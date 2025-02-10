@@ -1,0 +1,210 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+
+.contenedor-hoja {
+height: 100%;
+display: flex;
+flex-direction: column;
+
+  padding: 10px 10px 5px 5px;
+}
+
+.tabla-tickets {
+  width: 100%;
+  
+
+}
+
+
+/* Contenedor con scroll para el cuerpo de la tabla */
+.tabla-scroll {
+
+  max-height: 80%; /* Tamaño máximo del cuerpo con scroll */
+  /* Habilita la barra de desplazamiento */
+  overflow: auto;
+}
+.contenedor-hoja>caption{
+  width:max-content;
+  background-color: rgba(138, 137, 137, 0.233);
+  padding-left: 10px;
+} 
+
+
+/* Estilo de las celdas */
+td {
+ 
+  font-size: 14px;
+
+  text-align: center;
+  padding: 5px;
+ 
+}
+.fila-flex {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.384);
+    color: white;
+}
+/* Alineación específica para la primera y última columna */
+thead th:first-child, tbody td:first-child {
+  text-align: start;
+}
+
+thead th:last-child, tbody td:last-child {
+  text-align: right;
+}
+
+.icons-estado {
+ 
+  margin-right: 8px;
+}
+  .icons-estado{
+  width: 20px;
+}
+.accion{
+  width: 38px;
+}
+.col-estado{
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+.col-estado:not(th)>span{
+  background-color: aliceblue;
+  border-radius: 15px;
+  padding: 5px;
+ 
+  text-wrap: wrap;
+}
+.condicion{
+  text-wrap: nowrap;
+}
+.finalizado {
+  color: rgb(57, 201, 38);
+}
+
+.revisar {
+  color: rgb(231, 172, 11);
+}
+
+.cabecera-flex,.fila-flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cabecera-flex th, .fila-flex td {
+  flex: 1; /* Cada columna tiene igual proporción */
+  text-align: center;
+  padding: 10px;
+
+}
+/* .cabecera-flex:hover{
+  background-color: initial;
+  color: initial;
+} */
+
+.delete:hover{
+  transform: scale(1.1);
+  background-color: rgb(8, 8, 8);
+}
+.icons-condicion{
+  display: none;
+}
+
+.contenedor-hoja >caption{
+  margin: 0;
+  width: 100%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.418);
+  color: rgb(255, 255, 255);
+  font-family: "Oxanium", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:700;
+  font-style: normal;
+  margin-bottom: 25px;
+}
+
+.span-dato{
+  background-color: rgba(250, 244, 244, 0.267);
+  padding: 5px;
+  border-radius: 2px;
+  filter: drop-shadow(1px 1px 1px rgb(44, 44, 44));
+}
+
+.btn-add{
+  display: none;
+  margin-bottom: 10px;
+  width: 100%;
+  
+  align-items: center;
+  justify-content: center;
+  height: max-content;
+  border-radius: 5px;
+  border: none;
+ 
+  right: 0px;
+  background: linear-gradient(45deg, rgb(69, 69, 212),rgba(34, 22, 97, 0.726));
+  color: aliceblue;
+ filter: drop-shadow(1px 1px 1px Black);
+ 
+}
+.btn-add::before{
+  content: "+";
+  font-size: 30px;
+  margin-right: 5px;
+}
+
+
+.span-no-data{
+  width: 100%;
+
+  text-align: center;
+  color: black;
+}
+
+.filaDesactivada{
+ 
+  cursor: default;
+}
+@media screen and (max-width: 768px) {
+.accion{
+  display: none;
+}
+ .col-accion:not(td){
+  align-self: stretch;
+  background-color: transparent;
+  border-bottom: none;
+}
+
+
+.col-estado, .col-direccion{
+  display: none;
+}
+
+.icons-condicion {
+   display: block; 
+  position: relative;
+ 
+  top: 0;
+  left: 0;
+  margin-bottom: 5px;
+}
+.icons-condicion> .icons-estado{
+  width: 15px;
+}
+
+.span-btn{
+  display: none;
+}
+
+.btn-add{
+  display: inline-block;
+}
+
+td{
+  font-size: 13px;
+  font-weight: 600;
+}
+}
+

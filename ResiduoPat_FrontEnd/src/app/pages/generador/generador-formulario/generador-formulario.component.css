@@ -1,0 +1,30 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+label{
+    color: rgb(253, 253, 253);  
+    background-color: black;
+  
+  }
+  
+  
+  .input-formulario{
+    
+    background-color: aliceblue;
+  
+  }
+.btn{
+    background: linear-gradient(45deg, rgb(202, 191, 31),rgb(255, 230, 6));
+    color: rgb(10, 10, 10);
+   filter: drop-shadow(1px 1px 1px Black);
+}
+.aceptar{
+    background: linear-gradient(45deg, rgb(0, 131, 238),rgb(3, 86, 241));
+}
+
+.limpiar{
+    background: linear-gradient(45deg, rgb(136, 120, 120),rgb(177, 178, 179));
+}
+.modificar{
+    background: linear-gradient(45deg, rgb(231, 76, 76),rgb(224, 76, 50));
+}

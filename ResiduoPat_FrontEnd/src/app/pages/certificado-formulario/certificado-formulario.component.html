@@ -1,0 +1,111 @@
+<div class="contenedor-fondo"></div>
+
+<h2 id="titulo">Generar Certificado Mensual</h2>
+<div class="contenedor-principal">
+
+
+  <div class="container">
+
+    <form class="formulario" [formGroup]="formularioCertificado" >
+
+      <!-- input Transportista -->
+      <!--  Menu Desplegable para seleccionar Transportistas-->
+      <div #selectBox class="select-box select-transportista" desplegableCustom>
+        <label class="labelMenuDesplegable">Transportista</label>
+        <div class="select-option">
+          <input
+            #inputValor
+            type="text"
+            placeholder="Seleccionar Transportista"
+            id="input_transportista"      
+            [value]="formularioCertificado.get('transportista')?.value ? formularioCertificado.get('transportista')?.value : ''"
+            readonly
+          />
+        </div>
+  
+        <div class="content">
+         
+  
+          <ul class="opciones">
+            <li
+              *ngFor="let transportista of listaTransportistas"(click)="seleccionarTransportista(transportista)"
+             
+            >
+              {{ transportista.apellido + " " + transportista.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <!-- Inputs Selección Periodo -->
+
+      <!-- Input Mes Periodo -->
+      <div class="container-periodo">
+
+      <div #selectBox class="select-box select-Mes" desplegableCustom>
+        <label class="labelMenuDesplegable">Mes</label>
+        <div class="select-option">
+          <input
+            #inputValor
+            type="text"
+            placeholder="Seleccionar Mes"
+            id="input_mes" 
+            [value]="getNombreMes(formularioCertificado.get('mes')?.value)"
+
+          />
+        </div>
+  
+        <div class="content">
+        
+          <ul class="opciones">
+            <li class="item-opciones"
+            *ngFor="let item of mesesLista | keyvalue: compareFn"
+            (click)="formularioCertificado.patchValue({ mes: item.value })"
+             
+            >
+            {{ item.key }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div #selectBox class="select-box select-anio" desplegableCustom>
+        <label class="labelMenuDesplegable">Año</label>
+        <div class="select-option">
+          <input
+            #inputValor
+            type="text"
+            placeholder="Seleccionar Año"
+            id="input_anio"      
+            [value]="formularioCertificado.get('anio')?.value"
+              readonly
+          />
+        </div>
+  
+        <div class="content">
+          <ul class="opciones">
+            <li class="item-opciones"
+            *ngFor="let item of listaAnios"
+                (click)="formularioCertificado.patchValue({ anio: item })"
+            >
+            {{ item }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+      <button type="submit" class="btn btn-primary btn-Submit">Generar Certificado</button>
+    </form>
+
+  </div>
+  <div class="contenedor-modal" *ngIf="modal">
+   <app-modal [_mensaje]="mensajeModal" /> 
+  </div>
+<!--   <div class="contenedor-modal" >
+    <app-modal  /> 
+   </div> -->
+  
+</div>

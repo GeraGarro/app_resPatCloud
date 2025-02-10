@@ -1,0 +1,53 @@
+
+services:
+  app_respat:
+    build: 
+      context: ./residuosPatologicos_backEnd
+      dockerfile: DockerFile
+    container_name: app_respat
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://residuos_pat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: 1234
+    restart: always
+    depends_on:
+      residuos_pat:
+        condition: service_healthy
+
+  residuos_pat:
+    image: mysql:8.0.33
+    container_name: residuos_pat
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: residuos_Patologicos
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - db_data:/var/lib/mysql
+
+  frontend:
+    build:
+      context: ./ResiduoPat_FrontEnd
+      dockerfile: Dockerfile
+    container_name: angular_respat
+    ports:
+      - "80:80"
+    environment:
+      API_URL: http://app_respat:8080/api  
+    restart: always
+    depends_on:
+      - app_respat
+
+volumes:
+  db_data:

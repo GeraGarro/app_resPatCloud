@@ -1,0 +1,23 @@
+<div class="contenedor-fondo"></div>
+<div class=" dashboard">
+
+  <app-dashboard [url]="urlReport" [estiloContenedorPrincipal]="estiloDashboardGenerador" [titulo]="'Tickets Hoja Ruta'" [contador]="_contadorTicket"/>
+
+  <app-dashboard [url]="urlReportWarning" [estiloContenedorPrincipal]="estiloDashboardTipo"  [titulo]="' Tickets de Lote Sin Procesar'" [contador]="_contadorTicketWarning"/>
+  
+</div>
+<div class="contenedor-principal">
+  <button type="button" class="btn-close" (click)="toggleFormulario()" *ngIf="formularioVisible"></button>
+
+  <button type="button" class="btn-add" (click)="toggleFormulario()" *ngIf="!formularioVisible"></button>
+
+  <div class="hoja-ruta contenedor" *ngIf="!formularioVisible">
+  
+   <app-hoja-ruta-tickets (contadorTicket)="receptorContadorTicket($event.contador)" (contadorTicketWarning)="receptorContadorTicketWarning($event.contador)" #hojaRutaTickets/> 
+
+  </div>
+
+  <div class="ticket-formulario contenedor"      [ngClass]="{ hidden: !formularioVisible && isSmallScreen(), visible: formularioVisible }"
+  ><app-ticket-control-formulario (ticketCreado)="onTicketCreado()"> </app-ticket-control-formulario>
+  </div>
+</div>

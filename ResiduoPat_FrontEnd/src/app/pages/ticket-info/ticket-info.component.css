@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+.contenedor-principal{
+    position: relative;
+ width: 100%;
+  height: max-content;
+overflow:hidden;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+height: 100%;
+
+z-index: 999;
+padding: 25px 0px;
+}
+.contenedor-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   background: url(../../../assets/background/blurry-gradient-haikei.svg) ;
+  /*  background-repeat: no-repeat; */
+   z-index: 999;
+   
+}
+.contenedor-principal>*:not(.contenedor-fondo){
+    z-index: 9999;
+}
+.contenedor-manifiesto{
+    width: 100%;
+    display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: flex-start;
+
+z-index: 999;
+padding: 25px 0px;
+
+}
+.titulo-manifiesto{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+ 
+}
+.span-minifiesto::before{
+    content: 'Comprobante Manifiesto N° ';
+}
+.image-manifiesto{
+    width: 50px;
+  
+}
+
+.span-minifiesto{
+    background: black;
+    color: rgb(250, 250, 250);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.info-manifiesto{
+    display: flex;
+    align-self: center;
+   
+    justify-content: space-evenly;
+   
+   width: 80%;
+   padding: 2px;
+
+}
+
+.label-info{
+
+display: flex;
+flex-direction: column;
+flex-grow: 1;
+border-radius: 2px;
+align-items: center;
+justify-content: space-between;
+margin-left: 10px;
+padding: 5px;
+
+   
+}
+.label-info > span{
+    font-size: 15px;
+    text-wrap: nowrap;
+    font-weight: 600;
+}
+.label-info> input{
+    font-size: 12px;
+    width: 100%;
+    margin: 0 10px;
+    border: none;
+    font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+    text-align: center;
+    border-radius: 5px;
+}
+.label-info:not(input){
+   background: linear-gradient( 180deg, rgb(111, 101, 202), rgb(14, 33, 46));
+   font-weight: 600;
+   color: rgb(230, 235, 230);
+   font-size: 20px;
+}
+.contenedor-residuo{
+    width: 100%;
+    
+    margin-top: 20px;
+}
+@media screen and (max-width:600px) {
+  .titulo-manifiesto{
+    align-self: flex-end;
+    margin-right: 5px;
+}
+    
+    .info-manifiesto{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        min-height: 25vh;
+    
+        width: 100%;
+    }
+    .label-info{
+     width: 100%;
+       min-height: 7vh; 
+        border-radius: 10px;
+        align-items: center;
+        justify-content: center;
+        justify-content: space-between;
+        margin-left: 0;
+        margin-bottom: 15px;
+        }
+        .label-info> span{
+            font-size: 16px;
+            text-wrap: wrap;
+            
+        }
+        .label-info> input{
+            flex-wrap: wrap;
+            height: max-content;
+            font-size: 20px;
+            max-width: 100%;
+          
+        }
+}

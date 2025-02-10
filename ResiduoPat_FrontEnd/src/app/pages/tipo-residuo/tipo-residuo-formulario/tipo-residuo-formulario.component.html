@@ -1,0 +1,33 @@
+
+<div class="contenedor-principal-formulario">
+  <h3 class="titulo-formulario">{{nombreTituloForm}}</h3>
+      <form [formGroup]="formularioTipoResiduo"  (ngSubmit)="onSubmit()">
+
+        <div class="contenedor-input">
+          <label for="codigo_tipo" class="label">
+          
+           Código ID</label>
+          <input class="input-formulario"  type="text" id="codigo_tipo" formControlName="codigo_tipo">
+          
+        </div>
+
+        <div class="contenedor-input">
+          <label for="nombre_tipo" class="label">
+         
+            Nombre Tipo Residuo</label>
+          <input class="input-formulario" [ngClass]="{'is-invalid': hasErrors('nombre_tipo','required'),'input-disabled':estadoModificacion}"  type="text"  id="nombre_tipo" formControlName="nombre_tipo" >
+        <div class="text-error mensajeError" *ngIf="hasErrors('nombre_tipo','required')">
+            <img class="imagen-error" src="../../../../assets/icons/error-modal.png" alt="error">  Por favor Ingresa Nombre de Residuo
+          </div> 
+        </div>
+
+        <div class= "container-btn">
+          
+          <button type="button" class="boton btn btn-primary btn-Submit"  (click)="onSubmit()" *ngIf="!estadoModificacion">{{textoBotonSubmit}}</button>
+          <button type="button" class="btn modificar" (click)="hablitarEdicion()" *ngIf="estadoModificacion">Realizar modificación </button>
+
+        </div>
+            
+      </form>
+
+  </div>

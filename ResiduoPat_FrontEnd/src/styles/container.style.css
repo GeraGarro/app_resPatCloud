@@ -1,0 +1,250 @@
+.contenedor-padre {
+  position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+ 
+  }
+
+ 
+  .contenedor-contenido{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-height: 100%;
+   
+  }
+  .contenedor-formulario{
+height: 100%;
+  width: 100%;
+
+  
+  }
+
+  .contenedor-formulario, .contenedor-datos{
+ 
+    flex: 1;
+    padding: 5px;
+  }
+  .contenedor-datos{
+    display: flex;
+    align-items: stretch;
+    max-height: 70vh;
+  }
+  
+  .contenedor-lista{
+    padding-top: 1vh;
+    position: relative;
+    gap: 30px;
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+  width: 100%;
+ min-height: 60vh;
+    justify-content: center;
+    max-height: 100%;
+    transition: transform 0.3s ease-in-out;
+    overflow: auto;
+   flex: 1;
+  }
+  
+  .contenedor-lista:hover > :not(:hover):not(.item-lista.activo)  {
+  
+    opacity: 0.85;
+  } 
+
+  .contenedor-lista-wrapper {
+    width: 100%; /* Tamaño del contenedor */
+    max-height: 100%; /* Altura visible */
+
+    position: relative;
+    display: flex;
+
+  }
+  
+  .item-lista{
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    box-shadow: 5px 2px 1px 1px rgba(0, 0, 0, 0.418);
+ 
+    width: 140px;
+    height: 60px;
+    text-align: center;
+    list-style: none;
+    padding: 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(24, 24, 24, 0.726);
+    color: rgb(218, 213, 213);
+    transition: all .5s linear;
+    z-index: 10;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .item-lista.activo,.item-lista.activo::before,.item-lista.activo:nth-child(even)::before {
+    background-color: rgb(253, 253, 253);
+    color: rgb(24, 16, 16);
+    transition: all .1s linear;
+  }
+  .item-lista::before{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px;
+    background-color: rgb(11, 92, 185);
+  transition: all .3s linear;
+  z-index: -1;
+  
+  }
+  .item-lista:nth-child(even)::before{
+    background-color: rgb(16, 35, 119);
+  }
+  .item-lista:hover::before{
+    width: 100%;
+   
+  }
+  
+  
+  .item-lista> .span-nombre{
+    flex: 1;
+    max-height: 40%;
+  }
+
+ .toogle-estado{
+  width:25%;
+ }
+  .titulo-datos{
+    align-self: start;
+    width: max-content;
+   border-bottom:3px solid rgba(49, 49, 49, 0.795);
+  }
+   
+  
+  .contenedor-botones{
+    position: relative;
+    flex: 1;
+    
+    
+    display: flex;
+    flex-direction: column;
+    
+  
+  }
+
+  .contenedor-botones > .control{
+    flex: 1;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+
+    height: auto;
+    transform-origin: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .flecha{
+    width: 40px;
+   
+    background: none;
+  
+ 
+ 
+  }
+  
+   .arriba{
+   transform: rotate(-90deg) ;
+  }
+  .abajo{
+    transform: rotate(90deg) ;
+  } 
+  
+  .botones-slide{
+    background: none;
+    border: none;
+  }
+
+  .animacion-aparecer {
+    animation: AfueraHaciaAdentro 0.5s ease-out both;
+  }
+
+  @media screen and (min-width:1200px) {
+    .contenedor-lista{
+      width: 70%;
+    }
+  }
+  
+  @media screen and (max-width:768px) {
+    .contenedor-principal{
+     
+      flex-direction: column;
+   
+    }
+    .contenedor-formulario{
+      display: none;
+    }
+  
+    .contenedor-datos{
+      height: 70vh;
+    
+    }
+   
+    .contenedor-lista-wrapper {
+      max-height: 100%;
+      
+    }
+    .contenedor-principal >.btn-add{
+      display: block;
+    }
+   
+  }
+  @media screen and (width > 468px)and ( width < 768px) {
+    .contenedor-lista-wrapper {
+      max-height: 80%;
+      
+    }
+  }
+  @media screen and (max-width:468px) {
+   .contenedor-padre{
+    position: relative;
+    height: 75vh;
+   }
+
+   .contenedor-contenido{
+    position: relative;
+    height: 80%;
+   }
+   .contenedor-lista-wrapper{
+    overflow-y: hidden;
+   }
+
+   .contenedor-datos, .contenedor-lista{
+    height: 100%;
+   }
+
+   .contenedor-padre > .agregar{
+    display: inline-block;
+    
+   }
+  }
+  
+  @keyframes AfueraHaciaAdentro {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  

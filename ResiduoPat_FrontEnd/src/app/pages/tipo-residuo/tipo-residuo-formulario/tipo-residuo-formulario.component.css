@@ -1,0 +1,43 @@
+.contenedor-principal-formulario{
+   /*  background: linear-gradient( rgb(3, 89, 187),rgb(65, 100, 65)); */
+    background-color: rgba(128, 128, 128, 0.877);
+    background-color: rgba(24, 24, 24, 0.89);
+    border-radius: 2%;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.titulo-formulario{
+   
+    color: aliceblue;
+}
+label{
+    max-width: max-content;
+    color: rgb(253, 253, 253);  
+    background-color: black;
+  padding: 5px;
+   
+  }
+  
+  form{
+ 
+
+  }
+  
+  .input-formulario{
+    
+    background-color: aliceblue;
+  
+  }
+  .btn{
+    font-size: 14px;
+  }
+
+  .modificar{
+    background: linear-gradient(45deg, rgb(231, 76, 76),rgb(224, 76, 50));
+}
+.aceptar{
+  background: linear-gradient(45deg, rgb(0, 131, 238),rgb(3, 86, 241));
+}

@@ -1,0 +1,36 @@
+<div class="contenedor-principal">
+  <div class="contenedor-fondo"></div>
+
+  <div class="contenedor-manifiesto">
+    <div class="titulo-manifiesto">
+      <img
+        class="image-manifiesto"
+        src="../../../assets/icons/form_manifiesto.png"
+        alt="manifiesto"
+      />
+      <span class="span-minifiesto">{{ contador }}</span>
+    </div>
+    <div class="info-manifiesto">
+      <label class="label-info"
+        ><span>Operador de Retiro</span
+        ><input id="transportista" type="text" [(ngModel)]="operadorRetiro"
+      /></label>
+      <label class="label-info"
+        >Generador<input id="generador" type="text" [(ngModel)]="generador"
+      /></label>
+      <label class="label-info"
+        >Fecha<input
+          id="fecha"
+          type="date"
+          [(ngModel)]="fecha"
+          (change)="onDateChange($event)"
+      /></label>
+    </div>
+  </div>
+  <div class="contenedor-residuo">
+    <app-residuo
+      [residuosLista]="listaResiduos ? listaResiduos : []"
+      [id_TicketControl]="idTicket"
+    ></app-residuo>
+  </div>
+</div>

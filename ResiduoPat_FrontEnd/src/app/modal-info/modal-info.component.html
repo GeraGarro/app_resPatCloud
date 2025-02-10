@@ -1,0 +1,43 @@
+<!-- modal-info.component.html -->
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-content" *ngIf="nuevosResiduos.length===0 && residuosModificados.length===0 && residuosEliminados.length===0"> 
+    <h2>No se Han realizado Modificaciones</h2>
+  </div>
+    <div class="modal-content" *ngIf="nuevosResiduos.length!=0||residuosModificados.length!=0 || residuosEliminados.length!=0">
+   
+ 
+  
+      <div *ngIf="nuevosResiduos.length > 0">
+        <h3 class="contenedor-detalle" >Residuos Agregados</h3>
+        <ul>
+          <li *ngFor="let residuo of nuevosResiduos">
+            {{ residuo.tipoResiduo.nombre }} - Peso: {{ residuo.peso }} kg
+          </li>
+        </ul>
+      </div>
+  
+      <div  *ngIf="residuosModificados.length > 0">
+        <h3 class="contenedor-detalle">Residuos Modificados</h3>
+        <ul>
+          <li *ngFor="let residuo of residuosModificados">
+            {{ residuo.tipoResiduo.nombre }} - Peso actualizado a: {{ residuo.peso }} kg
+          </li>
+        </ul>
+      </div>
+  
+      <div *ngIf="residuosEliminados.length > 0">
+        <h3 class="contenedor-detalle" >Residuos Eliminados</h3>
+        <ul>
+          <li *ngFor="let residuo of residuosEliminados">
+            {{ residuo.tipoResiduo.nombre }}
+          </li>
+        </ul>
+      </div>
+  
+    </div>
+    <div class="contenedor-botones">  
+        <button class="close-button" (click)="cerrarModal()">Volver</button>
+      <button class="close-button" routerLink="/home">Ir a Home</button>
+    </div>
+
+  </div>

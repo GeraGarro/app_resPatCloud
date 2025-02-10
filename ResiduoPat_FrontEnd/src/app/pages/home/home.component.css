@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Scada:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+.contenedor-principal {
+    position: relative;
+   display: flex;
+   flex-direction: row;
+    box-sizing: content-box;
+  
+    z-index: 999;
+    width: 100%;
+    height: max-content;
+    padding: 10px;
+justify-content: space-around;
+column-gap: 30px;
+}
+.contenedor-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+/*    background: url(../../../assets/background/stacked-peaks-haikei.svg) ; */
+    width: 100%; 
+  background: #0F2A1D;
+  background: linear-gradient( 45deg,#1A2D42 60%,#AAB7B7);
+}
+
+.dashboard {
+
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+
+
+.hoja-ruta {
+    flex: 4;
+    width: 60%;
+    height: 90vh;
+    align-self: center;
+  
+}
+
+.hoja-ruta > .btn {
+    margin-top: 20px;
+}
+
+.fechaHoja {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #161111;
+    border: 2px solid rgb(151, 146, 146);
+    font-style: oblique;
+    padding: 8px;
+    margin-left: 5px;
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+span {
+    width: 80%;
+    font-weight: 700;
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: rgb(19, 21, 22);
+    text-wrap: nowrap;
+}
+
+
+.titulo.rotated::before {
+    transform: rotate(0deg); /* Rotación de 0 grados cuando está en estado 'rotated' */
+}
+
+.contenedor {
+height: 70vh;
+    background-color: #f0f3f485;
+    border-radius: 10px 5px;
+;
+    z-index: 999;
+  
+    margin-bottom: 20px;
+}
+.ticket-formulario{
+    box-sizing: content-box;
+    flex: 2;
+    width: 20%;
+   
+    align-self: start;
+    justify-content: center;
+   
+    align-self: center;
+    margin-right: 20px;
+}
+
+.btn-add, .btn-close{
+    display: none;
+    position: absolute;
+      right: 30px;
+      top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(45deg, rgb(69, 69, 212),rgba(34, 22, 97, 0.726));
+    color: aliceblue;
+  box-shadow: none;
+   z-index: 999;
+   opacity: 1;
+  }
+  .btn-add::before{
+    content: "+";
+    font-size: 30px;
+   
+  }
+  .btn-close{
+   
+    background: linear-gradient(45deg, rgb(255, 5, 5),rgb(238, 117, 3));
+  }
+  .btn-close::before{
+    content: "X";
+    font-size: 30px;
+   
+  }
+
+  .ticket-formulario.hidden {
+    display: none;
+  }
+  
+  .ticket-formulario.visible {
+    display: block;
+  }
+  
+@media screen and (max-width:768px) {
+    .dashboard{
+        height: 28vh;
+      flex-wrap: wrap-reverse;
+    }
+    .contenedor-principal{
+        margin-top: 5vh;
+       position: relative;
+       height: 68vh; 
+       display: flex;
+    }
+    .contenedor{
+        width: 98%;
+ 
+   inset: 0 0 0 0;
+    position: absolute;
+  
+    height: 100%;
+    z-index: 99;
+   }
+
+   .hoja-ruta, .btn-add,.btn-close{
+   display: inline-block;
+    
+   
+   }
+
+    .ticket-formulario {
+      display: none;
+    
+   
+    }
+  
+    
+      .ticket-formulario.hidden {
+        display: none;
+       
+      }
+ 
+    
+      
+}
+
+
+@media screen and (max-width: 515px) {
+    .dashboard{
+        display: none;
+    }
+    .contenedor-fondo{
+        top:-50px
+    }
+}

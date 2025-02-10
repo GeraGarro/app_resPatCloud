@@ -1,0 +1,13 @@
+# Dependencias de Node
+node_modules/
+
+# Archivos de entorno de Angular
+.angular/
+
+# Configuración de VS Code
+.vscode/
+
+# Otros archivos que no deseas rastrear
+.DS_Store
+.idea/
+*.log

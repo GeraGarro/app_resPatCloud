@@ -1,0 +1,84 @@
+ 
+ 
+ 
+ <div class="contenedor-padre">
+    
+    <h3 class="titulo-tipo">Tipos de <span>Residuos Registrados</span></h3>
+    <button class="btn agregar" (click)="activarNuevo()" *ngIf="!nuevo">Agregar</button>
+   <div class="contenedor-contenido" [ngClass]="{'contenedor-contenido-formulario':mostrarFormulario }">
+
+   
+    <div class="contenedor-lista-wrapper"*ngIf="!nuevo">
+<!--       <div class="contenedor-botones"> -->
+        <!-- Botón "Arriba" -->
+       <!--  <div class="control arriba">
+          <button class="botones-slide" (click)="scrollUp()">
+            <img
+              class="flecha"
+              src="../../../assets/icons/flecha_icon.png"
+              alt="flecha-arriba"
+            />
+          </button>
+        </div> -->
+        <!-- Botón "Abajo" -->
+    <!--     <div class="control abajo">
+          <button class="botones-slide" (click)="scrollDown()">
+            <img
+              class="flecha"
+              src="../../../assets/icons/flecha_icon.png"
+              alt="flecha-abajo"
+            />
+          </button>
+        </div> -->
+      <!-- </div> -->
+    <ul class="contenedor-lista" *ngIf="ListaTipoResiduos.length!=0">
+
+
+      <li
+      class="item-lista"
+      *ngFor="let item of ListaTipoResiduos; let i = index"
+      [class.activo]="selectedIndex === i"
+      (click)="seleccionarElemento(i, item.id)">
+
+        <span class="span-nombre">{{ item.nombre }}</span>
+
+        <div class="toogle-estado">
+          <input type="checkbox" hidden   name="check-toggle"  [id]="'checkbox-' + i" 
+          [(ngModel)]="item.estado" 
+          (change)="cambiarEstado(item.id, item.estado)">
+          <label  [for]="'checkbox-' + i" class="toggle" [class.toggle--activo]="item.estado">
+            <div class="toggle__circle" [class.toggle__circle--activo]="item.estado"></div>
+          </label>
+        </div>
+      </li>
+    
+
+
+    </ul>
+
+    <div class="contenedor-empty" *ngIf="ListaTipoResiduos.length==0">
+     <span class="titulo-empty"><img src="../../../assets/icons/ticketWarning.png" alt="">Aviso</span> 
+     <span class="texto-empty"> No hay registro de Residuos</span>
+     <span class="texto-empty"> Por Favor Registre Clasificación de Tipo De Residuo</span>
+    </div>
+    </div>
+  
+    
+   
+<div class="contenedor-formulario" *ngIf="mostrarFormulario"
+[class.animacion-aparecer]="mostrarFormulario">
+  <app-tipo-residuo-formulario (enviarMensaje)="recepcionDatos($event)"
+  [idRecibido]="idSeleccionado"
+  [nuevo]="nuevo"/>
+</div>
+       
+   </div>
+
+
+
+  </div>
+
+<div class="contenedor-modal" *ngIf="activarModal" >
+  <app-modal   
+  [_mensaje]="mensajeDeFormulario" [estadoAprobado]= "estadoModal"/>
+</div>

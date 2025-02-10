@@ -1,0 +1,16 @@
+<main>
+  <div class="container-modal" >
+    <div class="icon-modal" >
+    <img src="../../assets/icons/check_modal.png" alt="check_modal" *ngIf="estadoAprobado">
+    <img src="../../assets/icons/error-modal.png" alt="error-modal" *ngIf="!estadoAprobado">
+  </div>
+    <div class="message-Modal">
+      <h3 [ngClass]="{'texto-success': estadoAprobado, 'texto-error': !estadoAprobado}">{{_mensaje}}</h3>
+    </div>
+  </div>
+ 
+<!--   <div class="container-loader">
+    <i class="fa-solid fa-circle-notch fa-spin fa-5x loader" id="loader" style="color: rgb(20, 20, 20);" *ngIf="!this.openModal && this.isSuccessful"></i>
+  </div>
+ -->
+</main>

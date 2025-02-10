@@ -1,0 +1,148 @@
+.contenedor-principal, .contenedor-principal-formulario{
+   position: relative;
+width: 100%;
+height: 100%;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor-grupo {
+
+    display: flex;
+
+    width: 100%;
+   
+  }
+.contenedor-grupo > .contenedor-input{
+    flex: 1;
+}
+.contenedor-input{
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px;
+}
+
+.contenedor-input > input{
+    background: none;
+    border: none;
+
+}
+.label{
+    display: flex;
+  justify-items: flex-start;
+    align-items: center;
+    font-weight: 500;
+    
+  font-size: 15px;
+  max-width: 30%;
+  flex: 1;
+text-align: left;
+word-wrap: break-word;
+
+border-radius: 5px 0 0 5px;
+
+} 
+
+
+label , .input-formulario{
+   
+    height: 30px;
+}
+
+.input-formulario{
+    border-radius: 0 10px 10px 0;
+padding-right: 5px;
+font-family: "Lato", sans-serif;
+font-weight: 400;
+font-style: normal;
+text-align: left;
+}
+
+
+.candado{
+
+  position: absolute;
+  right: 10px; /* Ajusta según la distancia deseada al borde derecho */
+  top: 80%;
+  transform: translateY(-50%);
+  width: 20px; /* Ajusta el tamaño del ícono */
+  height: 20px;
+  pointer-events: none;
+}
+.container-btn{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+  input[type="number"] {
+    /* Estilos específicos para inputs tipo number */
+    -moz-appearance: textfield; /* Elimina las flechas en navegadores como Firefox */
+  }
+  
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    /* Estilos para ocultar las flechas en navegadores como Chrome */
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+/* div mensaje error de los inputs */
+.imagen-error{
+    width: 25px;
+}
+
+.mensajeError{
+    animation: palpitacion 2s infinite;
+    font-size: 15px;
+   width: max-content;
+   padding: 2px 5px;
+}
+.text-error{
+    background-color: red;
+}
+.text-alerta{
+background-color: rgb(124, 124, 6);
+}
+
+.text-alerta, .text-error{
+    color: rgb(247, 247, 247);
+    border-radius: 10px;
+}
+
+
+
+/*   estilos Modal */
+.contenedor-modal{
+    position: fixed;
+    top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: rgba(11, 2, 20, 0.445);
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+@keyframes palpitacion {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.02); /* Incrementa el tamaño ligeramente */
+        opacity: 0.8; /* Reduce la opacidad ligeramente */
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      } 
+}

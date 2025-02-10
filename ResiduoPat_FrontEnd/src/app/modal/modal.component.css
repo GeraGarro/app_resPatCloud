@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Corben:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+main{
+   
+    background: rgba(0, 0, 0, .5);
+
+}
+
+
+.success-modal {
+    /* Estilos específicos para un resultado exitoso */
+
+    background-color: #1db140;
+  
+  }
+  
+  .error-modal {
+    /* Estilos específicos para un resultado de error */
+    background-color: #ff0019;
+  }
+
+.icon-modal{
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    height: 30%;
+}
+.icon-modal img{
+    position: absolute;
+    height: 90%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+.container-modal{
+   
+    box-shadow: 1px 3px 5px 5px rgba(0, 0, 0, 0.555);
+   position: absolute;
+   background-color: #ffffff;
+   min-width: 13%;
+   width: max-content;
+   height: 100px;
+ 
+    top: 60px;
+    right: 0;
+   
+    border-radius: 0 0 15px 15px;
+    
+    display: flex;
+    flex-direction: column; 
+
+    justify-content: space-between;
+   
+
+    font-family: "Corben", serif;
+  font-weight: 500;
+  font-style: normal;
+  font-style: oblique;
+    /* border: 2px solid black; */
+    z-index: 9999;
+   opacity: 0;
+  animation: opacidad .7s linear .3s 1 forwards ;
+}
+
+.texto-success{
+    color: #1db140;
+}
+.texto-error{
+    color:#ff0019
+}
+.message-Modal{
+    height: 30%;
+    align-self: stretch;
+    
+    text-align: center;
+
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+   
+}
+
+
+.loader{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.message-Modal h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+ 
+    border-radius: 10px;
+    
+  }
+.boton{
+    height: 20%;
+    border: none;
+   
+    color: white;
+    font-size: 20px;
+    border-radius: 0 0 15px 15px ;
+}
+h3{text-align: center;
+    box-sizing: border-box;
+  padding: 2px 5px;    
+  font-size: 14px;
+  /* text-wrap: nowrap; */
+  text-shadow: 2px 2px 3px rgba(4, 5, 4, 0.158);
+ 
+   width: 90%;
+}
+
+.boton{
+    font-size: 12px;
+}
+
+img{/* width: 40px; */
+    position: relative;
+animation: giroEjeHorizontal 1.5s ease-in .7s 1 normal forwards;
+align-self: center;
+}
+
+
+
+
+@media screen and (min-width:600px) and (max-width:1100px) {
+   
+    
+    h3{
+        font-size: 10px;
+       
+    }
+}
+
+
+
+@keyframes giroEjeHorizontal {
+    0%{
+        transform: rotateY(0);
+        transform: translateX(100px);
+        opacity: .3;
+    }
+
+    50%{
+        transform: rotateY(180deg);
+        opacity: .7;
+    }
+
+    100%{
+        transform: rotateY(360deg);
+        transform: translateX(-50%);
+        opacity: 1;
+    }
+}
+
+@keyframes opacidad {
+    from {
+        opacity: 0; 
+      }
+      to {
+        opacity: 1;
+      }
+}

@@ -1,0 +1,190 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.contenedor-principal{
+   
+   
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo{
+    align-self: center;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-radius: 50px 0 0 50px;
+   padding: 10px;
+    text-align: right;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    text-shadow: 2px 2px 1px rgba(80, 80, 80, 0.747);
+    border-bottom: 3px transparent;
+}
+
+form{
+    width: 100%;
+   
+    position: relative;
+flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+  justify-content: space-evenly;
+    border-radius: 3%;
+  
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  z-index: 999; 
+
+
+ 
+}
+
+.fecha{
+    display: flex;
+    flex-direction: column; 
+    height: 30px;
+}
+.btn-add{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+    border-radius: 5px;
+    border: none;
+   
+    right: 0px;
+    color: aliceblue;
+    background: linear-gradient(45deg, rgb(69, 69, 212),rgba(34, 22, 97, 0.726));
+   
+/*    box-shadow: 10px -2px 5px 2px rgb(69, 69, 212), -10px -2px 1px 1px rgba(15, 15, 15, 0.514); */
+ 
+   margin-bottom: 10px;
+   transition: transform .2s linear ;
+  }
+  .btn-add:hover{
+ 
+   
+  
+   transform: scale(1.02);
+  }
+
+
+
+   .select-box {
+ 
+   width: 100%;
+   
+
+   }
+
+   mat-form-field{
+ 
+    height: 62px;
+    display: flex;
+   }
+   mat-label{
+  
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  top: 0;
+   }
+   mat-option{
+    font-size: 10px;
+   }
+   mat-select{
+    font-size: 12px;
+  
+   }
+
+#input-fecha{
+    width: 60%;
+    height: 100px;
+    
+        font-size: 13px;
+       
+}
+.mat-calendar-body-selected:hover {
+    background-color: #1565c0; /* Color diferente para fechas seleccionadas al hacer hover */
+    color: #fff;
+  }
+@media screen and (min-width:1000px) {
+
+ 
+    .form-label{
+        font-size: 15px;
+    }
+    input{
+        height: 27px;
+    }
+   
+    .input-formulario, mat-form-field {
+       
+        width: 80%;
+    }
+    mat-label{
+        font-size: 12px;
+    
+    
+       }
+}
+
+@media screen and (max-width:768px) {
+   
+   
+
+   
+    .input-formulario, mat-form-field .label-revision{
+       
+        width: 95%;
+    }
+    .label-revision{
+        align-items: center;
+     
+    }
+    .label-revision> .form-label{
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+    }
+
+    .form-label{
+        font-size: 20px;
+    }
+    input{
+        height: 27px;
+    }
+
+    mat-label{
+        font-size: 14px;
+    
+    
+       }
+       mat-option{
+        font-size: 15px;
+       }
+       input:checked + .slider::before{
+        transform:  translateX(105px);
+    }
+  
+  
+}
+@media screen and (min-width:478px)and ( max-width: 768px) {
+  
+     form{
+        position: relative;
+    
+       justify-content: space-evenly;
+     }
+ 
+}
+

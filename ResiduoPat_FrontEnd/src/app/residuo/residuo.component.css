@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+.titulo-residuo{
+font-size: 30px;
+
+padding: 5px;
+display: block;
+font-weight: 600;
+}
+.contenedor-lista-residuo{
+    position: relative;
+    background: rgb(255, 255, 255);
+    height: 100%;
+    
+}
+.container-no-data{
+    color: #02020257;
+    text-align: right;
+}
+.tabla-residuos{
+    
+
+  
+
+    width: 80%;
+    min-height: 10vh; 
+    text-align: center;
+    margin: auto;
+   
+}
+.tabla-residuos caption {
+    caption-side: top;
+    font-weight: bold;
+}
+.tabla-residuos>thead > tr{
+    background-color: rebeccapurple;
+    color: aliceblue;
+   font-size: 20px;
+ font-family: Arial, Helvetica, sans-serif;
+}
+.tabla-residuos>thead > tr > th{
+  
+    font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+ 
+}
+.tabla-residuos>tbody{
+background: white;
+color: black;
+overflow-y: auto;
+max-height: 500px;
+}
+.cabecera-nombre{
+    width: 10%;
+}
+.tabla-residuos>tbody > tr{
+    font-size: 12px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.521);
+   height: 40px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+
+.tabla-residuos>tbody > tr:hover {
+    background-color: #020202;
+    color: white;
+}
+.tabla-residuos>tbody > tr:last-child{
+    border-bottom:3px solid #020202;
+}
+ .peso-total::after{
+    content: "Kg"
+ }
+.tabla-residuos> tfoot> tr{
+   
+  /*   background-color: rgb(23, 141, 23);
+    color: aliceblue; */
+    height: 45px;
+   
+}
+
+.img-delete{
+    
+    width: 25px;
+    cursor: pointer;
+}
+.tabla-residuos thead >  tr{
+    
+    border-radius: 50%;
+}
+.col-peso > input{
+    border: 1px solid gray;
+    border-radius: 12px;
+    width: 120px;
+    padding: 10px 5px;
+    margin-right: 10px;
+    text-align: center;
+}
+.col-peso::after{
+    content: "Kg";
+}
+
+.btn-agregar{
+    background: rgb(51, 86, 182);
+    color: rgb(255, 255, 255);
+    border: none;
+    box-shadow: 1px 1px 1px 1px gray;
+    border-radius: 5px;
+}
+
+.btn-agregar:active{
+    background: rgb(31, 6, 90);
+}
+
+.btn-finalizar{
+    border: none;
+    background-color: green;
+    color: white;
+    margin: 5px;
+    border-radius: 2px;
+}
+.btn-finalizar:active{
+    background: rgb(73, 131, 59);
+   font-weight: 600;
+}
+.columna-tipo{
+    width: 150px;
+
+}
+.form-select{
+    width: 100%;
+    font-size: 13px;
+}
+
+ @media screen and (max-width:600px) {
+    .tabla-residuos{
+        width: 95%;
+    }
+    .img-delete{
+    
+        width: 35px;
+  
+    }
+    .col-peso > input{
+        width: 80px;
+        padding: 5px 2px;
+    }
+    .columna-tipo{
+        width: 110px;
+    }
+ }

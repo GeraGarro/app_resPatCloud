@@ -1,0 +1,56 @@
+<div class="contenedor-hoja">
+ 
+
+  <caption><h3>Hoja De Ruta N°<span class="span-dato">{{idHoja}}</span></h3> <span >Fecha Periodo <span class="span-dato">{{primerDiaSemana}}</span> a <span class="span-dato">{{ultimoDiaSemana}}</span></span></caption>
+  <div class="tabla-scroll">
+   
+    <table class="tabla-tickets">
+      <thead >
+        <tr class="cabecera-flex">
+          <th class="col-generador">Generador</th>
+          <th class="col-direccion"><span>Dirección</span></th>
+          <th class="col-fecha">Fecha</th>
+          <th class="col-estado"><span class="col-estado-content">Estado</span></th>
+          <th class="col-acciones"><span class="acciones">Acciones</span></th>
+        </tr>
+      </thead>
+      <tbody  >
+         <tr class="fila-flex" *ngFor="let item of listaTickets; let i = index " (click)="!item.estado &&onRowClicked(item)" style="cursor: pointer;" [ngClass]="{filaDesactivada: item.estado}">
+          
+          <td class="col-generador">
+            <div class="icons-condicion">      
+            
+              <img class="icons-estado" src="../../assets/icons/success.png" alt="success" *ngIf="item.estado">
+              <img class="icons-estado" src="../../assets/icons/warning.png" alt="warning" *ngIf="!item.estado">
+              
+            </div>
+            <span>{{ item.generador.nombre }}</span>
+         
+      
+          
+          </td>
+          <td class="col-direccion"><span>{{ item.generador.direccion }}</span></td>
+          <td class="col-fecha"><span>{{ item.fechaEmisionTk | date : 'fullDate' : undefined : 'es' }}</span></td>
+          <td class="col-estado fila-datos">
+            <img class="icons-estado" src="../../assets/icons/success.png" alt="success" *ngIf="item.estado">
+            <img class="icons-estado" src="../../assets/icons/warning.png" alt="warning" *ngIf="!item.estado">
+            <span class="condicion" [ngClass]="{'finalizado': item.estado, 'revisar': !item.estado}">
+              {{ item.estado ? 'Finalizado' : 'Sin Procesar' }}
+            </span>
+          </td>
+          <td class="col-acciones">
+            <img class="accion" src="../../../../assets/icons/delete.png" alt="delete" (click)="deleteTicket(item.id_Ticket); $event.stopPropagation()" *ngIf="!item.estado">
+
+            <img class="accion" src="../../../../assets/icons/edit.png" alt="edit" (click)="cambiarestado(item.id_Ticket,false)" *ngIf="item.estado">
+            <img class="accion" src="../../../../assets/icons/print.png" alt="print" (click)="descargarReporte(item.id_Ticket)" *ngIf="item.estado">
+          </td>
+        </tr> 
+
+    
+      </tbody>
+
+    </table>
+  </div>
+      <caption class="contenedor-no-dato" *ngIf="listaTickets.length==0">Aún no Hay carga de datos En La Hoja</caption>
+
+</div>

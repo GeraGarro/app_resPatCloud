@@ -1,0 +1,42 @@
+
+ <div class="contenedor container-xxl">
+
+   
+    <mat-card>
+      <table  mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+             
+        <ng-container matColumnDef='tipo_residuo'>
+         
+          <td mat-cell *matCellDef="let element"> {{element.tipo_residuo.nombre_tipoResiduo}} </td>
+        </ng-container>
+      
+   
+        <ng-container matColumnDef="peso">
+         
+          <td mat-cell *matCellDef="let element"> {{element.peso}} Kg</td>
+        </ng-container>
+     
+     
+ <ng-container matColumnDef="Acciones">
+      <td class="filaAcciones" mat-cell *matCellDef="let element">
+        <button class="botones" mat-button (click)="editar(element)">Ver Residuos</button>
+        <button class="botones" mat-button (click)="editar(element)">Eliminar</button>
+        <button class="botones" mat-button (click)="editar(element)">Imprimir Ticket</button>
+      </td>
+     ></ng-container>   
+
+       <!--  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      
+      </table>
+    <!--  
+      <mat-paginator      [length]="100"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page">
+</mat-paginator> -->
+
+    </mat-card>
+  </div>

@@ -1,0 +1,137 @@
+
+.pendiente{
+  background: rgb(224, 224, 36);
+  color: black;
+  font-weight: 800;
+  
+}
+
+
+#titulo{
+  background-color: rgba(50, 104, 28, 0.692);
+} 
+
+#columna-peso{
+ 
+  text-align:center ;
+  text-wrap: nowrap;
+}
+
+.icons-acciones{
+ 
+  margin: 1vh ;
+  width: 5vh;
+  height: 4vh;
+  border: none;
+object-fit: cover;
+object-position: center;
+border-radius: 30% ;
+}
+.vacio{
+  color: brown;
+  font-size: 50px;
+  
+}
+
+.icons-acciones>img{
+  width: 4vh;
+ 
+}
+
+.mat-mdc-table .mat-mdc-header-cell{
+  background-color: rgb(54, 54, 54);
+  color: rgb(255, 250, 250);
+  border: 1px solid rgb(189, 186, 186);
+  text-align: center;
+ padding: none;
+
+}
+
+.tabla-contenedor {
+
+  min-height: 250px;
+  max-height: 50vh; /* Ajusta según sea necesario */
+  overflow-y: auto;
+ 
+}
+.contenedor-dashboars{
+  width: 80%;
+  display: flex; 
+  justify-content: space-around;
+}
+
+.estilo-general{
+  font-size: 10px;
+}
+.columna-estado {
+  text-align: right;
+  width: 50px;
+}
+.cabecera-fija {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Color de fondo para evitar que se superponga con el contenido al hacer scroll */
+  z-index: 1000; /* Asegura que la cabecera quede encima de las filas */
+}
+
+.columna-estado img {
+  width: 20px;
+  height: 20px;
+}
+.procesado{
+  padding: 7px;
+  background-color: rgba(24, 112, 30, 0.973);
+  color: rgb(214, 212, 207);
+  border-radius: 80%;
+}
+
+.pendiente{
+  padding: 7px;
+  background-color: rgba(250, 246, 15, 0.973);
+  color: rgb(88, 85, 75);
+  border-radius: 80%;
+}
+                                         
+@media screen and (max-width: 800px) {
+ 
+  /* .columna_invi {
+    
+    background-color: red;
+  } */
+  .estilo-general{
+    font-size: 10px;
+  }
+  th, td{
+    /* Borde de las celdas */
+    height: 30px;
+  
+    text-align: center;
+   
+ 
+   /*  border: 1px solid rgba(0, 0, 0, 0.212);
+     */
+  
+  }
+  .icons-acciones{
+ 
+    margin: 0 ;
+    width: 5vh;
+    height: 4vh;
+    border: none;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 30% ;
+  }
+  
+  .icons-acciones>img{
+    width: 3vh;
+   
+  }
+  .tabla-contenedor{
+   overflow: auto;
+    margin: 2vh 0px;
+    padding: 0;
+ 
+  }
+
+}

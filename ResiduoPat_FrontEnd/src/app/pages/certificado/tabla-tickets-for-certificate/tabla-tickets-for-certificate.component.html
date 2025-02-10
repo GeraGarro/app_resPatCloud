@@ -1,0 +1,21 @@
+
+
+
+<table class="tabla-tickets">
+  
+    <tbody  >
+       <tr class="fila-flex" *ngFor="let item of listaTickets; let i = index " (click)="onRowClicked(item)" style="cursor: pointer;" >
+        <td class="col-codigo"><span>{{item.codigo}}</span></td>
+
+        <td class="col-generador"> <span>{{item.generador.nombre}}</span></td>
+        
+        <td class="col-direccion"><span>{{item.generador.direccion}}</span></td>
+        
+        <td class="col-fecha"><span>{{item.fechaEmisionTk}}</span></td>
+        
+      </tr> 
+
+  
+    </tbody>
+
+  </table>

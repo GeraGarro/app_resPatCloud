@@ -1,0 +1,72 @@
+<div class="contenedor-padre">
+
+  <h3 class="titulo">Gestión de Generadores</h3>
+
+  <div class="contenedor-contenido">
+    <div class="contenedor-formulario"  *ngIf="mostrarFormulario"
+    [class.animacion-aparecer]="mostrarFormulario">
+ 
+
+      <app-generador-formulario (enviarMensaje)="recepcionDatos($event)"
+        [idRecibido]="idSeleccionado"
+        [nuevo]="nuevo"
+      ></app-generador-formulario>
+      
+    </div>
+
+    <div class="contenedor-datos" *ngIf="!nuevo">
+      <div class="contenedor-lista-wrapper">
+        <ul class="contenedor-lista" #lista>
+          <li
+            class="item-lista"
+            *ngFor="let item of ListaGeneradores; let i = index"
+            [class.activo]="selectedIndex === i"
+            (click)="seleccionarElemento(i, item.id)"
+          >
+            <span class="span-nombre">{{ item.nombre }}</span>
+
+            <div class="toogle-estado">
+              <input type="checkbox" hidden   name="check-toggle"  [id]="'checkbox-' + i" 
+              [(ngModel)]="item.estado" 
+              (change)="cambiarEstado(item.id, item.estado)">
+              <label  [for]="'checkbox-' + i" class="toggle" [class.toggle--activo]="item.estado">
+                <div class="toggle__circle" [class.toggle__circle--activo]="item.estado"></div>
+              </label>
+            </div>
+          
+          </li>
+        </ul>
+      </div>
+    
+      <div class="contenedor-botones">
+        <!-- Botón "Arriba" -->
+    <!--     <div class="control arriba">
+          <button class="botones-slide" (click)="scrollUp()">
+            <img
+              class="flecha"
+              src="../../../assets/icons/flecha_icon.png"
+              alt="flecha-arriba"
+            />
+          </button>
+        </div> -->
+        <!-- Botón "Abajo" -->
+      <!--   <div class="control abajo">
+          <button class="botones-slide" (click)="scrollDown()">
+            <img
+              class="flecha"
+              src="../../../assets/icons/flecha_icon.png"
+              alt="flecha-abajo"
+            />
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <button class="btn agregar" (click)="activarNuevo()" *ngIf="!nuevo">Agregar</button>
+</div>
+
+<div class="contenedor-modal" *ngIf="activarModal" >
+  <app-modal   
+  [_mensaje]="mensajeDeFormulario" [estadoAprobado]= "estadoModal"/>
+</div>
+

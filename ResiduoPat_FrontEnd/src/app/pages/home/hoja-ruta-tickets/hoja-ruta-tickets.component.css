@@ -1,0 +1,212 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+
+.contenedor-hoja {
+  position: relative;
+height: 100%;
+display: flex;
+flex-direction: column;
+
+  padding: 10px ;
+}
+
+.tabla-tickets {
+
+  width: 100%;
+
+/*   border-collapse: collapse;
+  table-layout: fixed;  *//* Asegura que todas las columnas tengan la misma proporción */
+}
+thead{
+  background-color: rgb(158, 155, 155);
+  position: sticky; /* Permite que el encabezado se mantenga fijo */
+  top: 0; /* Fija el encabezado en la parte superior */
+  z-index: 1;
+}
+thead th {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid rgba(158, 154, 154, 0.733);
+}
+
+/* Contenedor con scroll para el cuerpo de la tabla */
+.tabla-scroll {
+
+  max-height: 80%; /* Tamaño máximo del cuerpo con scroll */
+  /* Habilita la barra de desplazamiento */
+  overflow: auto;
+}
+.contenedor-hoja>caption{
+  width:max-content;
+ 
+  padding-left: 10px;
+} 
+
+
+/* Estilo de las celdas */
+td {
+ 
+  font-size: 11px;
+
+  text-align: center;
+  padding: 5px;
+ 
+}
+.fila-flex {
+  border-bottom: 1px solid gray;
+}
+/* Alineación específica para la primera y última columna */
+thead th:first-child, tbody td:first-child {
+  text-align: start;
+}
+
+thead th:last-child, tbody td:last-child {
+  text-align: right;
+}
+
+.icons-estado {
+ 
+  margin-right: 8px;
+}
+  .icons-estado{
+  width: 20px;
+}
+.accion{
+  width: 38px;
+}
+.col-estado{
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+.col-estado:not(th)>span{
+  background-color: aliceblue;
+  border-radius: 15px;
+  padding: 5px;
+ 
+  text-wrap: wrap;
+}
+.condicion{
+  text-wrap: nowrap;
+}
+.finalizado {
+  color: rgb(57, 201, 38);
+}
+
+.revisar {
+  color: rgb(231, 172, 11);
+}
+
+.cabecera-flex,.fila-flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cabecera-flex th, .fila-flex td {
+  flex: 1; /* Cada columna tiene igual proporción */
+  text-align: center;
+  padding: 10px;
+
+}
+.cabecera-flex:hover{
+  background-color: initial;
+  color: initial;
+}
+.accion{
+  background-color: rgba(255, 255, 255, 0.719);
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform .5s linear ;
+}
+.delete:hover{
+  transform: scale(1.1);
+  background-color: rgb(8, 8, 8);
+}
+.icons-condicion{
+  display: none;
+}
+
+.contenedor-hoja >caption{
+  margin: 0;
+  width: 100%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.418);
+  color: rgb(255, 255, 255);
+  font-family: "Oxanium", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:700;
+  font-style: normal;
+  margin-bottom: 25px;
+}
+
+
+
+
+
+
+.span-no-data{
+  width: 100%;
+
+  text-align: center;
+
+}
+
+.filaDesactivada{
+ 
+  cursor: default;
+}
+
+.contenedor-no-dato{
+  text-align: center;
+}
+@media screen and (max-width: 768px) {
+.col-acciones, .accion{
+  display: none;
+}
+ .col-accion:not(td){
+  align-self: stretch;
+  background-color: transparent;
+  border-bottom: none;
+}
+
+
+.col-estado, .col-direccion{
+  display: none;
+}
+
+.icons-condicion {
+   display: block; 
+  position: relative;
+ 
+  top: 0;
+  left: 0;
+  margin-bottom: 5px;
+}
+.icons-condicion> .icons-estado{
+  width: 15px;
+}
+
+.span-btn{
+  display: none;
+}
+
+
+td{
+  font-size: 13px;
+  font-weight: 600;
+}
+}
+
+/* @media screen and ( max-width: 768px) and ( min-height: 610px) {
+  .tabla-scroll{
+    max-height: 40%;
+ 
+  }
+} */

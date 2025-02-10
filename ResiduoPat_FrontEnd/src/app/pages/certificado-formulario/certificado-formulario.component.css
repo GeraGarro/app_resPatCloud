@@ -1,0 +1,115 @@
+#titulo{
+   color: rgb(250, 245, 245);
+   background-color: rgba(74, 74, 204, 0.582);
+ 
+}
+
+.contenedor-principal{
+    height: 100vh;
+    z-index: 999;
+    position: relative;
+}
+
+.contenedor-fondo{
+    position: absolute;
+  
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+  
+  background-image: url("../../../assets/background/residuosPatologicosCertificado.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* filter: blur(1px); */
+  /* filter: sepia(.3); */
+  z-index: 99;
+  }
+.formulario{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 80vh;
+}
+
+.container-periodo{
+    
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 10px 0px;
+  
+}
+.container-periodo>.select-box{
+width: 25%;
+
+}
+
+.select-transportista, .container-periodo{
+    /* border: 1px solid rgba(128, 128, 128, 0.205); */
+    background: rgba(95, 158, 160, 0.568) ;
+    padding: 30px;
+    border-radius: 30px;
+  
+}
+.select-box {
+    
+    width: 80%;
+}
+.item-opciones{
+    text-align: center;
+   padding-bottom: 5px ;
+
+}
+.btn-Submit{
+   /*  margin-top: 20px; */
+    font-size: 22px;
+    padding: 10px;
+    border-radius: 5px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,.3));
+}
+
+.select-transportista>.content>.opciones{
+   height: min-content;
+}
+
+.contenedor-modal{
+    position: absolute;
+    top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: rgba(11, 2, 20, 0.445);
+    z-index: 999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+
+@media screen and (min-width:420px) {
+    .select-box {
+        width: 90%;
+    }
+    .formulario{
+        height: 80vh;
+        justify-content: space-evenly;
+    }
+    .select-transportista> .content{
+        height: 100px;
+    }
+    .container-periodo{
+        
+        width: 90%;
+        padding: 10px ;
+    }
+    .container-periodo>.select-box{
+        width: 45%;
+        
+        }
+}

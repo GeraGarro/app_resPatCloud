@@ -1,0 +1,20 @@
+.contenedor{
+    background:linear-gradient(to right,#5A3F37,#2C7744);
+    padding: 5vh;
+    
+}
+table{
+    background: gray;
+}
+*{
+    font-size: 130%;
+    font-family: var(--texto-tabla);
+    color: antiquewhite;
+}
+.filaAcciones{
+    display: flex;
+}
+button{
+    background: red;
+    font-size: 80%;
+}
