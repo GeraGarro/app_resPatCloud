@@ -1,4 +1,8 @@
 
+networks:
+ resPatNetworks: # Definir la red para la comunicación entre servicios
+    driver: bridge
+
 services:
   app_respat:
     build: 
@@ -16,16 +20,19 @@ services:
     depends_on:
       residuos_pat:
         condition: service_healthy
+    networks:
+      - resPatNetworks
 
   residuos_pat:
     image: mysql:8.0.33
     container_name: db_residuoPat
     ports:
-      - "3307:3306"
+      - "3307:3306"  # Solo si necesitas acceso externo a MySQL
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_PASSWORD: 1234
       MYSQL_DATABASE: residuos_Patologicos
+      MYSQL_ROOT_HOST: "%"
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -35,6 +42,8 @@ services:
       start_period: 30s
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - resPatNetworks
 
   frontend:
     build:
@@ -43,11 +52,12 @@ services:
     container_name: angular_respat
     ports:
       - "80:80"
-    environment:
-      API_URL: http://app_respat:8080/api  
     restart: always
     depends_on:
-      - app_respat
+      app_respat:
+        condition: service_started
+    networks:
+      - resPatNetworks
 
 volumes:
   db_data:
