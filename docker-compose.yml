@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:mysql://residuos_pat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_URL: jdbc:mysql://db_residuoPat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER_NAME: root
       DB_PASSWORD: 1234
     restart: always
@@ -19,7 +19,7 @@ services:
 
   residuos_pat:
     image: mysql:8.0.33
-    container_name: residuos_pat
+    container_name: db_residuoPat
     ports:
       - "3307:3306"
     environment:

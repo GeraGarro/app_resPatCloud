@@ -17,9 +17,8 @@ import { Error404Component } from './error404/error404.component';
 import { LoginComponent } from './pages/login/login.component';
 import { TicketInfoComponent } from './pages/ticket-info/ticket-info.component';
 
-const routes: Routes = [
+ const routes: Routes = [
 {path:'ticket',component:TicketControlComponent},
-
 {path: 'formulario-ticket/:id', component: TicketControlFormularioComponent },
 {path:'residuo',component: ResiduoComponent},
 {path:'residuo_Formulario',component: ResiduoFormularioComponent},
@@ -31,14 +30,15 @@ const routes: Routes = [
 {path:'transportista',component: TransportistaComponent},
 {path:'transportista_Formulario',component: TransportistaFormularioComponent},
 {path:'home',component: HomeComponent},
-{path:'', redirectTo:'/home', pathMatch:'full'},
+{path:'',component: HomeComponent},
 {path:'ticket-control-Formulario',component: TicketControlFormularioComponent},
 { path: 'generador-Formulario', component: GeneradorFormularioComponent },
 { path: 'tipo-residuo-Formulario', component: TipoResiduoFormularioComponent },
 {path: 'error-404', component: Error404Component,},
 {path: 'login', component:LoginComponent},
 {path: 'ticket-info', component:TicketInfoComponent}
-];
+]; 
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

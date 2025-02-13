@@ -29,7 +29,7 @@
               "src/styles/container.style.css"
             ],
             "scripts": [
-           
+           "src/assets/scripts.js"
             ]
           },
           "configurations": {
@@ -39,7 +39,7 @@
               "namedChunks": false,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -108,6 +108,7 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+             
             ]
           }
         }
