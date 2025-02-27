@@ -1,9 +1,9 @@
-<div class="contenedor-padre">
+<div class="contenedor-fondo"></div>
 
-  <h3 class="titulo">Gestión de Generadores</h3>
+<div class="contenedor-padre" [ngClass]="{'padre-solo-formulario': mostrarFormulario}">
 
-  <div class="contenedor-contenido">
-    <div class="contenedor-formulario"  *ngIf="mostrarFormulario"
+  <div class="contenedor-contenido" >
+    <div  class="contenedor-formulario"  *ngIf="mostrarFormulario"
     [class.animacion-aparecer]="mostrarFormulario">
  
 
@@ -14,12 +14,12 @@
       
     </div>
 
-    <div class="contenedor-datos" *ngIf="!nuevo">
+    <div class="contenedor-datos"  [ngClass]="{'contenedor-mobile':mostrarFormulario==true}" *ngIf="listaGeneradores.length>0">
       <div class="contenedor-lista-wrapper">
         <ul class="contenedor-lista" #lista>
           <li
             class="item-lista"
-            *ngFor="let item of ListaGeneradores; let i = index"
+            *ngFor="let item of listaGeneradores; let i = index"
             [class.activo]="selectedIndex === i"
             (click)="seleccionarElemento(i, item.id)"
           >
@@ -37,35 +37,18 @@
           </li>
         </ul>
       </div>
-    
-      <div class="contenedor-botones">
-        <!-- Botón "Arriba" -->
-    <!--     <div class="control arriba">
-          <button class="botones-slide" (click)="scrollUp()">
-            <img
-              class="flecha"
-              src="../../../assets/icons/flecha_icon.png"
-              alt="flecha-arriba"
-            />
-          </button>
-        </div> -->
-        <!-- Botón "Abajo" -->
-      <!--   <div class="control abajo">
-          <button class="botones-slide" (click)="scrollDown()">
-            <img
-              class="flecha"
-              src="../../../assets/icons/flecha_icon.png"
-              alt="flecha-abajo"
-            />
-          </button>
-        </div> -->
-      </div>
     </div>
   </div>
-  <button class="btn agregar" (click)="activarNuevo()" *ngIf="!nuevo">Agregar</button>
+  <div class="contenedor-empty" *ngIf="!mostrarFormulario && listaGeneradores.length==0">
+    <img class="img-warning" src="../../../assets/icons/warning.png" alt="">
+    <span class="titulo-empty">No hay Generadores Cargados</span>
+    <span class="texto-empty">Por favor Ingrese Datos de un nuevo Generador</span>
+  </div>
+  <button type="button" class="btn agregar" [ngClass]="{'contenedor-mobile':mostrarFormulario || idSeleccionado!=undefined }" (click)="activarNuevo()" *ngIf="!nuevo && !idSeleccionado">Agregar</button>
 </div>
 
 <div class="contenedor-modal" *ngIf="activarModal" >
+ 
   <app-modal   
   [_mensaje]="mensajeDeFormulario" [estadoAprobado]= "estadoModal"/>
 </div>

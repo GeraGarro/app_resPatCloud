@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiGeneradorService } from 'src/app/services/api/api-generador/api-generador.service';
 
@@ -42,6 +42,7 @@ import { ServicioCompartidoService } from 'src/app/services/servicio-compartido/
     ModalComponent,
     MatSlideToggleModule
   ],
+  encapsulation: ViewEncapsulation.None,
   providers: [DatePipe]
 })
 export class TicketControlFormularioComponent implements OnInit {

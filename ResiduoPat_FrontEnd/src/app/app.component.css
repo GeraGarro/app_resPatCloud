@@ -1,6 +1,9 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Metal&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
 :root{
 
   --texto-logo:'Metal', serif;
@@ -8,12 +11,13 @@
 }
 .navbar-brand{
   display: flex;
-
+position: relative;
  height: 5vh;
  margin-right: 3vh;
  perspective: 1000px;
- 
+ justify-content: space-evenly;
 }
+
 
 
 
@@ -44,6 +48,7 @@
   
   align-items: center;
   border-radius: 2vh .5vh .7vh 2.5vh;
+  align-self: flex-end;
 }
 .logo>img{
   width: 6vh;
@@ -54,7 +59,8 @@
 
 main{
 
-  min-height: 100vh; 
+  min-height: 70vh; 
+  max-height: 100vh;
 min-width: 50vw;
 overflow-y: hidden;
   margin: 0 ;
@@ -64,8 +70,10 @@ overflow: hidden;
 /*   background: linear-gradient(#a8b2ca,#7f9bdd); */
   background: #f1f1f1;
 }
+
+
 footer{
-  position: relative;
+
   z-index: 9999;
 }
 .contenedor-footer{
@@ -91,49 +99,26 @@ footer{
   
 }
 
-.titulo{
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
- height: 9.5vh; 
-  font-size: 30px;
-  align-self: center;
-  font-family: "Comfortaa", sans-serif;
-  font-optical-sizing: unset;
-  font-weight: 700;
-  font-style: normal;
- flex: 1;
+.titulo-central{
+position: relative;
+/* background: red; */
 letter-spacing: 5px;
- width: 100%;
- 
-
-
- /* color: transparent; 
- background-clip: text; */
-/*  border: 1px solid rgba(255, 255, 255, 0.527); */
+width: 50%;
+height: 100%;
+font-size: 40px;
+text-align: center;
+color: white;
 text-wrap: balance;
-font-weight: 700;
-
+font-family: "Poppins", serif;
+font-weight: 600;
+font-style: normal;
+padding-bottom: 3rem;
+flex: 1;
 }
-.titulo > span{
 
-  margin-top: 10px;
-  text-align: center;
-  
-  
-  width: 80%;
-  height: 80%;
-  color: rgb(255, 255, 255);
-  border-radius:0 20px 20px 0;
-  padding: 5px 5px 5px 0;
-  width: 100%;
-}
 
 @media screen and (max-width: 800px) {
-  .columna_invi {
-    display: none;
-   
-  }
+
   th{
     font-size: 10px;
   
@@ -142,27 +127,12 @@ font-weight: 700;
     font-size: 9px;
     
   }
-  .footer-datos{
-   
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
+
   .footer-datos>p>a>img{
     width: 5vh;
   }
 
  
-  .titulo > span{
-    margin-top: 5px;
-    padding: 0px 10px;
-    height: 70%;
-    width: 90%;
-  }
-  .titulo{
-    margin-top: 5px;
-    align-items: center;
-    flex-wrap: balance;
-  }
 }
 
 @media screen and (max-width:500px) {
@@ -174,14 +144,7 @@ font-weight: 700;
     .texto-logo1{
       display: none;
     }
-    .titulo{
-      flex: 1;
-    
-    font-size: 18px;
-    font-weight: 600;
-
-    }
-  
+ 
    .navbar{
     height: 8vh;
    }
@@ -196,18 +159,10 @@ font-weight: 700;
    }
 }
 @media screen and (min-width:500px) and (max-width:750px) {
-  .titulo{
-    font-size: 23px;
-  }
-  .titulo > span{
-    text-wrap: nowrap;
-    padding: 0px 10px;
-  }
+
 }
 
 @media screen and (min-width:380px) and (max-width:500px){
-  .titulo {
-font-size: 20px;
-  }
+
 }
 

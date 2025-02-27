@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap');
+.contenedor-fondo{
+  background-image: URL(../../../assets/background/clasificacionResiduos.jpeg);
+
+}
+
 .contenedor-padre{
     position: relative;
-    background-image: URL(../../../assets/background/clasificacionResiduos.jpeg);
+   
   display: flex;
   flex-direction: column;
-
-height: 100%;
+  min-height: 15%;
+  max-height: 100%;
 /* justify-content: space-around; */
 }
 .titulo-tipo{
@@ -30,52 +35,41 @@ height: 100%;
 .contenedor-lista-wrapper{
     position: relative;
     
-    flex-direction: column;
+    
  
    height: 100%;
    
 }
 
 
-.contenedor-empty{
-    color: rgba(44, 44, 44, 0.856);
-position: relative;
-font-family: "Hanken Grotesk", serif;
-font-optical-sizing: auto;
-font-weight: 600;
-font-style: normal;
-font-size: 50px;
-display: flex;
-flex-direction: column;
-background: rgba(255, 255, 255, 0.726);
-align-items: center;
+
+.tipo-residuo-remarque{
+    padding: 2px;
+    background: black;
+    color: azure;
 }
 
-.texto-empty{
-    color: rgba(44, 44, 44, 0.993); 
-font-size: 30px;
-}
  .contenedor-lista{
     margin-top: 20px;
-    background-color: rgba(220, 220, 220, 0.664);
+    
+    height: 100%;
     overflow-y: auto;
     padding: 10px ;
   
 } 
 
 .contenedor-contenido{
+  margin-top: 30px;
    align-items: center;
-   max-height: 100%;
+ 
+   height: 100%;
     flex-direction: row;
  
 }
 
-.contenedor-contenido-formulario{
-    height: 100%;
-    
-}
+
 .item-lista{
-    height: 15%;
+   
     width: 80%;
     background-color: rgba(24, 24, 24, 0.89);
     box-shadow: 5px 2px 1px 1px rgba(0, 0, 0, 0.747);
@@ -86,31 +80,11 @@ font-size: 30px;
     transform: none;
     transform: scale(1.5);
 }
-.btn-add{
- 
-  margin-top: 10px;
-  width: max-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: max-content;
-  border-radius: 5px;
-  border: none;
 
-  bottom:  0px;
-  background: linear-gradient(45deg, rgb(69, 212, 112),rgba(22, 97, 22, 0.726));
-  color: aliceblue;
- filter: drop-shadow(1px 1px 1px Black);
- 
-}
-.btn-add::before{
-  content: "+";
-  font-size: 30px;
-  margin-right: 5px;
-}
 
 
 .contenedor-formulario{
+  display: inline-block;
     flex: 1; 
   
     height: 80%;
@@ -119,20 +93,8 @@ font-size: 30px;
 }
 
 
-.contenedor-botones{
-  
-    position: absolute;
-    top: 50%;
-    left: 18%;
-    transform: translate(-18%, -50%);
-    display: flex;
-    flex-direction: column;
-    height: 10vh;
-    opacity: 0;
-}
-.contenedor-botones{
-    z-index: 999;
-}
+
+
 
 .agregar{
    
@@ -149,17 +111,37 @@ font-size: 30px;
     transition: all .1s linear;
   }
   
-@media screen and (max-width:1200px) {
-    .contenedor-botones{
-        left: 0%;
-    }
+  .formulario.hidden {
+    display: none;
+  }
+  
+  .formulario.visible {
+    display: block;
+  }
 
-   
+.contenedor-empty{
+  
+  margin-top: 30px;
 }
-
 @media screen and (min-width:1000px) {
     .btn-add{
         width: max-content;
         align-self: center;
     }
+}
+
+@media screen and (max-width:768px) {
+  
+  .contenedor-contenido{
+    min-height: 10%;
+    max-height: 100%;
+  }
+
+  .contenedor-lista-invisible{
+    display: none;
+  }
+
+  .contenedor-lista-wrapper, .contenedor-formulario{
+    height: 60vh;
+  }
 }

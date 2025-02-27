@@ -134,11 +134,11 @@ height: 70vh;
   
 @media screen and (max-width:768px) {
     .dashboard{
-        height: 28vh;
+        height: 15vh;
       flex-wrap: wrap-reverse;
     }
     .contenedor-principal{
-        margin-top: 5vh;
+        margin-top: 3vh;
        position: relative;
        height: 68vh; 
        display: flex;

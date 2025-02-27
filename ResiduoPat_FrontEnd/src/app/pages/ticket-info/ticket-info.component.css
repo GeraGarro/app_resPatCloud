@@ -6,6 +6,7 @@
 overflow:hidden;
 display: flex;
 flex-direction: column;
+
 justify-content: flex-start;
 height: 100%;
 
@@ -31,8 +32,8 @@ padding: 25px 0px;
     display: flex;
 flex-direction: column;
 justify-content: flex-start;
-align-items: flex-start;
-
+align-items: center;
+height:40%;
 z-index: 999;
 padding: 25px 0px;
 
@@ -52,6 +53,7 @@ padding: 25px 0px;
 }
 
 .span-minifiesto{
+  
     background: black;
     color: rgb(250, 250, 250);
     padding: 10px;
@@ -65,12 +67,13 @@ padding: 25px 0px;
     justify-content: space-evenly;
    
    width: 80%;
+   height: 100%;
    padding: 2px;
 
 }
 
 .label-info{
-
+height: 100%;
 display: flex;
 flex-direction: column;
 flex-grow: 1;
@@ -88,7 +91,8 @@ padding: 5px;
     font-weight: 600;
 }
 .label-info> input{
-    font-size: 12px;
+    height: 50%;
+    font-size: 15px;
     width: 100%;
     margin: 0 10px;
     border: none;
@@ -109,8 +113,24 @@ padding: 5px;
 }
 .contenedor-residuo{
     width: 100%;
-    
+    flex: 1;
     margin-top: 20px;
+}
+
+
+@media screen and (min-width:768px) {
+    .contenedor-principal{
+        background-color: red;
+        height: 82vh;
+    }
+}
+@media screen and (max-width:768px) {
+ .contenedor-principal{
+    overflow-y: auto;
+ }   
+ .contenedor-manifiesto{
+    height: 70%;
+ }
 }
 @media screen and (max-width:600px) {
   .titulo-manifiesto{

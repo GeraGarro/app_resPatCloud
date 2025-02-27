@@ -7728,19 +7728,13 @@ input[type="checkbox"]:checked + .toggle {
   --bg-circle: hsl(0, 8%, 79%); /* Círculo gris */
 }
 
-.titulo{
- 
-  background-color: aliceblue;
-  color: rgba(0, 0, 0, 0.753);
-  display: inline-block;
-padding-bottom: 5px ;
-padding-left: 5px;
-padding-right: 10px;
-border-bottom: 2px solid rgba(0, 0, 0, 0.76);
- border-left: 2px solid rgba(0, 0, 0, 0.753);
-border-bottom-left-radius: 10px;
-}
 
+.contenedor-fondo{
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+}
 
 @keyframes linearGradient {
   0%{
@@ -7860,3 +7854,33 @@ border-bottom-left-radius: 10px;
   
 }
 
+@keyframes palpitacion {
+  0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.02); /* Incrementa el tamaño ligeramente */
+      opacity: 0.8; /* Reduce la opacidad ligeramente */
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    } 
+}
+
+@media screen and (max-width:768px) {
+  footer{
+    height: 100px;
+    bottom: 0;
+    position: fixed;
+  }
+  .contenedor-footer{
+    height: 100%;
+  }
+
+  .footer-datos{
+    display: flex;
+    flex-direction: row;
+  }
+}

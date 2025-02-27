@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { TipoResiduo } from '../../services/models/tipo_Residuos';
 import { ApiServicesTipoResiduosService } from '../../services/api/api-tipoResiduos/api.services-tipo-residuos.service';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule } from '@angular/router';
-import { RotacionCircularDirective } from 'src/app/directivas/rotacion-circular.directive';
 import { TipoResiduoFormularioComponent } from './tipo-residuo-formulario/tipo-residuo-formulario.component';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from 'src/app/modal/modal.component';
@@ -36,7 +35,50 @@ import { ModalComponent } from 'src/app/modal/modal.component';
   styleUrls: ['./tipo-residuo.component.css']
 })
 export class TipoResiduoComponent implements OnInit{
-ListaTipoResiduos: TipoResiduo[]=[];
+/* listaTipoResiduos: TipoResiduo[]=[]; */
+
+listaTipoResiduos: TipoResiduo[]=[
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  }/* ,
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  },
+  {id:1,
+    nombre:"Gaseoso Rojo",
+    codigo:"A12",
+    estado:true
+  }, */]
+
 ListaTiposActivos: TipoResiduo[]=[];
 ListaTiposInactivos: TipoResiduo[]=[];
 
@@ -72,12 +114,8 @@ isActivo:boolean=false;
 selectedIndex: number | null = null;
 @Input()nuevo: boolean = false;
 
-
-private currentOffset = 0; // Mantiene la posición actual del desplazamiento
-private itemHeight = 200; // Altura de cada item (en píxeles, ajusta según tu diseño)
-private visibleItemsCount = 4; // Número de ítems visibles a la vez (ajusta según el contenedor)
 private cdr= inject(ChangeDetectorRef)
-items: string[] = Array.from({ length: 30 }, (_, i) => `Elemento ${i + 1}`);
+
 
 constructor(private _apiTipoResiduo:ApiServicesTipoResiduosService ){
  
@@ -85,10 +123,15 @@ constructor(private _apiTipoResiduo:ApiServicesTipoResiduosService ){
 
 
 ngOnInit(): void {
+  this.cargaTipoResiduos();
+}
+
+
+cargaTipoResiduos():void{
   this._apiTipoResiduo.getTipoResiduos().subscribe(
     data=>{
-      this.ListaTipoResiduos=data;
-      this.ListaTipoResiduos=data.sort((a,b)=>{
+      this.listaTipoResiduos=data;
+      this.listaTipoResiduos=data.sort((a,b)=>{
         return a.nombre.localeCompare(b.nombre)
       });
    this.cdr.detectChanges();
@@ -131,7 +174,7 @@ cambiarEstado(id: number | undefined, estado: boolean): void {
   this._apiTipoResiduo.cambioEstadoTipo(id, estado).subscribe({
     next: (respuesta) => {
       console.log('Estado actualizado:', respuesta);
-      const generadorActualizado = this.ListaTipoResiduos.find((gen) => gen.id === id);
+      const generadorActualizado = this.listaTipoResiduos.find((gen) => gen.id === id);
       if (generadorActualizado) {
         generadorActualizado.estado = estado; // Actualiza el estado en la lista local
       }
@@ -157,30 +200,23 @@ activarNuevo(): void {
   this.activarFormulario() // Muestra el formulario
 
 }
+formularioVisible = false; // Controla la visibilidad del formulario
 
-controlarVisibilidadFormulario(event: { estadoEdicion: boolean }): void {
-  // Recibe el estado del componente hijo y controla la visibilidad del formulario
-  this.mostrarFormulario = event.estadoEdicion;
-}
-
-
-scrollUp() {
-  // Límite superior
-  const maxOffset = 0;
-  this.currentOffset = Math.min(this.currentOffset + this.itemHeight, maxOffset);
-  this.updateTransform();
-}
-
-scrollDown() {
-  // Límite inferior
-  const maxOffset = -this.itemHeight * (this.ListaTipoResiduos.length - this.visibleItemsCount);
-  this.currentOffset = Math.max(this.currentOffset - this.itemHeight, maxOffset);
-  this.updateTransform();
-}
-private updateTransform() {
-  const listaElement = document.querySelector('.contenedor-lista') as HTMLElement;
-  if (listaElement) {
-    listaElement.style.transform = `translateY(${this.currentOffset}px)`;
+  // Método para alternar la visibilidad del formulario
+  toggleFormulario(): void {
+    this.formularioVisible = !this.formularioVisible;
   }
-}
+
+  // Detecta si la pantalla es pequeña (por ejemplo, móvil o tablet)
+  isSmallScreen(): boolean {
+    return window.innerWidth <= 768;
+  }
+
+    // Detecta el cambio de tamaño de la pantalla
+    @HostListener('window:resize', ['$event'])
+    onResize(): void {
+      if (!this.isSmallScreen() && this.formularioVisible) {
+        this.formularioVisible = false; // Oculta el formulario en pantallas grandes
+      }
+    }
 }

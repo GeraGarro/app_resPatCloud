@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectorRef, Output, EventEmitter, inject} from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef, Output, EventEmitter, inject, SimpleChanges} from '@angular/core';
 import { Generador } from '../../services/models/generador.model';
 import { MatTableModule } from '@angular/material/table';
 import { ApiGeneradorService } from '../../services/api/api-generador/api-generador.service';
@@ -33,8 +33,173 @@ import { ModalComponent } from "../../modal/modal.component";
   styleUrls: ['./generador.component.scss']
 })
 export class GeneradorComponent  {
-  
- mensajeDeFormulario:string="Mensaje recibido de formulario";
+   /* listaGeneradores: Generador[]=[];  */
+ listaGeneradores: Generador[]=[
+  {
+  id:1,
+  nombre:'pepe',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Carlos',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Dosep',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Martin Rocca',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'pepe',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Carlos',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Dosep',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Martin Rocca',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'pepe',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Carlos',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Dosep',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Martin Rocca',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'pepe',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Carlos',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Dosep',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Martin Rocca',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:false
+},  {
+  id:1,
+  nombre:'pepe',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Carlos',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+},  {
+  id:1,
+  nombre:'Dosep',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:false
+},  {
+  id:1,
+  nombre:'Martin Rocca',
+  legajo: '123',
+  direccion: 'Los Alelies 511',
+  cuit: '12341231',
+  telefono: '2664122311',
+  estado:true
+}
+]; 
+
+
+mensajeDeFormulario:string="Mensaje recibido de formulario Mensaje recibido de formulario ";
 activarModal:boolean=false;
 estadoModal:boolean=false;
 
@@ -43,7 +208,6 @@ recepcionDatos(event: any): void {
   this.mensajeDeFormulario = modal.mensajeEnviar;
   this.activarModal = modal.activarModal;
 this.estadoModal=modal.estadoAprobado;
-console.log("estadoModal: "+this.estadoModal )
   if (this.activarModal) {
     this.cerrarModalConDelay(); // Llama al método para desactivar el modal automáticamente
   }
@@ -58,44 +222,47 @@ cerrarModalConDelay(): void {
   }, delay);
 }
 
-ListaGeneradores: Generador[]=[];
+
 
 @Output()contadorEmitido=new EventEmitter<{contador:number}>();
 
-idSeleccionado: number | undefined;
+idSeleccionado: number | undefined=undefined;
 
 isActivo:boolean=false;
 
 mostrarFormulario: boolean = false; // Controla la visibilidad del formulario
 nuevo: boolean = false; // Indica si el formulario está en modo "nuevo"
 
-private currentOffset = 0; // Mantiene la posición actual del desplazamiento
-private itemHeight = 100; // Altura de cada item (en píxeles, ajusta según tu diseño)
-private visibleItemsCount = 10; // Número de ítems visibles a la vez (ajusta según el contenedor)
 private cdr= inject(ChangeDetectorRef)
 selectedIndex: number | null = null;
+
+
 constructor(private _apiGeneradorService:ApiGeneradorService , private router: Router, private dialog: MatDialog){
 }
 
 items: string[] = Array.from({ length: 30 }, (_, i) => `Elemento ${i + 1}`);
 
 ngOnInit(): void {
+  this.cargaGeneradores();
+
+}
+
+
+cargaGeneradores():void{
   this._apiGeneradorService.getGeneradores().subscribe(
     data=>{
       console.log(data);
-    this.ListaGeneradores=data.sort((a, b) => {
+    this.listaGeneradores=data.sort((a, b) => {
       return a.nombre.localeCompare(b.nombre); // Compara los nombres de forma alfabética
     });;
-     this.contadorEmitido.emit({ contador: this.ListaGeneradores.length }); 
+     this.contadorEmitido.emit({ contador: this.listaGeneradores.length }); 
     this.cdr.detectChanges();
     },
     error=>{
       console.error('Error fetching Generadores:', error);
     }
   );
-
 }
-
 /* Seleccionar un elemento para mandar la información a Formulario */
 seleccionarElemento(index: number, id:number|undefined) {
  
@@ -108,7 +275,7 @@ seleccionarElemento(index: number, id:number|undefined) {
   console.log("id seleccionado: "+this.idSeleccionado)
 
  this.isActivo=true;
-
+ this.cdr.detectChanges();
 }
 /* Actualizar estado de Actividad Generadores mediante solicitud Update a estado */
 cambiarEstado(id: number | undefined, estado: boolean): void {
@@ -121,7 +288,7 @@ cambiarEstado(id: number | undefined, estado: boolean): void {
   this._apiGeneradorService.cambioEstadoGenerador(id, estado).subscribe({
     next: (respuesta) => {
       console.log('Estado actualizado:', respuesta);
-      const generadorActualizado = this.ListaGeneradores.find((gen) => gen.id === id);
+      const generadorActualizado = this.listaGeneradores.find((gen) => gen.id === id);
       if (generadorActualizado) {
         generadorActualizado.estado = estado; // Actualiza el estado en la lista local
       }
@@ -144,31 +311,7 @@ activarNuevo(): void {
   this.activarFormulario() // Muestra el formulario
 }
 
-controlarVisibilidadFormulario(event: { estadoEdicion: boolean }): void {
-  // Recibe el estado del componente hijo y controla la visibilidad del formulario
-  this.mostrarFormulario = event.estadoEdicion;
-}
 
-  scrollUp() {
-    // Límite superior
-    const maxOffset = 0;
-    this.currentOffset = Math.min(this.currentOffset + this.itemHeight, maxOffset);
-    this.updateTransform();
-  }
-  
-  scrollDown() {
-    // Límite inferior
-    const maxOffset = -this.itemHeight * (this.ListaGeneradores.length - this.visibleItemsCount);
-    this.currentOffset = Math.max(this.currentOffset - this.itemHeight, maxOffset);
-    this.updateTransform();
-  }
 
-  private updateTransform() {
-    const listaElement = document.querySelector('.contenedor-lista') as HTMLElement;
-    if (listaElement) {
-      listaElement.style.transform = `translateY(${this.currentOffset}px)`;
-    }
-  }
-  
 
 }

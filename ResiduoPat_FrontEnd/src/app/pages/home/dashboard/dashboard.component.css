@@ -69,3 +69,9 @@ h4{
 .contador{
     font-size: 22px
 }
+
+@media screen and (max-width:768px) {
+    .contenedor-principal{
+        height: 60px;
+    }
+}

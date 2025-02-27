@@ -26,5 +26,32 @@ label{
     background: linear-gradient(45deg, rgb(136, 120, 120),rgb(177, 178, 179));
 }
 .modificar{
+    color: aliceblue;
     background: linear-gradient(45deg, rgb(231, 76, 76),rgb(224, 76, 50));
+}
+
+
+@media screen and (max-width:768px) {
+
+  .contenedor-input, .contenedor-grupo{
+    display: flex;
+    flex-direction: column;
+   }
+   .label{
+    max-width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+   }
+   .input-formulario{
+    height: 45px;
+    box-shadow: 2px 0px 5px 3px rgba(0, 0, 0, 0.623);
+   }
+
+   .label ,.input-formulario{
+    border-radius: 5px;
+   }
+   
+   
 }

@@ -1,9 +1,10 @@
 .contenedor-padre {
   position: relative;
     width: 100%;
-    height: 100%;
-    padding: 10px;
- 
+    min-height: 20%;
+    max-height: 100%;
+    padding: 30px;
+
   }
 
  
@@ -12,7 +13,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: flex-start;
+   /*  align-items: flex-start; */
+ 
     max-height: 100%;
    
   }
@@ -31,6 +33,7 @@ height: 100%;
   .contenedor-datos{
     display: flex;
     align-items: stretch;
+    min-height: 10vh;
     max-height: 70vh;
   }
   
@@ -42,9 +45,10 @@ height: 100%;
     display: flex;
     flex-wrap: wrap;
   width: 100%;
- min-height: 60vh;
+ min-height: 10vh;
+ max-height: 60vh;
     justify-content: center;
-    max-height: 100%;
+    
     transition: transform 0.3s ease-in-out;
     overflow: auto;
    flex: 1;
@@ -57,6 +61,7 @@ height: 100%;
 
   .contenedor-lista-wrapper {
     width: 100%; /* Tamaño del contenedor */
+    
     max-height: 100%; /* Altura visible */
 
     position: relative;
@@ -129,61 +134,49 @@ height: 100%;
   }
    
   
-  .contenedor-botones{
-    position: relative;
-    flex: 1;
-    
-    
-    display: flex;
-    flex-direction: column;
-    
-  
-  }
-
-  .contenedor-botones > .control{
-    flex: 1;
-    align-items: center; /* Centra el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
-
-    height: auto;
-    transform-origin: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .flecha{
-    width: 40px;
-   
-    background: none;
-  
- 
- 
-  }
-  
-   .arriba{
-   transform: rotate(-90deg) ;
-  }
-  .abajo{
-    transform: rotate(90deg) ;
-  } 
-  
-  .botones-slide{
-    background: none;
-    border: none;
-  }
 
   .animacion-aparecer {
     animation: AfueraHaciaAdentro 0.5s ease-out both;
   }
 
+
+  .contenedor-empty{
+    color: rgba(44, 44, 44, 0.856);
+position: relative;
+font-family: "Hanken Grotesk", serif;
+font-optical-sizing: auto;
+font-weight: 600;
+font-style: normal;
+font-size: 50px;
+display: flex;
+flex-direction: column;
+background: rgba(255, 255, 255, 0.726);
+align-items: center;
+}
+
+.texto-empty{
+    color: rgba(44, 44, 44, 0.993); 
+font-size: 30px;
+}
+
+
+.img-warning{
+  width: 50px;
+  animation: palpitacion2 2s infinite;
+}
+
+
   @media screen and (min-width:1200px) {
     .contenedor-lista{
-      width: 70%;
+      width: 100%;
     }
   }
   
   @media screen and (max-width:768px) {
+    .contenedor-padre{
+      padding: 10px;
+    }
+
     .contenedor-principal{
      
       flex-direction: column;
@@ -198,6 +191,10 @@ height: 100%;
     
     }
    
+    .btn{
+      color: aliceblue;
+      font-size: 1.3rem;
+    }
     .contenedor-lista-wrapper {
       max-height: 100%;
       
@@ -206,22 +203,54 @@ height: 100%;
       display: block;
     }
    
+
+    .img-warning{
+      width: 60px;
   }
-  @media screen and (width > 468px)and ( width < 768px) {
+  .titulo-empty{
+    
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 40px;
+  }
+
+  .texto-empty{
+      font-size: 25px;
+      text-align: center;
+  }
+  .contenedor-padre{
+    overflow-y: auto;
+  }
+
+  .contenedor-mobile{
+    display: none;
+  }
+  }
+
+
+/*   @media screen and (width > 468px)and ( width < 768px) {
     .contenedor-lista-wrapper {
       max-height: 80%;
       
     }
-  }
+  } */
+  
   @media screen and (max-width:468px) {
+    main{
+      height: 100%;
+    }
    .contenedor-padre{
     position: relative;
     height: 75vh;
+    overflow-y: auto;
    }
 
    .contenedor-contenido{
     position: relative;
-    height: 80%;
+    min-height: 0%;
+    max-height: 80%;
    }
    .contenedor-lista-wrapper{
     overflow-y: hidden;
@@ -248,3 +277,17 @@ height: 100%;
     }
   }
   
+  @keyframes palpitacion2 {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2); /* Incrementa el tamaño ligeramente */
+        opacity: 0.8; /* Reduce la opacidad ligeramente */
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      } 
+}

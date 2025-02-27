@@ -1,8 +1,12 @@
 <div class="contenedor-lista-residuo">
-  <table class="tabla-residuos">
+
+  <button class="btn-agregar" (click)= "agregarResiduo()" >Agregar</button>
+  <span class="span-no-data" *ngIf="residuosLista.length==0">Aún no Hay carga de residuos en el Manifiesto</span>
+
+  <table class="tabla-residuos" *ngIf="residuosLista.length>0">
      <caption>
       Residuos Retirados
-      <button class="btn-agregar" (click)= "agregarResiduo()" >Agregar</button>
+     
      </caption>
      
         <tbody>
@@ -28,7 +32,6 @@
             <td><img class="img-delete" src="../../assets/icons/delete.png" alt=""  (click)="deleteResiduo(i, item.id)"> </td>
                               </tr> 
         </tbody>
-        <caption class="container-no-data" *ngIf="residuosLista.length==0"><span class="span-no-data">Aún no Hay carga de datos En La Hoja</span></caption>
       <tfoot>
           <tr>
             <td colspan="2">Total:</td>
@@ -38,7 +41,7 @@
 
         
   </table>
-  <button class="btn-finalizar" (click)="enviarListaResiduos()">Finalizar Carga</button>
+  <button *ngIf="residuosLista.length > 0" type="button" class="btn-finalizar" (click)="enviarListaResiduos()">Finalizar Carga</button> 
   <app-modal-info>
 </app-modal-info>
   </div>

@@ -24,9 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
-
-
 @RequestMapping("api/TicketControl")
+
 public class TicketControl_controller {
 
 @Autowired

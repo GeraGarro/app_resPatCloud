@@ -85,14 +85,27 @@ flex: 1;
 
    }
 
+   .contenedor-input{
+    height: auto !important;
+   }
+
    mat-form-field{
  
-    height: 62px;
+    height: 70px !important;
+   
+ /*    background-color:  #ff6600; */
     display: flex;
    }
+
+   .mat-select-trigger {
+    height: 48px !important; /* O el valor que necesites */
+    display: flex;
+    align-items: center; /* Asegura que el texto esté centrado */
+ 
+  }
    mat-label{
   
-    font-size: 10px;
+    font-size: 13px;
     font-family: "Roboto", sans-serif;
   font-weight: 300;
   font-style: normal;
@@ -105,6 +118,10 @@ flex: 1;
     font-size: 12px;
   
    }
+   .mat-select-panel {
+    min-width: 200px !important;
+    max-width: 300px !important;
+  }
 
 #input-fecha{
     width: 60%;
@@ -116,6 +133,15 @@ flex: 1;
 .mat-calendar-body-selected:hover {
     background-color: #1565c0; /* Color diferente para fechas seleccionadas al hacer hover */
     color: #fff;
+  }
+
+  .mat-form-field-appearance-outline .mat-select {
+    border: none !important;
+  }
+  
+  .mat-form-field-appearance-outline.mat-form-field-should-float .mat-form-field-outline {
+    border-color: #007bff !important;
+    border: 5px !important; /* Hace más grueso el borde para que se note */
   }
 @media screen and (min-width:1000px) {
 
@@ -141,12 +167,23 @@ flex: 1;
 @media screen and (max-width:768px) {
    
    
-
+   .mat-mdc-form-field {
+    width: 80%;
+    height: 80px;
+   }
+   mat-label{
+    font-size: 40px;
+   }
    
-    .input-formulario, mat-form-field .label-revision{
+   #input-fecha{
+    width: 60%;
+    height: 150px;
+    
+        font-size: 13px;
        
-        width: 95%;
-    }
+}
+
+ 
     .label-revision{
         align-items: center;
      
@@ -176,7 +213,12 @@ flex: 1;
         transform:  translateX(105px);
     }
   
-  
+  .btn-add{
+    width: 80%;
+    height: 50px;
+    font-weight: 700;
+    box-shadow: 1px 1px 1px 1px black;
+  }
 }
 @media screen and (min-width:478px)and ( max-width: 768px) {
   

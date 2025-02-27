@@ -1,25 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-.titulo-residuo{
-font-size: 30px;
 
-padding: 5px;
-display: block;
-font-weight: 600;
-}
 .contenedor-lista-residuo{
     position: relative;
     background: rgb(255, 255, 255);
-    height: 100%;
-    
+    min-height: fit-content ;
+    max-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-.container-no-data{
+.span-no-data{
+    width: max-content;
+   
+   
     color: #02020257;
-    text-align: right;
+   
 }
 .tabla-residuos{
-    
-
-  
 
     width: 80%;
     min-height: 10vh; 
@@ -31,12 +30,7 @@ font-weight: 600;
     caption-side: top;
     font-weight: bold;
 }
-.tabla-residuos>thead > tr{
-    background-color: rebeccapurple;
-    color: aliceblue;
-   font-size: 20px;
- font-family: Arial, Helvetica, sans-serif;
-}
+
 .tabla-residuos>thead > tr > th{
   
     font-family: "Roboto", sans-serif;
@@ -53,13 +47,7 @@ max-height: 500px;
 .cabecera-nombre{
     width: 10%;
 }
-.tabla-residuos>tbody > tr{
-    font-size: 12px;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.521);
-   height: 40px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
-}
 
 
 .tabla-residuos>tbody > tr:hover {
@@ -82,13 +70,10 @@ max-height: 500px;
 
 .img-delete{
     
-    width: 25px;
+    width: 35px;
     cursor: pointer;
 }
-.tabla-residuos thead >  tr{
-    
-    border-radius: 50%;
-}
+
 .col-peso > input{
     border: 1px solid gray;
     border-radius: 12px;
@@ -102,11 +87,11 @@ max-height: 500px;
 }
 
 .btn-agregar{
-    background: rgb(51, 86, 182);
+
+    background: rgb(245, 133, 5);
     color: rgb(255, 255, 255);
-    border: none;
-    box-shadow: 1px 1px 1px 1px gray;
-    border-radius: 5px;
+    
+  
 }
 
 .btn-agregar:active{
@@ -131,22 +116,59 @@ max-height: 500px;
 .form-select{
     width: 100%;
     font-size: 13px;
+    border-radius: 20px;
+    padding: 5px;
+}
+button{
+    cursor: pointer;
+    border: none;
+    box-shadow: 1px 1px 1px 1px gray;
+    border-radius: 3px;
 }
 
- @media screen and (max-width:600px) {
-    .tabla-residuos{
-        width: 95%;
+
+tfoot> tr{
+    font-size: 25px;
+    color: brown;
+}
+
+.tabla-residuos > tbody > tr{
+       background-color: rgba(128, 128, 128, 0.288); 
+    height: 70px;
+    
+}
+@media screen and (min-width:768px) {
+    .btn-agregar, .btn-finalizar{
+        height: 50px;
+        width: max-content;
+    }
+    
+    .form-select, .tabla-residuos > tbody > tr{
+        font-size: 20px;
+    }
+    .btn-finalizar{
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
     .img-delete{
-    
-        width: 35px;
-  
+        width: 50px;
     }
-    .col-peso > input{
-        width: 80px;
-        padding: 5px 2px;
-    }
-    .columna-tipo{
-        width: 110px;
-    }
+}
+
+ @media screen and (max-width:768px) {
+  .tabla-residuos{
+    width: 100%;
+  }
+  .col-peso>input{
+    width: 70px;
+    padding: 5px 2px;
+  }
+  button{
+    padding: 8px;
+  }
+  .form-select{
+    width: 70%;
+    font-size: 15px;
+  }
  }
