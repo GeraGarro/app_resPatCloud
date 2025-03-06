@@ -3,9 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TransportistaComponent } from './transportista/transportista.component';
-
-import { TransportistaFormularioComponent } from './transportista-formulario/transportista-formulario.component';
 import{HttpClientModule} from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -46,8 +43,6 @@ registerLocaleData(localeEs,'es');
 @NgModule({
   declarations: [
     AppComponent,
-    TransportistaComponent,
-    TransportistaFormularioComponent,
     ConfirmacionDialogoComponent,
    
 

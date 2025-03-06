@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiGeneradorService } from 'src/app/services/api/api-generador/api-generador.service';
 
@@ -49,14 +49,13 @@ export class TicketControlFormularioComponent implements OnInit {
   formularioTicket: FormGroup;
   estadoEdicion: boolean = false;
   idTicket: number | undefined;
-  titulo?: string;
+ 
  
 
   generadores: Generador[] = [];
-  listaTransportistas: Transportista[] = [];
   listaGeneradores: Generador []=[];
-  
-  selectedTransportistaName = ''; // Para mostrar el nombre en el input
+  @Input() idTransportistaReceptor:number | undefined;
+ // Para mostrar el nombre en el input
   
   selectTransportistaId: number | null = null; 
   selectGeneradorId: number | null=null;
@@ -68,6 +67,9 @@ export class TicketControlFormularioComponent implements OnInit {
   mensajeModal:string='';
 
   modal:boolean=false;
+
+  minDate!: Date; // Fecha mínima (lunes de la semana actual)
+  maxDate!: Date; // Fecha máxima (domingo de la semana actual)
 
   private servicioCompartido= inject(ServicioCompartidoService)
 
@@ -88,7 +90,6 @@ export class TicketControlFormularioComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
-    private apiTransportistaService: ApiTransportistaService,
     private apiGeneradorService: ApiGeneradorService,
     private apiTicketService: ApiTicketService,
     private route: ActivatedRoute
@@ -110,38 +111,21 @@ export class TicketControlFormularioComponent implements OnInit {
       fechaRetiro: ahora
     });
 
-    if (this.idTicket) {
-      this.cargarDatosDelTicket();
-      this.titulo = 'Editar Ticket ' + this.idTicket;
-    } else {
-      this.cargarGeneradores();
-    }
-
-    this.apiTransportistaService.getTransportistas().subscribe(
-      (data) => {
-        console.log('Transportistas cargados:', data); 
-        this.listaTransportistas = data;
-        // Inicializa las opciones filtradas
-      },
-      (error) => {
-        console.error('Error al seleccionar Transportista:', error);
-      }
-    );
-
 this.cargarGeneradores()
 
 this.servicioCompartido.idHoja$.subscribe((idHoja) => {
   this.idHoja = idHoja;
-  console.log('idHoja recibido:', this.idHoja);
 });
 
-this.limitarCalendario()
+this.limitarCalendario();
+
   }
 
-  minDate!: Date; // Fecha mínima (lunes de la semana actual)
-  maxDate!: Date; // Fecha máxima (domingo de la semana actual)
-
-
+  /* ngOnChanges(changes: SimpleChanges): void {
+    if (changes['idTransportistaReceptor'] && changes['idTransportistaReceptor'].currentValue !== undefined) {
+      console.log('idTransportistaReceptor actualizado:', this.idTransportistaReceptor);
+    }
+  } */
 limitarCalendario(){
   const today = new Date(); // Fecha actual
   const dayOfWeek = today.getDay(); // Día de la semana (0 = domingo, 1 = lunes, ...)
@@ -189,10 +173,6 @@ limitarCalendario(){
     );
   }
 
-  onSelectTransportista(transportistaId: number): void {
-    this.selectTransportistaId = transportistaId;
-    console.log('Transportista seleccionado:', this.selectTransportistaId);
-  }
   onSelectGenerador(generadorId: number):void{
     this.selectGeneradorId= generadorId;
     console.log('Generador seleccionado:', this.selectGeneradorId);
@@ -204,9 +184,7 @@ limitarCalendario(){
     console.log('Fecha seleccionada:', fechaSeleccionada);
   }
 
-  hablitarEdicion():void{
-
-  }
+  
   onSubmit(){
    
     if (!this.idHoja) {
@@ -214,22 +192,16 @@ limitarCalendario(){
       return;
     }
 
-     const id_transp=this.selectTransportistaId;
+   
      const id_generador=this.selectGeneradorId;
      
      const fechaRetiro = this.datePipe.transform(this.formularioTicket.value.fechaRetiro, 'yyyy-MM-dd');
-      let estadoRevision=false;
-   /*   console.log('Transportista:', id_transp);
-     console.log('Generador:', id_generador);
-     console.log('Fecha de Retiro:', fechaRetiro); */
-    
-     if(this.estadoEdicion){
-  /*     console.log() */
-     }
-     else
-     { 
+     
+     let estadoRevision=false;
+
+     
       let transportista: Transportista={
-        id_transportista: id_transp ?? 0
+        id_transportista: this.idTransportistaReceptor
       };
      
       let hoja: Hoja={
@@ -240,7 +212,7 @@ limitarCalendario(){
         id: id_generador ?? 0
       };
 
-      if (id_transp == null || id_generador == null) {
+      if (this.idTransportistaReceptor == null || id_generador == null) {
         this.modal = true;
         this.mensajeModal = 'Debe seleccionar un transportista y un generador';
         this.accionAceptada = false;
@@ -285,7 +257,7 @@ limitarCalendario(){
           console.log("modal despues: "+this.modal)
         }
       ) 
-     }
+     
   }
 
   mostrarError(error: HttpErrorResponse) {

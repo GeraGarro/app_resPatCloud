@@ -75,9 +75,6 @@ ngOnInit(): void {
     this.primerDiaSemana = format(fechaInicio, "dd/MM/yyyy", { locale: es });
     this.ultimoDiaSemana = format(fechaFin, "dd/MM/yyyy", { locale: es });
   
-      console.log("id fecha Inicio: "+ this.primerDiaSemana)
-      console.log("id fecha Fin: "+ this.ultimoDiaSemana)
-
       this.servicioCompartido.reload$.subscribe(() => {
         this.cargaTickets();
       });
@@ -91,7 +88,6 @@ ngOnInit(): void {
 cargaTickets(){
   this.apiTicket.getTicketsByHoja(this.idHoja).subscribe(
     (data)=>{
-      console.log(data)
       this.listaTickets = data.sort((a: ITicket, b: ITicket) => {
         const fechaA = a.fechaEmisionTk ? new Date(a.fechaEmisionTk).getTime() : 0;
         const fechaB = b.fechaEmisionTk ? new Date(b.fechaEmisionTk).getTime() : 0;

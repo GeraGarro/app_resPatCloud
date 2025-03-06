@@ -4,6 +4,7 @@ export interface Transportista {
     apellido?:  string;
     cuit?:      string;
     telefono?:  string;
+    email?:     string;
     domicilio?: string;
     estado?:    boolean;
 }

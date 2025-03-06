@@ -22,6 +22,8 @@ public class Transportista {
     private String apellido;
     private String cuit;
     private String telefono;
+    @Column(unique = true, nullable = false)
+    private String email;
     private String domicilio;
     private boolean estado;
 

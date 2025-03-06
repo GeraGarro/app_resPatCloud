@@ -4,11 +4,10 @@ import { TicketControlComponent } from './ticket-control/ticket-control.componen
 import { ResiduoComponent } from './residuo/residuo.component';
 import { TipoResiduoComponent } from './pages/tipo-residuo/tipo-residuo.component';
 import { GeneradorComponent } from './pages/generador/generador.component';
-import { TransportistaComponent } from './transportista/transportista.component';
+import { TransportistaComponent } from './pages/user-transportista/transportista.component';
 import { TicketControlFormularioComponent } from './pages/home/ticket-control-formulario/ticket-control-formulario.component';
 import { TipoResiduoFormularioComponent } from '../app/pages/tipo-residuo/tipo-residuo-formulario/tipo-residuo-formulario.component';
 import { CertificadoComponent } from './pages/certificado/certificado.component';
-import { TransportistaFormularioComponent } from './transportista-formulario/transportista-formulario.component';
 import { GeneradorFormularioComponent } from './pages/generador/generador-formulario/generador-formulario.component';
 import { CertificadoFormularioComponent } from './pages/certificado-formulario/certificado-formulario.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -26,7 +25,6 @@ import { TicketInfoComponent } from './pages/ticket-info/ticket-info.component';
 {path: 'certificado_formulario',component:CertificadoFormularioComponent},
 {path: 'certificado_formulario/:id',component:CertificadoFormularioComponent},
 {path:'transportista',component: TransportistaComponent},
-{path:'transportista_Formulario',component: TransportistaFormularioComponent},
 {path:'home',component: HomeComponent},
 {path:'',component: HomeComponent},
 {path:'ticket-control-Formulario',component: TicketControlFormularioComponent},

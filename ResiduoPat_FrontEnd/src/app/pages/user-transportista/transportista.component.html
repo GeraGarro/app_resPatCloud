@@ -1,0 +1,142 @@
+
+<div class="contenedor-padre">
+  
+  <div class="contenedor-formulario">
+    <form [formGroup]="formularioTransportista" (ngSubmit)="onSubmit()">
+ <div class="register-title">Registro Usuario Transportista</div> 
+      <div class="contenedor-grupo ">
+        <div class="contenedor-input data-transportista">
+      
+        <label for="nombre" class="label"> Nombre</label>
+        <input
+          class="input-formulario"
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+        /> 
+        <div
+          class="text-error mensajeError"
+          *ngIf="hasErrors('nombre', 'required')"
+        >
+          <img
+            class="imagen-error"
+            src="../../../../assets/icons/error-modal.png"
+            alt="error"
+          />
+          Por favor Ingresa Nombre a Registrar
+        </div>
+      </div>
+      <div class="contenedor-input data-transportista">
+      
+        <label for="apellido" class="label"> Apellido</label>
+        <input
+          class="input-formulario"
+          type="text"
+          id="apellido"
+          formControlName="apellido"
+        /> 
+        <div
+          class="text-error mensajeError"
+          *ngIf="hasErrors('apellido', 'required')"
+        >
+          <img
+            class="imagen-error"
+            src="../../../../assets/icons/error-modal.png"
+            alt="error"
+          />
+          Por favor Ingresa Apellido a Registrar
+        </div>
+
+      </div>
+
+      
+    </div>
+      
+    <div class="contenedor-input">
+      
+      <label for="cuit" class="label"> CUIT</label>
+      <input
+        class="input-formulario"
+        type="text"
+        id="cuit"
+        formControlName="cuit"
+      /> 
+      <div
+        class="text-error mensajeError"
+        *ngIf="hasErrors('cuit', 'required')"
+      >
+        <img
+          class="imagen-error"
+          src="../../../../assets/icons/error-modal.png"
+          alt="error"
+        />
+        Por favor Ingresa CUIT del Transportista
+      </div>
+    </div>
+
+    <div class="contenedor-input">
+      
+      <label for="telefono" class="label"> Telefono</label>
+      <input
+        class="input-formulario"
+        type="text"
+        id="telefono"
+        formControlName="telefono"
+      /> 
+    
+    </div>
+
+    <div class="contenedor-input">
+      
+      <label for="domicilio" class="label"> Domicilio</label>
+      <input
+        class="input-formulario"
+        type="text"
+        id="domicilio"
+        formControlName="domicilio"
+      /> 
+      <div
+        class="text-error mensajeError"
+        *ngIf="hasErrors('domicilio', 'required')"
+      >
+        <img
+          class="imagen-error"
+          src="../../../../assets/icons/error-modal.png"
+          alt="error"
+        />
+        Por favor Ingresa Domicilio del Transportista
+      </div>
+    </div>
+
+    <div class="contenedor-input">
+      
+      <label for="email" class="label"> Email</label>
+      <input
+        class="input-formulario"
+        type="email"
+        id="email"
+        formControlName="email"
+      /> 
+      <div
+        class="text-error mensajeError"
+        *ngIf="hasErrors('email', 'required')"
+      >
+        <img
+          class="imagen-error"
+          src="../../../../assets/icons/error-modal.png"
+          alt="error"
+        />
+        Por favor Ingresa Email del Transportista
+      </div>
+    </div>
+
+    <button type="button" class="btn aceptar" (click)="onSubmit()">Aceptar</button>
+    </form>
+  </div>
+</div>
+
+<div class="contenedor-modal" *ngIf="activarModal" >
+ 
+  <app-modal   
+  [_mensaje]="mensajeDeFormulario" [estadoAprobado]= "estadoModal"/>
+</div>

@@ -1,9 +1,10 @@
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { HojaRutaTicketsComponent } from 'src/app/pages/home/hoja-ruta-tickets/hoja-ruta-tickets.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TicketControlFormularioComponent } from './ticket-control-formulario/ticket-control-formulario.component';
+import { ApiTransportistaService } from 'src/app/services/api/api-transportista/api-transportista.service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,30 @@ TicketControlFormularioComponent
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+ private apiTransportistaService=inject(ApiTransportistaService);
+ private router=inject(Router);
+ idTransportista:number | undefined;
+
+  ngOnInit(): void {
+    this.apiTransportistaService.getTransportistaById(1).subscribe({
+      next: (transportista) => {
+        this.idTransportista = transportista.id_transportista;
+        console.log('idTransportista:', this.idTransportista);
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          console.log('Transportista no encontrado, redirigiendo...');
+          this.router.navigate(['/transportista']);
+        } else {
+          console.error('Error desconocido:', error);
+        }
+      }
+    });
+  
+
+  }
   estiloDashboardGenerador = {
     background: '#AF1EDD',
   };
@@ -77,4 +101,6 @@ export class HomeComponent {
       this.formularioVisible = false; // Oculta el formulario en pantallas grandes
     }
   }
+
+  
 }

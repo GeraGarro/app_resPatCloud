@@ -1,0 +1,77 @@
+
+.contenedor-padre{
+    
+    height: 100%;
+    background: linear-gradient(to right, #b9ada979 0%, #b9ada9 50%, #b9ada979 100%);
+    display: flex;
+ 
+}
+
+.contenedor-formulario{
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.register-title{
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgb(114, 112, 112);
+    text-align: center;
+   
+    border-bottom: 1px solid #ccc;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: red;
+}
+
+.label{
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(37, 37, 37);
+}
+.input-formulario{
+    width: 100%;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.data-transportista{
+height: 100px;
+display: flex;
+flex-direction: column;
+align-items: center;
+
+
+}
+
+
+.aceptar{
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.849);
+    font-size: 1.2rem;
+}
+@media screen and (min-width: 1024px) {
+   .contenedor-padre{
+    align-items: center;
+    justify-content: center;
+   }
+    .contenedor-formulario{
+         max-width: 800px;
+       
+    }
+}

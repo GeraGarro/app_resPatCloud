@@ -18,6 +18,6 @@
   </div>
 
   <div class="ticket-formulario contenedor"      [ngClass]="{ hidden: !formularioVisible && isSmallScreen(), visible: formularioVisible }"
-  ><app-ticket-control-formulario (ticketCreado)="onTicketCreado()"> </app-ticket-control-formulario>
+  ><app-ticket-control-formulario [idTransportistaReceptor]="idTransportista" (ticketCreado)="onTicketCreado()"> </app-ticket-control-formulario>
   </div>
 </div>

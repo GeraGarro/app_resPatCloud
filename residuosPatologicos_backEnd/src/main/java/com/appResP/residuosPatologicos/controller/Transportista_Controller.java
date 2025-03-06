@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -22,7 +23,7 @@ public class Transportista_Controller {
     private Transportista_service transportistaService;
 
     //Ver un Determinado  Transportista
-@GetMapping("/transportista/{id}")
+@GetMapping("/{id}")
 public ResponseEntity<?> findTransportistaById(@PathVariable Long id){
     Optional<Transportista> transportistaOptional= transportistaService.findByID(id);
 
@@ -36,6 +37,7 @@ public ResponseEntity<?> findTransportistaById(@PathVariable Long id){
                 .cuit(transportista.getCuit())
                 .telefono(transportista.getTelefono())
                 .domicilio(transportista.getDomicilio())
+                .email(transportista.getEmail())
                 .estado(transportista.isEstado())
                 .build();
 
@@ -56,35 +58,66 @@ public ResponseEntity<?> findTransportistaById(@PathVariable Long id){
                      .telefono(transportista.getTelefono())
                      .domicilio(transportista.getDomicilio())
                      .estado(transportista.isEstado())
+                     .email(transportista.getEmail())
                      .build()).toList();
 
      return ResponseEntity.ok(listaTransportista);
 }
 //Creación De nuevo Transportista
-@PostMapping("/crear")
-    public ResponseEntity <?> saveTransportista(@RequestBody TransportistaDTO transportistaDTO) throws Exception {
-   try {
-       if(transportistaDTO.getNombre().isBlank()||
-               transportistaDTO.getApellido().isBlank()||
-               transportistaDTO.getCuit().isBlank()){
-           return ResponseEntity.badRequest().build();
-       }
-       transportistaService.save(Transportista.builder()
-               .nombre(transportistaDTO.getNombre())
-               .apellido(transportistaDTO.getApellido())
-               .cuit(transportistaDTO.getCuit())
-               .telefono(transportistaDTO.getTelefono())
-               .domicilio(transportistaDTO.getDomicilio())
-               .estado(transportistaDTO.isEstado())
-               .build());
+//@PostMapping("/crear")
+//    public ResponseEntity <?> saveTransportista(@RequestBody TransportistaDTO transportistaDTO) throws Exception {
+//   try {
+//       if(transportistaDTO.getNombre().isBlank()||
+//               transportistaDTO.getApellido().isBlank()||
+//               transportistaDTO.getCuit().isBlank()){
+//           return ResponseEntity.badRequest().build();
+//       }
+//       transportistaService.save(Transportista.builder()
+//               .nombre(transportistaDTO.getNombre())
+//               .apellido(transportistaDTO.getApellido())
+//               .cuit(transportistaDTO.getCuit())
+//               .telefono(transportistaDTO.getTelefono())
+//               .domicilio(transportistaDTO.getDomicilio())
+//               .estado(transportistaDTO.isEstado())
+//               .build());
+//
+//       return ResponseEntity.created(new URI("/api/transportista/crear")).body("Transportista Ha sido Creado");
+//   }catch (IllegalArgumentException e){
+//       return ResponseEntity.badRequest().body("No ha sido posible crear el Transportista");
+//   }catch (Exception e) {
+//       // Error 500 - Internal Server Error
+//       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ha ocurrido un error interno al intentar crear el Transportista");
+//   }
 
-       return ResponseEntity.created(new URI("/api/transportista/crear")).body("Transportista Ha sido Creado");
-   }catch (IllegalArgumentException e){
-       return ResponseEntity.badRequest().body("No ha sido posible crear el Transportista");
-   }catch (Exception e) {
-       // Error 500 - Internal Server Error
-       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ha ocurrido un error interno al intentar crear el Transportista");
-   }
+    @PostMapping("/crear")
+    public ResponseEntity<Map<String, String>> saveTransportista(@RequestBody TransportistaDTO transportistaDTO) {
+        try {
+            if (transportistaDTO.getNombre().isBlank() ||
+                    transportistaDTO.getApellido().isBlank() ||
+                    transportistaDTO.getCuit().isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Datos incompletos"));
+            }
+
+            transportistaService.save(Transportista.builder()
+                    .nombre(transportistaDTO.getNombre())
+                    .apellido(transportistaDTO.getApellido())
+                    .cuit(transportistaDTO.getCuit())
+                    .telefono(transportistaDTO.getTelefono())
+                    .domicilio(transportistaDTO.getDomicilio())
+                            .email(transportistaDTO.getEmail())
+                    .estado(transportistaDTO.isEstado())
+                    .build());
+
+            return ResponseEntity
+                    .created(new URI("/api/transportista/crear"))
+                    .body(Map.of("message", "Transportista Ha sido Creado"));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "No ha sido posible crear el Transportista"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Ha ocurrido un error interno al intentar crear el Transportista"));
+        }
 
 
 }
@@ -118,6 +151,7 @@ public ResponseEntity<?> findTransportistaById(@PathVariable Long id){
         transportista.setApellido(transportistaDTO.getApellido());
         transportista.setCuit(transportistaDTO.getCuit());
         transportista.setDomicilio(transportistaDTO.getDomicilio());
+        transportista.setEmail(transportistaDTO.getEmail());
         transportista.setTelefono(transportistaDTO.getTelefono());
         transportista.setEstado(transportistaDTO.isEstado());
 

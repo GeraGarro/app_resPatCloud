@@ -99,16 +99,16 @@ max-height: 500px;
 }
 
 .btn-finalizar{
+  position: relative;
     border: none;
     background-color: green;
     color: white;
+    padding: 2px;
     margin: 5px;
     border-radius: 2px;
 }
-.btn-finalizar:active{
-    background: rgb(73, 131, 59);
-   font-weight: 600;
-}
+
+
 .columna-tipo{
     width: 150px;
 
@@ -147,9 +147,8 @@ tfoot> tr{
         font-size: 20px;
     }
     .btn-finalizar{
-        position: absolute;
-        bottom: 0;
-        right: 0;
+        align-self: flex-end;
+        
     }
     .img-delete{
         width: 50px;

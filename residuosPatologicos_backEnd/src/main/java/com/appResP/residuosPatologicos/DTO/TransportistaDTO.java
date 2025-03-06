@@ -16,6 +16,7 @@ public class TransportistaDTO {
     private String apellido;
     private String cuit;
     private boolean estado;
+    private String email;
     private String telefono;
     private String domicilio;
 }

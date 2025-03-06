@@ -8,13 +8,13 @@ import { MatDialogRef } from '@angular/material/dialog';
   
   template: `
   
-    <h2 mat-dialog-title >Confirmación</h2>
-    <mat-dialog-content>¿Estás seguro de que deseas eliminar este registro?</mat-dialog-content>
+    <h2 mat-dialog-title>Confirmación</h2>
+    <div mat-dialog-content>¿Estás seguro de que deseas eliminar este registro?</div>
     
-    <mat-dialog-actions >
+    <div mat-dialog-actions>
       <button mat-button (click)="cancelar()">Cancelar</button>
       <button mat-raised-button color="warn" (click)="confirmar()">Eliminar</button>
-    </mat-dialog-actions>
+    </div>
 
   `,
   styles: [
