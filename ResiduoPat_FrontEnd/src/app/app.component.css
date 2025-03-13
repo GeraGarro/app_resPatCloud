@@ -58,9 +58,9 @@ position: relative;
 }
 
 main{
-
-  min-height: 70vh; 
-  max-height: 100vh;
+position: relative;
+  
+  height: 100vh;
 min-width: 50vw;
 overflow-y: hidden;
   margin: 0 ;
