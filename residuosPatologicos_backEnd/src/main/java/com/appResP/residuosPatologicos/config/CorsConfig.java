@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("http://localhost:4200","http://angular_respat","http://149.50.147.200")
+                        .allowedOriginPatterns("http://localhost:4200","vps-4679263-x.dattaweb.com:80","http://149.50.147.200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("Authorization", "Content-Type", "Accept")
                         .allowCredentials(true); // Habilitar credenciales si es necesario

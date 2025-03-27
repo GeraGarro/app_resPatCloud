@@ -45,7 +45,7 @@ services:
     networks:
       - resPatNetworks
 
-  ResiduoPat_FrontEnd:
+  FrontEnd:
     build:
       context: ./ResiduoPat_FrontEnd
       dockerfile: Dockerfile

@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
 
-    apiUrl: 'http://149.50.147.200:8080/api' , 
+    apiUrl: 'vps-4679263-x.dattaweb.com:8080/api' , 
 
   };
