@@ -1,27 +1,24 @@
-# Usa una imagen de Node.js para construir la app
+# Etapa de construcción
 FROM node:18 AS build
 
-# Establece el directorio de trabajo
 WORKDIR /app
-
-# Copia los archivos del proyecto
 COPY package*.json ./
-RUN npm install
-
+RUN npm ci --omit=dev
 COPY . .
 RUN npm run build --prod
 
-# Usa Nginx para servir el frontend
+# Etapa de producción
 FROM nginx:alpine
 
-# Copia los archivos de la build al servidor de Nginx
+# Elimina la configuración default de Nginx
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copia los archivos construidos
 COPY --from=build /app/dist/frontend-admin-residuos /usr/share/nginx/html
 
-#nuevo
-COPY nginx.conf /etc/nginx/conf.d/default.conf 
+# Copia nuestra configuración personalizada
+COPY nginx.conf /etc/nginx/conf.d/
 
-# Expone el puerto para Nginx
+# Expone el puerto y arranca Nginx
 EXPOSE 80
-
-# Inicia el servidor Nginx
 CMD ["nginx", "-g", "daemon off;"]
