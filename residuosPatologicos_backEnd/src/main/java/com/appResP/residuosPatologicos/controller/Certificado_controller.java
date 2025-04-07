@@ -31,7 +31,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@CrossOrigin
 @RestController
 
 @RequestMapping("/api/Certificado")

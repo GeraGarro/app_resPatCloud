@@ -1,14 +1,16 @@
-# Usa una imagen base de Java 17
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-alpine
 
-# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia el JAR generado por Maven o Gradle
+# Copia el script de espera y el JAR
+COPY wait-for-it.sh .
 COPY target/residuos_Patologicos-0.0.1.jar app.jar
 
-# Expone el puerto donde escucha la aplicación (ajústalo según tu configuración)
+# Asegura permisos de ejecución
+RUN chmod +x wait-for-it.sh
+
+# Puerto expuesto (solo informativo)
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando de entrada con espera para MySQL
+ENTRYPOINT ["./wait-for-it.sh", "db_residuoPat:3306", "--timeout=60", "--", "java", "-jar", "app.jar"]

@@ -22,7 +22,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@CrossOrigin
 @RestController
 @RequestMapping("api/TicketControl")
 
