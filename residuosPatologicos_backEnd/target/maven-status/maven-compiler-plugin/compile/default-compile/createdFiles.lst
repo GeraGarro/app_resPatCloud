@@ -70,7 +70,6 @@ com\appResP\residuosPatologicos\persistence\ICertificadoDAO.class
 com\appResP\residuosPatologicos\models\Residuo$ResiduoBuilder.class
 com\appResP\residuosPatologicos\services\imp\Transportista_service.class
 com\appResP\residuosPatologicos\ResiduosPatologicosApplication.class
-com\appResP\residuosPatologicos\config\CorsConfig$1.class
 com\appResP\residuosPatologicos\models\Ticket_control$Ticket_controlBuilder.class
 com\appResP\residuosPatologicos\exceptions\TicketNotFoundException.class
 com\appResP\residuosPatologicos\DTO\residuosReportDTO.class

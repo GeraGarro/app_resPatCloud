@@ -10,8 +10,8 @@ services:
       dockerfile: DockerFile
     container_name: app_respat
     mem_limit: 512m
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     environment:
       DB_URL: jdbc:mysql://db_residuoPat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER_NAME: root
