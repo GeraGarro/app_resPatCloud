@@ -11,13 +11,17 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://vps-4679263-x.dattaweb.com","http://localHost:8080")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH")
+                .allowedOrigins(
+                        "http://vps-4679263-x.dattaweb.com",
+                        "http://localhost:4200"
+                )
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
 }
+
 //@Configuration
 //public class CorsConfig {
 //

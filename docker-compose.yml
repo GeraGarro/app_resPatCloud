@@ -16,6 +16,10 @@ services:
       DB_URL: jdbc:mysql://db_residuoPat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER_NAME: root
       DB_PASSWORD: 1234
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      start_period: 40s  
     restart: always
     depends_on:
       residuos_pat:
@@ -35,7 +39,7 @@ services:
       MYSQL_ROOT_HOST: "%"
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p1234 || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 10
