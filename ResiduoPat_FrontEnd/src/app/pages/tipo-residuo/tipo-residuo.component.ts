@@ -35,49 +35,9 @@ import { ModalComponent } from 'src/app/modal/modal.component';
   styleUrls: ['./tipo-residuo.component.css']
 })
 export class TipoResiduoComponent implements OnInit{
-/* listaTipoResiduos: TipoResiduo[]=[]; */
+listaTipoResiduos: TipoResiduo[]=[];
 
-listaTipoResiduos: TipoResiduo[]=[
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  }/* ,
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  },
-  {id:1,
-    nombre:"Gaseoso Rojo",
-    codigo:"A12",
-    estado:true
-  }, */]
+
 
 ListaTiposActivos: TipoResiduo[]=[];
 ListaTiposInactivos: TipoResiduo[]=[];
