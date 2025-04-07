@@ -2,10 +2,19 @@
 FROM node:18 AS build
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev
+
+# 1. Copia solo los archivos necesarios para instalar dependencias
+COPY package.json package-lock.json ./
+
+# 2. Instala Angular CLI como dependencia de desarrollo
+RUN npm install -g @angular/cli && \
+    npm ci --omit=dev
+
+# 3. Copia el resto de los archivos
 COPY . .
-RUN npm run build --prod
+
+# 4. Ejecuta el build (ahora ng estará disponible)
+RUN ng build --configuration production
 
 # Etapa de producción
 FROM nginx:alpine
