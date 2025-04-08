@@ -57,7 +57,7 @@ services:
       - "80:80"
     volumes:
       - ./ResiduoPat_FrontEnd/dist/frontend-admin-residuos:/usr/share/nginx/html
-      - ./default.conf:/etc/nginx/conf.d/custom.conf
+      - ./ResiduoPat_FrontEnd/default.conf:/etc/nginx/conf.d/custom.conf
     depends_on:
       - app_respat
     networks:
