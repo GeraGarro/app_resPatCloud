@@ -54,7 +54,6 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./ResiduoPat_FrontEnd/dist/frontend-admin-residuos:/usr/share/nginx/html
     depends_on:
       - app_respat
