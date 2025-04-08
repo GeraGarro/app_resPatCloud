@@ -2,6 +2,7 @@ FROM eclipse-temurin:17-jdk-alpine
 
 WORKDIR /app
 
+RUN apk add --no-cache curl
 # Copia el script de espera y el JAR
 COPY wait-for-it.sh .
 COPY target/residuos_Patologicos-0.0.1.jar app.jar
@@ -11,6 +12,7 @@ RUN chmod +x wait-for-it.sh
 
 # Puerto expuesto (solo informativo)
 EXPOSE 8080
+
 
 # Comando de entrada con espera para MySQL
 ENTRYPOINT ["./wait-for-it.sh", "db_residuoPat:3306", "--timeout=60", "--", "java", "-jar", "app.jar"]
