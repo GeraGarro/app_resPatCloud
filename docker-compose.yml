@@ -12,6 +12,8 @@ services:
     mem_limit: 512m
     expose:
       - "8080"
+    ports:
+      - "8080:8080"
     environment:
       DB_URL: jdbc:mysql://residuos_pat:3306/residuos_Patologicos?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER_NAME: root
