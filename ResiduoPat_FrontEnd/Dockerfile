@@ -28,7 +28,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/frontend-admin-residuos /usr/share/nginx/html
 
 # Copia nuestra configuración personalizada
-COPY nginx.conf /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expone el puerto y arranca Nginx
 EXPOSE 80
