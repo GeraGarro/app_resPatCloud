@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
@@ -376,8 +377,7 @@ return ResponseEntity.notFound().build();
     try{
         Optional <Ticket_control> ticketControlOptional= ticketControlService.findByID(id);
         if(ticketControlOptional.isPresent()){
-            String filePatch="src"+ File.separator+"main"+File.separator+"resources"+File.separator+"templates"+File.separator+ "ticketResiduo.jrxml";
-            Ticket_control ticketControl= ticketControlOptional.get();
+            InputStream reportStream = getClass().getResourceAsStream("/templates/ticketResiduo.jrxml");            Ticket_control ticketControl= ticketControlOptional.get();
 
             if(ticketControl.isEstado()){
                Map<String,Object> parameters= new HashMap<>();
@@ -411,7 +411,7 @@ return ResponseEntity.notFound().build();
                 String nombreTransportista = ticketControl.getTransportista().getNombre() + " " + ticketControl.getTransportista().getApellido();
                 parameters.put("pesoTotal", ticketControlService.pesoResiduosByTicket(id).setScale(2, RoundingMode.HALF_UP));
                 parameters.put("firma_transportista", nombreTransportista);
-                JasperReport report = JasperCompileManager.compileReport(filePatch);
+                JasperReport report = JasperCompileManager.compileReport(reportStream);
                 JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
 
                 // Exportar el PDF a un arreglo de bytes

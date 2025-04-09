@@ -15,4 +15,5 @@ EXPOSE 8080
 
 
 # Comando de entrada con espera para MySQL
-ENTRYPOINT ["./wait-for-it.sh", "db_residuoPat", "3306", "java", "-jar", "app.jar"]
+#ENTRYPOINT ["./wait-for-it.sh", "db_residuoPat", "3306", "java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
