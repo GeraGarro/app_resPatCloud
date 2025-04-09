@@ -208,21 +208,21 @@
 			<staticText>
 				<reportElement x="-3" y="40" width="142" height="33" uuid="fc0231fb-5a36-4428-8c1e-c4050b531a94"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Constantia" size="14" isBold="false" isItalic="true" isUnderline="true"/>
+					<font fontName="Monospaced" size="14" isBold="false" isItalic="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Nombre Beneficiario]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="49" width="120" height="20" uuid="ad64e69a-a2ad-4a37-aa1e-934976bf05f6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Constantia" size="14" isBold="false" isItalic="true" isUnderline="true"/>
+					<font fontName="Monospaced" size="14" isBold="false" isItalic="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Domicilio]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="90" width="120" height="20" uuid="2c140ecf-030b-4136-bd3f-342eada68b49"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Constantia" size="14" isBold="false" isItalic="true" isUnderline="true"/>
+					<font fontName="Monospaced" size="14" isBold="false" isItalic="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Cuit/Cuil]]></text>
 			</staticText>
@@ -250,7 +250,7 @@
 			<staticText>
 				<reportElement x="280" y="90" width="161" height="21" uuid="f8d36f96-0fc1-4bfb-9b76-10f33a1e645d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Constantia" size="14" isBold="false" isItalic="true" isUnderline="true"/>
+					<font fontName="Monospaced" size="14" isBold="false" isItalic="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de Transacion-]]></text>
 			</staticText>
