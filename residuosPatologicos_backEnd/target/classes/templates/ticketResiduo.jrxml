@@ -97,7 +97,7 @@
 			<staticText>
 				<reportElement x="310" y="5" width="245" height="40" uuid="8876f64d-a016-4a41-8c26-d100e7f55f74"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font fontName="Berlin Sans FB" size="20" isUnderline="false" isStrikeThrough="false"/>
+					<font fontName="Arial" size="20" isUnderline="false" isStrikeThrough="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Comprobante de Retiro]]></text>
@@ -328,7 +328,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="60" height="30" forecolor="#FFFFFF" uuid="a2940e66-8254-4cec-97e6-071efe6f18d5"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Berlin Sans FB" size="12"/>
+									<font fontName="Arial" size="12"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 							</textField>
@@ -349,7 +349,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="300" height="30" forecolor="#FFFFFF" uuid="03e19480-e04e-45d6-ab0a-0aac318af165"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Berlin Sans FB" size="12"/>
+									<font fontName="Arial" size="12"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{tipoDeResiduo}]]></textFieldExpression>
 							</textField>
@@ -370,7 +370,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="160" height="30" forecolor="#FFFFFF" uuid="ec9ef74e-496b-4ad1-9c52-86bb75891b55"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Berlin Sans FB" size="12"/>
+									<font fontName="Arial" size="12"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
 							</textField>
