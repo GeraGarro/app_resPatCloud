@@ -294,7 +294,7 @@
 			<staticText>
 				<reportElement x="-3" y="10" width="561" height="49" forecolor="#736E6E" backcolor="#13A4ED" uuid="2ca9db78-e0a8-415e-a45b-afbc686a977b"/>
 				<textElement textAlignment="Left">
-					<font fontName="Sylfaen" size="18" isItalic="true"/>
+					<font fontName="SansSerif" size="18" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[En el día de la fecha, han sido retirados los siguientes residuos patológicos en conformidad:]]></text>
 			</staticText>
@@ -319,7 +319,7 @@
 							<staticText>
 								<reportElement mode="Transparent" x="0" y="0" width="60" height="30" forecolor="#F2E2E1" uuid="2b97ddf4-140e-4e42-8ecb-d5e20c41b1e9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Gadugi" size="16" isItalic="false"/>
+									<font fontName="SansSerif" size="16" isItalic="false"/>
 								</textElement>
 								<text><![CDATA[id]]></text>
 							</staticText>
@@ -340,7 +340,7 @@
 							<staticText>
 								<reportElement mode="Transparent" x="0" y="0" width="300" height="30" forecolor="#F2E2E1" uuid="bd9d5977-af38-499c-bd69-876833f52de4"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Gadugi" size="16" isItalic="false"/>
+									<font fontName="Serif" size="16" isItalic="false"/>
 								</textElement>
 								<text><![CDATA[Tipo De Residuo]]></text>
 							</staticText>
@@ -361,7 +361,7 @@
 							<staticText>
 								<reportElement mode="Transparent" x="0" y="0" width="160" height="30" forecolor="#F2E2E1" uuid="6bc1d81d-a0b7-4a23-8a4b-5bfd1a89b1cb"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Gadugi" size="16" isItalic="false"/>
+									<font fontName="Serif" size="16" isItalic="false"/>
 								</textElement>
 								<text><![CDATA[Peso(Kg)]]></text>
 							</staticText>
@@ -394,7 +394,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font fontName="Bodoni MT" size="19" isItalic="true"/>
+					<font fontName="Monospaced" size="19" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Peso Total:]]></text>
 			</staticText>
@@ -426,7 +426,7 @@
 			<textField>
 				<reportElement x="380" y="30" width="150" height="27" uuid="7630af97-9ebf-4a11-abfa-c345cd8335a6"/>
 				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="12"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{firma_transportista}]]></textFieldExpression>
 			</textField>
