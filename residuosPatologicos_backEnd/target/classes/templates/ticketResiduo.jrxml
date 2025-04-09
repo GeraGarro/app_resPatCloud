@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ticketResiduo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c5beb82a-61ab-4cf9-9f09-1dee428ce1c4">
+
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
@@ -50,7 +51,9 @@
 	<subDataset name="residuosDataBase" uuid="c68b99ac-26cf-4817-a19d-69a002440d9b">
 		<queryString>
 			<![CDATA[]]>
+
 		</queryString>
+
 		<field name="id" class="java.lang.String"/>
 		<field name="tipoDeResiduo" class="java.lang.String"/>
 		<field name="peso" class="java.lang.Float"/>
@@ -67,6 +70,7 @@
 	<parameter name="residuosDateSet" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="pesoTotal" class="java.math.BigDecimal"/>
 	<parameter name="firma_transportista" class="java.lang.String"/>
+	<parameter name="imgDir" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -100,7 +104,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="50" height="50" uuid="251f0fbb-748c-4eee-90cc-79cdfd11b97a"/>
-				<imageExpression><![CDATA["src/main/resources/templates/icons-residuos.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imgDir} + "icons-residuos.png"]]></imageExpression>
 			</image>
 			<ellipse>
 				<reportElement mode="Transparent" x="310" y="0" width="251" height="50" uuid="7283df48-6d4e-45cc-880a-d44204a7045c"/>

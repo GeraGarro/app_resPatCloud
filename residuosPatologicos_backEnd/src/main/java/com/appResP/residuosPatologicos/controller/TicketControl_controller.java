@@ -389,7 +389,7 @@ return ResponseEntity.notFound().build();
                parameters.put("generador.nombre", ticketControl.getGenerador().getNombre());
                parameters.put("generador.cuit", ticketControl.getGenerador().getCuit());
                parameters.put("generador.domicilio", ticketControl.getGenerador().getDireccion());
-               parameters.put("imgDir", "classpath/templates/");
+                parameters.put("imgDir", "templates/");
 
                Date fechaEmisionDate= java.sql.Date.valueOf(ticketControl.getFechaEmision());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -412,6 +412,10 @@ return ResponseEntity.notFound().build();
                 parameters.put("pesoTotal", ticketControlService.pesoResiduosByTicket(id).setScale(2, RoundingMode.HALF_UP));
                 parameters.put("firma_transportista", nombreTransportista);
                 JasperReport report = JasperCompileManager.compileReport(reportStream);
+
+                // Línea necesaria para imágenes en el classpath
+                parameters.put(JRParameter.REPORT_CLASS_LOADER, getClass().getClassLoader());
+
                 JasperPrint print = JasperFillManager.fillReport(report, parameters, new JREmptyDataSource());
 
                 // Exportar el PDF a un arreglo de bytes
@@ -436,6 +440,4 @@ return ResponseEntity.notFound().build();
         return ResponseEntity.notFound().build();
     }
 
-
     }
-
