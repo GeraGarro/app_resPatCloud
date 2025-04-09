@@ -89,7 +89,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font fontName="Pristina" size="19" isBold="true"/>
+					<font fontName="SansSerif" size="19" isBold="true"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
 				<text><![CDATA[Residuos Patologicos]]></text>
