@@ -159,14 +159,14 @@
 			<textField>
 				<reportElement x="110" y="131" width="100" height="19" uuid="55aecc3e-dd31-48ba-9e00-112679dd49a0"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Baskerville Old Face" size="12"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{Transportista.nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="150" width="100" height="20" uuid="31d0615a-3a59-41e9-8a24-703251f57a95"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Baskerville Old Face" size="12"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{transportista.cuit}]]></textFieldExpression>
 			</textField>
@@ -180,14 +180,14 @@
 			<textField>
 				<reportElement x="390" y="131" width="100" height="19" uuid="d5ca672d-a6df-411e-a249-2e19a602d2e1"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Baskerville Old Face" size="12"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{transportista.domicilio}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="390" y="150" width="100" height="20" uuid="b860158f-2742-4bf2-956c-7e43a71c5c99"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="Baskerville Old Face" size="12"/>
+					<font fontName="Serif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{transportista.telefono}]]></textFieldExpression>
 			</textField>
