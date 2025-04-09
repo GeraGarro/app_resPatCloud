@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -381,6 +383,8 @@ return ResponseEntity.notFound().build();
 
             if(ticketControl.isEstado()){
                Map<String,Object> parameters= new HashMap<>();
+
+
                parameters.put("id-Ticket",ticketControlService.codificacionIdTicket(id));
                parameters.put("Transportista.nombre", ticketControl.getTransportista().getNombre() + " " + ticketControl.getTransportista().getApellido());
                parameters.put("transportista.cuit", ticketControl.getTransportista().getCuit());
@@ -389,7 +393,10 @@ return ResponseEntity.notFound().build();
                parameters.put("generador.nombre", ticketControl.getGenerador().getNombre());
                parameters.put("generador.cuit", ticketControl.getGenerador().getCuit());
                parameters.put("generador.domicilio", ticketControl.getGenerador().getDireccion());
-                parameters.put("imgDir", "templates/");
+
+                InputStream imgStream = getClass().getResourceAsStream("/templates/icons-residuos.png");
+                BufferedImage bufferedImage = ImageIO.read(imgStream);
+                parameters.put("imgTransportista", bufferedImage);
 
                Date fechaEmisionDate= java.sql.Date.valueOf(ticketControl.getFechaEmision());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

@@ -70,7 +70,7 @@
 	<parameter name="residuosDateSet" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="pesoTotal" class="java.math.BigDecimal"/>
 	<parameter name="firma_transportista" class="java.lang.String"/>
-	<parameter name="imgDir" class="java.lang.String"/>
+	<parameter name="imgTransportista" class="java.awt.Image"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -104,7 +104,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="50" height="50" uuid="251f0fbb-748c-4eee-90cc-79cdfd11b97a"/>
-				<imageExpression><![CDATA[$P{imgDir} + "icons-residuos.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imgTransportista}]]></imageExpression>
 			</image>
 			<ellipse>
 				<reportElement mode="Transparent" x="310" y="0" width="251" height="50" uuid="7283df48-6d4e-45cc-880a-d44204a7045c"/>
