@@ -7732,7 +7732,7 @@ input[type="checkbox"]:checked + .toggle {
 
 .contenedor-fondo{
   position: absolute;
-
+  background: linear-gradient(45deg, rgb(101, 214, 214) ,rgba(112, 114, 230, 0.781));
   width: 100%;
     
   height: 100%;
@@ -7875,8 +7875,8 @@ input[type="checkbox"]:checked + .toggle {
 @media screen and (max-width:768px) {
   footer{
     height: 100px;
-    bottom: 0;
-    position: fixed;
+
+
   }
   .contenedor-footer{
     height: 100%;

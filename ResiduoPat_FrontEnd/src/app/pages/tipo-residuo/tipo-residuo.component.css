@@ -144,4 +144,9 @@
   .contenedor-lista-wrapper, .contenedor-formulario{
     height: 60vh;
   }
+
+ 
+}
+@media screen and (min-width:768px) {
+
 }

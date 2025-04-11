@@ -12,6 +12,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+
     justify-content: space-between;
    /*  align-items: flex-start; */
  
@@ -175,6 +176,7 @@ font-size: 30px;
   @media screen and (max-width:768px) {
     .contenedor-padre{
       padding: 10px;
+      overflow-y: auto;
     }
 
     .contenedor-principal{
@@ -220,15 +222,20 @@ font-size: 30px;
       font-size: 25px;
       text-align: center;
   }
-  .contenedor-padre{
-    overflow-y: auto;
-  }
+
 
   .contenedor-mobile{
     display: none;
   }
   }
 
+  @media screen and (min-width:768px) {
+    .contenedor-padre{
+      
+
+    }
+    
+  }
 
 /*   @media screen and (width > 468px)and ( width < 768px) {
     .contenedor-lista-wrapper {
@@ -243,8 +250,8 @@ font-size: 30px;
     }
    .contenedor-padre{
     position: relative;
-    height: 75vh;
-    overflow-y: auto;
+  /*   height: 75vh;
+    overflow-y: auto; */
    }
 
    .contenedor-contenido{
