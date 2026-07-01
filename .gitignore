@@ -45,6 +45,9 @@ node_modules/
 .DS_Store
 .idea/
 *.log
+.env
+.env.*
+!.env.example
 
 # Backups locales de metadatos Git anidados
 .git-nested-backup/

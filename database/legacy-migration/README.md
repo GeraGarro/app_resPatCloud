@@ -37,6 +37,7 @@ Inconsistencias detectadas:
 - El modelo legacy no tiene `usuarios`; el modelo nuevo exige usuario asociado al transportista. El script crea usuarios tecnicos para transportistas.
 - El modelo legacy no tiene `horario`, `numero_ticket`, `numero_hoja_ruta`, `numero_certificado` ni `peso_total`. El script usa IDs historicos como numeracion inicial, `00:00:00` como horario y recalcula `peso_total`.
 - Los usuarios tecnicos se crean con un hash temporal no usable para login real. Antes de operar productivamente hay que resetear la clave desde el flujo de la aplicacion o actualizar el hash.
+- Los generadores quedan asociados a `transportista_id=1`. No se asigna `generador.usuario_id=1` porque esa columna es unica y representa una relacion directa 1:1; la pertenencia al usuario 1 se resuelve mediante `transportista.usuario_id=1`.
 
 ## Flujo recomendado
 
@@ -44,6 +45,7 @@ Inconsistencias detectadas:
 2. Importar el dump legacy como base separada `residuos_Patologicos`.
 3. Revisar `legacy_to_current_mysql.sql`.
 4. Ejecutar el script contra MySQL.
-5. Validar conteos, tickets, pesos y reportes desde la aplicacion.
+5. Ejecutar `validate_current_data.sql`.
+6. Validar conteos, tickets, pesos y reportes desde la aplicacion.
 
 El script esta pensado para una base destino limpia. Si la base nueva ya tiene datos reales, no ejecutarlo sin adaptar la estrategia de IDs.

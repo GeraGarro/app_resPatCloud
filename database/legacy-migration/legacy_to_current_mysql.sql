@@ -6,7 +6,11 @@
 --
 -- Nota: el modelo nuevo exige identificadores fiscales unicos en generador_empresa.
 -- Para CUIT legacy duplicado, vacio o invalido se genera un CUIT tecnico 9 + id legacy.
+-- Los generadores quedan vinculados al transportista id 1. No se asigna
+-- generador.usuario_id=1 porque esa columna es UNIQUE y representa una relacion 1:1.
+-- La vinculacion con el usuario 1 queda en transportista.usuario_id.
 
+SET NAMES utf8mb4;
 START TRANSACTION;
 
 SET @legacy_schema := 'residuos_Patologicos';
@@ -92,7 +96,7 @@ ON DUPLICATE KEY UPDATE
 SET @default_transportista_id := (
     SELECT id_transportista
     FROM admin_residuosDB.transportista
-    ORDER BY id_transportista
+    WHERE id_transportista = 1
     LIMIT 1
 );
 
