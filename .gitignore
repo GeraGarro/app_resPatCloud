@@ -48,3 +48,6 @@ node_modules/
 
 # Backups locales de metadatos Git anidados
 .git-nested-backup/
+
+# Dumps/exportaciones de bases con datos reales
+server_exports/
