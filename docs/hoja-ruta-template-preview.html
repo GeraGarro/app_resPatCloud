@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista previa - Hoja de Ruta</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111;
+      --muted: #5a5a5a;
+      --line: #242424;
+      --soft: #efefef;
+      --paper: #fff;
+      --screen: #d9dde3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--screen);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+
+    .preview-shell {
+      min-height: 100vh;
+      padding: 18px;
+      display: grid;
+      place-items: start center;
+    }
+
+    .page {
+      width: 297mm;
+      min-height: 210mm;
+      background: var(--paper);
+      padding: 10mm;
+      box-shadow: 0 10px 30px rgba(20, 26, 38, 0.18);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 6px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 42mm 1fr 58mm;
+      border: 1px solid var(--line);
+    }
+
+    .brand,
+    .title,
+    .meta-box {
+      padding: 5px 7px;
+      min-height: 30mm;
+    }
+
+    .brand {
+      border-right: 1px solid var(--line);
+      display: grid;
+      align-content: center;
+      gap: 3px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+      font-size: 8px;
+      text-transform: uppercase;
+    }
+
+    .title {
+      display: grid;
+      align-content: center;
+      text-align: center;
+      border-right: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    .meta-box {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3px;
+      align-content: center;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 26mm 1fr;
+      min-height: 15px;
+      align-items: center;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 7px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .value {
+      min-height: 13px;
+      border-bottom: 1px solid var(--line);
+      font-size: 9px;
+      font-weight: 700;
+      padding-left: 3px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      border: 1px solid var(--line);
+      border-top: 0;
+    }
+
+    .info-card {
+      padding: 5px 7px 6px;
+      min-height: 22mm;
+      border-right: 1px solid var(--line);
+    }
+
+    .info-card:last-child {
+      border-right: 0;
+    }
+
+    .section-title {
+      margin-bottom: 4px;
+      font-size: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .compact-rows {
+      display: grid;
+      gap: 3px;
+    }
+
+    .compact-row {
+      display: grid;
+      grid-template-columns: 28mm 1fr;
+      align-items: center;
+      min-height: 13px;
+    }
+
+    .compact-row .value {
+      font-weight: 400;
+    }
+
+    .route-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .route-table th,
+    .route-table td {
+      border: 1px solid var(--line);
+      padding: 4px 5px;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    .route-table th {
+      height: 21px;
+      background: var(--soft);
+      font-size: 7px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .route-table td {
+      height: 28px;
+      font-size: 8px;
+    }
+
+    .num {
+      text-align: center;
+      width: 7mm;
+    }
+
+    .small-center {
+      text-align: center;
+    }
+
+    .signature-cell {
+      background:
+        linear-gradient(to bottom, transparent 64%, rgba(0, 0, 0, 0.35) 65%, transparent 66%);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border: 1px solid var(--line);
+      border-top: 0;
+    }
+
+    .footer-box {
+      min-height: 24mm;
+      border-right: 1px solid var(--line);
+      padding: 5px 7px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 4px;
+    }
+
+    .footer-box:last-child {
+      border-right: 0;
+    }
+
+    .signature-line {
+      align-self: end;
+      border-bottom: 1px solid var(--line);
+      height: 18px;
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 7px;
+      line-height: 1.25;
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 8mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .preview-shell {
+        padding: 0;
+        display: block;
+      }
+
+      .page {
+        width: auto;
+        min-height: auto;
+        padding: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="preview-shell">
+    <section class="page" aria-label="Hoja de ruta imprimible">
+      <header class="header">
+        <div class="brand">
+          <div class="brand-name">EcoGroup S.R.L.</div>
+          <div class="brand-subtitle">Gestion de residuos patologicos</div>
+          <div class="brand-subtitle">Ruta 3 km 4,5 - San Luis</div>
+        </div>
+
+        <div class="title">
+          <h1>Hoja de Ruta</h1>
+          <p>Registro de visitas y conformidad del generador</p>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-row">
+            <div class="label">Nro. hoja</div>
+            <div class="value">HR-000453</div>
+          </div>
+          <div class="meta-row">
+            <div class="label">Emision</div>
+            <div class="value">29/06/2026 09:20</div>
+          </div>
+          <div class="meta-row">
+            <div class="label">Pagina</div>
+            <div class="value">1 de 1</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="info-grid" aria-label="Datos generales">
+        <div class="info-card">
+          <div class="section-title">Periodo de visita</div>
+          <div class="compact-rows">
+            <div class="compact-row">
+              <div class="label">Desde</div>
+              <div class="value">05/08/2025</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">Hasta</div>
+              <div class="value">05/08/2025</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">Visitas</div>
+              <div class="value">13 generadores programados</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="section-title">Transportista</div>
+          <div class="compact-rows">
+            <div class="compact-row">
+              <div class="label">Razon social</div>
+              <div class="value">EcoGroup S.R.L.</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">CUIT</div>
+              <div class="value">30-00000000-0</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">Conductor</div>
+              <div class="value">Apellido y nombre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="section-title">Vehiculo asignado</div>
+          <div class="compact-rows">
+            <div class="compact-row">
+              <div class="label">Marca</div>
+              <div class="value">Iveco</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">Modelo</div>
+              <div class="value">Daily 35S15</div>
+            </div>
+            <div class="compact-row">
+              <div class="label">Patente</div>
+              <div class="value">AD561VA</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <table class="route-table" aria-label="Listado de visitas">
+        <colgroup>
+          <col style="width: 7mm">
+          <col style="width: 43mm">
+          <col style="width: 55mm">
+          <col style="width: 30mm">
+          <col style="width: 23mm">
+          <col style="width: 23mm">
+          <col style="width: 78mm">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Nro.</th>
+            <th>Nombre del generador</th>
+            <th>Domicilio del generador</th>
+            <th>Localidad</th>
+            <th>Fecha visita</th>
+            <th>Comprobante</th>
+            <th>Firma y aclaracion del generador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">1</td>
+            <td>Hospital de La Toma</td>
+            <td>La Toma 1250</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">642</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">2</td>
+            <td>Frigorifico Saladillo S.A.</td>
+            <td>Ruta nac. 146</td>
+            <td>Saladillo</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">903</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">3</td>
+            <td>Clinica Toma S.R.L.</td>
+            <td>San Martin 756</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">311</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">4</td>
+            <td>Laboratorio Gambier</td>
+            <td>25 de Mayo 1271</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">322</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">5</td>
+            <td>Consultorio Guillermo D'Alestro</td>
+            <td>Junin 552</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">223</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">6</td>
+            <td>Odontologia Estetica Integral</td>
+            <td>Rivadavia 1590</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">510</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">7</td>
+            <td>Farmacia Diego Pied</td>
+            <td>Belgrano 557</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">237</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">8</td>
+            <td>Consultorio Dr. Amante</td>
+            <td>Mariano Moreno 235</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">256</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">9</td>
+            <td>Laboratorio Tonelli</td>
+            <td>Rawson 44</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">439</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">10</td>
+            <td>Centro Ganadero La Pampa y Verdera</td>
+            <td>9 de Julio 904</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">453</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">11</td>
+            <td>Alimentos Marcus</td>
+            <td>Yrigoyen 456</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">911</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">12</td>
+            <td>Centro de Salud</td>
+            <td>San Luis 0</td>
+            <td>Saladillo</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">683</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">13</td>
+            <td>Consultorio Medico Pediatrico</td>
+            <td>Presidente Ilia 1077</td>
+            <td>La Toma</td>
+            <td class="small-center">05/08/2025</td>
+            <td class="small-center">639</td>
+            <td class="signature-cell"></td>
+          </tr>
+          <tr>
+            <td class="num">14</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="small-center"></td>
+            <td class="small-center"></td>
+            <td class="signature-cell"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <footer class="footer">
+        <div class="footer-box">
+          <div class="section-title">Firma del transportista</div>
+          <div class="signature-line"></div>
+          <div class="muted">Firma y aclaracion</div>
+        </div>
+        <div class="footer-box">
+          <div class="section-title">Control interno</div>
+          <div class="legal">
+            Documento generado por el sistema. Verificar numero de hoja de ruta,
+            fecha de emision, vehiculo asignado y cantidad de visitas antes de imprimir.
+          </div>
+          <div class="muted">Operador / sello</div>
+        </div>
+        <div class="footer-box">
+          <div class="section-title">Observaciones</div>
+          <div class="signature-line"></div>
+          <div class="muted">Incidencias de recorrido, rechazo o visita pendiente</div>
+        </div>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,345 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  z-index: 20;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  background:
+     linear-gradient(135deg, rgba(236, 35, 28, 0.94), rgba(0, 0, 0, 0.98)),
+    #ffffff;
+  color: #f7fbf8;
+}
+
+.user-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 14px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.user-badge:hover {
+  border-color: rgba(194, 234, 216, 0.34);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.user-badge > span {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #21815f;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.user-badge strong,
+.user-badge small,
+.user-badge em {
+  display: block;
+}
+
+.user-badge small,
+.user-badge em {
+  color: #93aca0;
+}
+
+.user-badge strong {
+  color: #ffffff;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.user-badge em {
+  margin-top: 4px;
+  font-size: 12px;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.home-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 14px;
+  border: 1px solid rgba(191, 234, 216, 0.34);
+  border-radius: 12px;
+  background: #1f7a5c;
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+}
+
+.home-card:hover,
+.home-card.active {
+  background: #26936c;
+}
+
+.home-card strong,
+.home-card small {
+  display: block;
+}
+
+.home-card strong {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.home-card small {
+  margin-top: 3px;
+  color: #d9f4e8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+nav {
+  display: grid;
+  gap: 7px;
+  padding-top: 4px;
+}
+
+nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 54px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #c4d4cc;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.nav-marker {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #bfead8;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.nav-text {
+  min-width: 0;
+}
+
+.nav-text strong,
+.nav-text small {
+  display: block;
+}
+
+.nav-text strong {
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.nav-text small {
+  margin-top: 3px;
+  color: #93aca0;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.mobile-label {
+  display: none;
+}
+
+nav a:hover,
+nav a.active {
+  border-color: rgba(191, 234, 216, 0.22);
+  background: rgba(72, 189, 145, 0.16);
+  color: #ffffff;
+}
+
+nav a.active::before {
+  position: absolute;
+  left: -8px;
+  width: 4px;
+  height: 28px;
+  border-radius: 999px;
+  background: #66d19f;
+  content: "";
+}
+
+nav a.active .nav-marker {
+  background: #e8fff4;
+  color: #1f7a5c;
+}
+
+.logout {
+  margin-top: auto;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: transparent;
+  color: #f7fbf8;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  :host {
+    position: sticky;
+    height: auto;
+    min-height: auto;
+    z-index: 40;
+  }
+
+  .sidebar {
+    gap: 12px;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 12px 14px 14px;
+    border-bottom: 1px solid rgba(18, 34, 29, 0.16);
+  }
+
+  .home-card {
+    min-height: 54px;
+    padding: 10px 12px;
+  }
+
+  nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    padding-top: 0;
+  }
+
+  nav a {
+    justify-content: center;
+    min-height: 48px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+
+  nav a.active::before {
+    inset: auto 18px -3px;
+    width: auto;
+    height: 3px;
+  }
+
+  .nav-marker {
+    display: none;
+  }
+
+  .nav-text {
+    display: none;
+  }
+
+  .mobile-label {
+    display: block;
+    color: inherit;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    gap: 9px;
+    padding: 9px 10px 10px;
+  }
+
+  .user-badge {
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+
+  .user-badge > span {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+
+  .user-badge small,
+  .user-badge em {
+    display: none;
+  }
+
+  .user-badge strong {
+    font-size: 12px;
+    max-width: min(210px, 58vw);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .home-card {
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+
+  .home-card .nav-marker {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+  }
+
+  .home-card strong {
+    font-size: 13px;
+  }
+
+  .home-card small {
+    font-size: 11px;
+  }
+
+  nav {
+    display: flex;
+    gap: 6px;
+    margin: 0 -10px;
+    overflow-x: auto;
+    padding: 0 10px 3px;
+    scrollbar-width: none;
+  }
+
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  nav a {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .logout {
+    align-self: flex-start;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,351 @@
+<section class="transport-shell">
+  <app-transportista-sidebar [displayName]="transportistaPrincipal"></app-transportista-sidebar>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Panel transportista</p>
+        <h1>Hoja de ruta y trazabilidad semanal</h1>
+      </div>
+    </header>
+
+    <aside class="floating-warning" *ngIf="mostrarAvisoProcesamiento">
+      <strong>Procesamiento pendiente</strong>
+      <span>
+        Quedan {{ ticketsPendientes }} manifiestos sin procesar en la hoja de ruta actual.
+      </span>
+    </aside>
+
+    <section class="setup-warning" *ngIf="profileStatus && !profileStatus.completo">
+      <div>
+        <p class="eyebrow">Configuracion requerida</p>
+        <strong>Completa tu perfil operativo para registrar generadores y tipos de residuo.</strong>
+        <span *ngFor="let pendiente of profileStatus.pendientes">{{ pendiente }}</span>
+      </div>
+      <a routerLink="/transportista/perfil">Configurar perfil</a>
+    </section>
+
+    <section class="home-message" *ngIf="homeMessage">
+      {{ homeMessage }}
+    </section>
+
+    <section class="route-summary">
+      <article class="route-card">
+        <div class="period-card">
+          <span class="period-mark">HR</span>
+          <div>
+            <p class="eyebrow">Periodo de hoja de ruta actual</p>
+            <h2>{{ periodoHojaActual }}</h2>
+            <p>{{ periodoDetalleHojaActual }}</p>
+          </div>
+        </div>
+
+        <div class="progress-block">
+          <span>{{ cumplimientoPorcentaje }}%</span>
+          <div class="progress-track">
+            <div class="progress-bar" [style.width.%]="cumplimientoPorcentaje"></div>
+          </div>
+          <small>{{ ticketsCerrados }} cerradas - {{ ticketsPendientes }} pendientes</small>
+        </div>
+      </article>
+
+      <article class="operator-card">
+        <small>Transportista asignado</small>
+        <strong>{{ transportistaPrincipal }}</strong>
+        <div class="active-vehicles" *ngIf="vehiculosActivos.length; else sinVehiculosActivos">
+          <span>Vehiculos activos</span>
+          <div class="vehicle-pill" *ngFor="let vehiculo of vehiculosActivos">
+            <strong>{{ vehiculo.dominio }}</strong>
+            <small>{{ vehiculo.marca }} {{ vehiculo.modelo }}</small>
+          </div>
+        </div>
+        <ng-template #sinVehiculosActivos>
+          <span>Sin vehiculos activos</span>
+        </ng-template>
+      </article>
+    </section>
+
+    <section class="metric-grid">
+      <article class="metric-card">
+        <small>Generadores activos</small>
+        <strong>{{ generadoresCount }}</strong>
+        <span>Clientes con retiro habilitado</span>
+      </article>
+      <article class="metric-card">
+        <small>Manifiestos de hoja actual</small>
+        <strong>{{ totalTickets }}</strong>
+        <span>Tickets vinculados</span>
+      </article>
+      <article class="metric-card">
+        <small>Peso registrado</small>
+        <strong>{{ pesoTotal | number: '1.0-2' }} kg</strong>
+        <span>Acumulado semanal</span>
+      </article>
+      <article class="metric-card warning">
+        <small>Certificados generados</small>
+        <strong>{{ certificadosGenerados }}</strong>
+        <span>{{ certificadoHojaActual }}</span>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel collections-panel" id="manifiestos-pendientes">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Manifiestos</p>
+            <h2>Generados en la hoja semanal</h2>
+          </div>
+          <div class="table-actions" aria-label="Acciones de manifiestos">
+            <button type="button" class="table-action primary" (click)="nuevoTicket()">
+              Nuevo manifiesto
+            </button>
+            <button
+              type="button"
+              class="table-action"
+              [class.active]="manifiestosFiltro === 'pendientes'"
+              (click)="filtrarManifiestos('pendientes')"
+            >
+          Pendientes
+            </button>
+            <button
+              type="button"
+              class="table-action"
+              [class.active]="manifiestosFiltro === 'todos'"
+              (click)="filtrarManifiestos('todos')"
+            >
+              Ver todos
+            </button>
+            <button
+              type="button"
+              class="table-action print"
+              [disabled]="!data?.hojaActual || isPrintingInforme"
+              (click)="imprimirInforme()"
+            >
+              {{ isPrintingInforme ? 'Generando...' : 'Imprimir hoja de ruta' }}
+            </button>
+          </div>
+        </header>
+
+        <div class="table-summary">
+          <span class="chip">
+            {{ manifiestosDesde }}-{{ manifiestosHasta }} de {{ manifiestosVisiblesCount }} manifiestos
+          </span>
+          <small *ngIf="manifiestosFiltro === 'pendientes'">
+            Mostrando solo manifiestos no procesados de la hoja actual.
+          </small>
+          <small *ngIf="manifiestosFiltro === 'todos'">
+            Mostrando todos los manifiestos de la hoja actual.
+          </small>
+        </div>
+
+        <div class="table-wrap" *ngIf="manifiestosVisibles.length; else sinManifiestos">
+          <table>
+            <thead>
+              <tr>
+                <th>Generador</th>
+                <th>Fecha estimada</th>
+                <th>Vinculos</th>
+                <th>Peso</th>
+                <th>Estado</th>
+                <th>Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="clickable-row"
+                *ngFor="let registro of manifiestosPaginados"
+                (click)="abrirManifiesto(registro)"
+              >
+                <td data-label="Generador">
+                  <strong>{{ nombreGenerador(registro.generador) }}</strong>
+                  <small>{{ registro.generador.tipo }} - {{ registro.generador.legajo ?? 'Sin legajo' }}</small>
+                </td>
+                <td data-label="Fecha">{{ registro.fechaEstimada }}</td>
+                <td data-label="Vinculos">
+                  <strong>{{ registro.hojaRuta }}</strong>
+                  <small>{{ registro.certificado }}</small>
+                </td>
+                <td data-label="Peso">{{ registro.peso | number: '1.0-2' }} kg</td>
+                <td data-label="Estado">
+                  <span class="state" [class.done]="registro.estado === 'Procesado'" [class.planned]="registro.estado !== 'Procesado'">
+                    {{ registro.estado }}
+                  </span>
+                </td>
+                <td data-label="Accion">
+                  <div class="manifest-actions" *ngIf="registro.estado === 'Procesado'; else completarManifiesto">
+                    <button
+                      type="button"
+                      class="manifest-action edit"
+                      (click)="solicitarEdicionManifiesto(registro); $event.stopPropagation()"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      class="manifest-action print"
+                      [disabled]="isPrintingManifiestoId === registro.ticket.idTicket"
+                      (click)="imprimirManifiesto(registro); $event.stopPropagation()"
+                    >
+                      {{ isPrintingManifiestoId === registro.ticket.idTicket ? 'Generando...' : 'Imprimir' }}
+                    </button>
+                  </div>
+                  <ng-template #completarManifiesto>
+                    <button
+                      type="button"
+                      class="manifest-action"
+                      (click)="abrirManifiesto(registro); $event.stopPropagation()"
+                    >
+                      Completar
+                    </button>
+                  </ng-template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-controls" *ngIf="manifiestosVisiblesCount > pageSize">
+            <button
+              type="button"
+              [disabled]="manifiestosPaginaActual === 1"
+              (click)="setManifiestosPage(manifiestosPaginaActual - 1)"
+            >
+              Anterior
+            </button>
+            <span>Pagina {{ manifiestosPaginaActual }} de {{ manifiestosTotalPages }}</span>
+            <button
+              type="button"
+              [disabled]="manifiestosPaginaActual === manifiestosTotalPages"
+              (click)="setManifiestosPage(manifiestosPaginaActual + 1)"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+        <ng-template #sinManifiestos>
+          <div class="empty-state">
+            {{
+              manifiestosFiltro === 'pendientes'
+                ? 'No hay manifiestos pendientes para completar en la hoja actual.'
+                : 'No hay manifiestos generados para la hoja actual.'
+            }}
+          </div>
+        </ng-template>
+      </article>
+
+      <aside class="right-column">
+        <article class="panel action-panel">
+          <header class="panel-header compact">
+            <div>
+              <p class="eyebrow">Control operativo</p>
+              <h2>Tareas del periodo</h2>
+            </div>
+          </header>
+
+          <div class="task-list">
+            <div
+              class="task-row"
+              *ngFor="let task of tareasOperativas"
+              [class.done]="task.state === 'done'"
+              [class.pending]="task.state === 'pending'"
+              [class.warning]="task.state === 'warning'"
+            >
+              <div>
+                <strong>{{ task.label }}</strong>
+                <small>{{ task.value }} / {{ task.total }}</small>
+              </div>
+              <span>{{ taskProgress(task) }}%</span>
+              <div class="task-track">
+                <div [style.width.%]="taskProgress(task)"></div>
+              </div>
+            </div>
+          </div>
+
+        </article>
+
+        <article class="panel residue-panel">
+          <header class="panel-header compact">
+            <div>
+              <p class="eyebrow">Tipos y pesos</p>
+              <h2>Resumen de residuos</h2>
+            </div>
+          </header>
+
+          <div class="residue-list" *ngIf="residuosPorTipo().length; else sinResiduos">
+            <div class="residue-row" *ngFor="let item of residuosPorTipo()">
+              <span>{{ item.nombre }}</span>
+              <strong>{{ item.peso | number: '1.0-2' }} kg</strong>
+              <small>{{ item.count }} registros</small>
+              <div class="residue-track">
+                <div [style.width.%]="item.porcentaje"></div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #sinResiduos>
+            <div class="empty-state">
+              Todavia no hay pesos cargados en la hoja actual.
+            </div>
+          </ng-template>
+        </article>
+      </aside>
+    </section>
+
+    <section class="panel document-strip">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Pendientes documentales</p>
+          <h2>Hojas sin certificar</h2>
+        </div>
+        <a class="document-link" routerLink="/transportista/certificados">Ver certificados</a>
+      </header>
+
+      <div class="document-grid">
+        <article class="document-highlight" [class.clear]="!hojasSinCertificar">
+          <small>Hojas de ruta sin certificar</small>
+          <strong>{{ hojasSinCertificar }}</strong>
+          <span>{{ estadoPendientesDocumentales }}</span>
+        </article>
+
+        <article class="document-card">
+          <small>Manifiestos del mes</small>
+          <strong>{{ manifiestosMensualesGenerados }}</strong>
+          <span>Generados en el periodo mensual actual.</span>
+        </article>
+
+        <article class="document-card">
+          <small>Hoja mas antigua</small>
+          <strong>{{ hojaPendienteMasAntigua }}</strong>
+          <span>Prioridad sugerida para revisar en Certificados.</span>
+        </article>
+      </div>
+
+      <div class="document-note">
+        <span></span>
+        <div>
+          <strong>Gestionar desde Certificados</strong>
+          <small>Las hojas pendientes se revisan con sus manifiestos y se preparan para relacionarlas con certificado.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" *ngIf="manifiestoParaEditar">
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="edit-manifest-title">
+      <p class="eyebrow">Confirmacion requerida</p>
+      <h2 id="edit-manifest-title">Modificar manifiesto procesado</h2>
+      <p>
+        El manifiesto {{ etiquetaTicket(manifiestoParaEditar.ticket) }} ya esta procesado.
+        Confirma que queres abrirlo para editar sus datos?
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="table-action" (click)="cancelarEdicionManifiesto()">
+          Cancelar
+        </button>
+        <button type="button" class="table-action primary" (click)="confirmarEdicionManifiesto()">
+          Confirmar edicion
+        </button>
+      </div>
+    </section>
+  </div>
+</section>

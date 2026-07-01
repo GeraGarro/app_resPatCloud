@@ -1,19 +1,23 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
+
+WORKDIR /workspace
+
+COPY pom.xml .
+COPY src ./src
+RUN mvn -DskipTests package
+
+RUN mkdir /app \
+    && JAR_FILE="$(find target -maxdepth 1 -type f -name '*.jar' ! -name '*.original' | head -n 1)" \
+    && cp "$JAR_FILE" /app/app.jar
+
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
 RUN apk add --no-cache curl
-# Copia el script de espera y el JAR
-COPY wait-for-it.sh .
-COPY target/residuos_Patologicos-0.0.1.jar app.jar
 
-# Asegura permisos de ejecución
-RUN chmod +x wait-for-it.sh
+COPY --from=build /app/app.jar ./app.jar
 
-# Puerto expuesto (solo informativo)
 EXPOSE 8080
 
-
-# Comando de entrada con espera para MySQL
-#ENTRYPOINT ["./wait-for-it.sh", "db_residuoPat", "3306", "java", "-jar", "app.jar"]
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

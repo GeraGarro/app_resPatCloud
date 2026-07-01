@@ -1,6 +1,6 @@
 package com.appResP.residuosPatologicos.config;
 
-import com.appResP.residuosPatologicos.services.imp.Certificado_service;
+import com.appResP.residuosPatologicos.services.ICertificadoService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartupCertificadoValidator implements ApplicationListener<ApplicationReadyEvent> {
 
-       private final Certificado_service certificadoService;
+       private final ICertificadoService certificadoService;
 
-        public StartupCertificadoValidator(Certificado_service certificadoService) {
+        public StartupCertificadoValidator(ICertificadoService certificadoService) {
             this.certificadoService = certificadoService;
         }
 

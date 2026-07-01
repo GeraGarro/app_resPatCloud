@@ -1,0 +1,250 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #eef3f0;
+  color: #17211d;
+}
+
+.entity-page {
+  padding: 28px;
+}
+
+.page-header,
+.panel-header,
+.vehicle-card,
+.context-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.page-header {
+  margin-bottom: 16px;
+}
+
+.page-header h1,
+.panel h2,
+.page-header p {
+  margin: 0;
+}
+
+.page-header h1 {
+  font-size: 32px;
+}
+
+.page-header p:not(.eyebrow) {
+  margin-top: 8px;
+  color: #66766e;
+}
+
+.page-header a {
+  padding: 11px 14px;
+  border: 1px solid #ccd9d2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f7a5c;
+  font-weight: 900;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #1f7a5c;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.context-card,
+.panel {
+  border: 1px solid #d9e4de;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(28, 45, 37, 0.06);
+}
+
+.context-card {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+}
+
+.context-card span {
+  color: #66766e;
+  font-weight: 800;
+}
+
+.page-grid {
+  display: grid;
+  grid-template-columns: minmax(380px, 0.82fr) minmax(0, 1.18fr);
+  gap: 18px;
+}
+
+.panel {
+  padding: 20px;
+}
+
+form {
+  display: grid;
+  gap: 14px;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+}
+
+label span {
+  color: #37483f;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+input {
+  min-height: 42px;
+  width: 100%;
+  padding: 0 12px;
+  border: 1px solid #cfdad3;
+  border-radius: 10px;
+  background: #fbfdfb;
+  color: #17211d;
+  outline: none;
+}
+
+input:focus {
+  border-color: #1f7a5c;
+  box-shadow: 0 0 0 4px rgba(31, 122, 92, 0.12);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.check input {
+  width: 18px;
+  min-height: 18px;
+}
+
+form > button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: #21815f;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.secondary-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #ccd9d2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #21362e;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+form > button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.chip {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e9f4ef;
+  color: #1f7a5c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.vehicle-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.vehicle-card {
+  padding: 14px;
+  border-radius: 12px;
+  background: #f6f9f7;
+}
+
+.vehicle-card strong,
+.vehicle-card span,
+.vehicle-card small {
+  display: block;
+}
+
+.vehicle-card strong {
+  font-size: 20px;
+}
+
+.vehicle-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.vehicle-card span,
+.vehicle-card small,
+.empty,
+.message {
+  color: #66766e;
+}
+
+.vehicle-card .status-button {
+  min-width: 92px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff4dc;
+  color: #8b6117;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.vehicle-card .status-button.active {
+  background: #e6f5ed;
+  color: #1f7a5c;
+}
+
+.message,
+.empty {
+  padding: 12px;
+  border-radius: 10px;
+  background: #f6f9f7;
+}
+
+@media (max-width: 980px) {
+  .page-grid,
+  .two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header,
+  .context-card,
+  .vehicle-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .vehicle-actions {
+    justify-content: flex-start;
+  }
+}

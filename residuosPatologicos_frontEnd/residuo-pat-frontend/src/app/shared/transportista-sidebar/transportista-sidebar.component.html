@@ -1,0 +1,40 @@
+<aside class="sidebar">
+  <a class="user-badge" routerLink="/home" aria-label="Volver al panel principal">
+    <span>{{ initials }}</span>
+    <div>
+      <small>Usuario activo</small>
+      <strong>{{ userName }}</strong>
+      <em>Panel transportista</em>
+    </div>
+  </a>
+
+  <a
+    class="home-card"
+    routerLink="/home"
+    [class.active]="isActive('/home')"
+    aria-label="Ir al inicio"
+  >
+    <span class="nav-marker" aria-hidden="true">IN</span>
+    <span>
+      <strong>Inicio</strong>
+      <small>Volver al home</small>
+    </span>
+  </a>
+
+  <nav aria-label="Navegacion transportista">
+    <a
+      *ngFor="let item of sectionNavItems"
+      [routerLink]="item.route"
+      [class.active]="isActive(item.route)"
+    >
+      <span class="nav-marker" aria-hidden="true">{{ item.marker }}</span>
+      <span class="nav-text">
+        <strong>{{ item.label }}</strong>
+        <small>{{ item.description }}</small>
+      </span>
+      <span class="mobile-label">{{ item.shortLabel }}</span>
+    </a>
+  </nav>
+
+  <button type="button" class="logout" (click)="logout()">Cerrar sesion</button>
+</aside>

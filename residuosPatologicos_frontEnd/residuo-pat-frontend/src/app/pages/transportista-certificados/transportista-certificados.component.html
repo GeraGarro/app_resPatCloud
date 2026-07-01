@@ -1,0 +1,313 @@
+<main class="transport-shell">
+  <app-transportista-sidebar [displayName]="transportistaNombre"></app-transportista-sidebar>
+
+  <section class="content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Certificados mensuales</p>
+        <h1>Control documental por periodo</h1>
+      </div>
+
+      <div class="topbar-summary">
+        <span>{{ certificados.length }} certificados</span>
+        <strong>{{ resumenSeleccion }}</strong>
+      </div>
+    </header>
+
+    <div class="message" *ngIf="message">{{ message }}</div>
+
+    <section class="metric-grid">
+      <article class="metric-card">
+        <small>Hojas de ruta</small>
+        <strong>{{ totalHojas }}</strong>
+        <span>{{ textoMetricasHojas }}</span>
+      </article>
+
+      <article class="metric-card">
+        <small>Tickets</small>
+        <strong>{{ totalTickets }}</strong>
+        <span>{{ textoMetricasTickets }}</span>
+      </article>
+
+      <article class="metric-card">
+        <small>Peso total</small>
+        <strong>{{ peso(pesoTotal) }}</strong>
+        <span>Kilogramos declarados</span>
+      </article>
+    </section>
+
+    <section class="pending-panel" *ngIf="hojasPendientes.length">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Pendientes de certificado</p>
+          <h2>Hojas disponibles para completar</h2>
+        </div>
+        <span class="chip">{{ hojasPendientes.length }} hojas</span>
+      </div>
+
+      <div class="pending-list">
+        <article
+          class="pending-item"
+          role="button"
+          tabindex="0"
+          *ngFor="let hoja of hojasPendientes"
+          [class.active]="hojaPendienteSeleccionada?.id === hoja.id"
+          (click)="seleccionarHojaPendiente(hoja)"
+          (keydown.enter)="seleccionarHojaPendiente(hoja)"
+          (keydown.space)="$event.preventDefault(); seleccionarHojaPendiente(hoja)"
+        >
+          <div>
+            <strong>{{ etiquetaHojaRuta(hoja) }}</strong>
+            <small>{{ hoja.fechaInicio }} / {{ hoja.fechaFin }}</small>
+          </div>
+          <button type="button" class="row-action" (click)="nuevoTicketEnHoja(hoja); $event.stopPropagation()">
+            Agregar ticket
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <section class="certificate-layout">
+      <aside class="certificate-list">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Seleccion</p>
+            <h2>Certificados</h2>
+          </div>
+        </div>
+
+        <div class="loading" *ngIf="isLoading">Cargando certificados...</div>
+
+        <button
+          type="button"
+          class="certificate-item"
+          *ngFor="let certificado of certificados"
+          [class.active]="certificadoSeleccionado?.id === certificado.id"
+          (click)="seleccionarCertificado(certificado)">
+          <span>{{ etiquetaCertificado(certificado) }}</span>
+          <strong>{{ periodo(certificado) }}</strong>
+          <small>{{ certificado.cantidadHojasRuta }} hojas registradas</small>
+        </button>
+
+        <div class="empty-state" *ngIf="!isLoading && !certificados.length">
+          No hay certificados generados para este transportista.
+        </div>
+      </aside>
+
+      <section class="detail-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">{{ hojaPendienteSeleccionada ? 'Hoja pendiente' : 'Detalle' }}</p>
+            <h2>
+              {{
+                certificadoSeleccionado
+                  ? etiquetaCertificado(certificadoSeleccionado)
+                  : hojaPendienteSeleccionada
+                    ? etiquetaHojaRuta(hojaPendienteSeleccionada)
+                    : 'Sin seleccion'
+              }}
+            </h2>
+          </div>
+          <div class="detail-actions" *ngIf="certificadoSeleccionado || hojaPendienteSeleccionada">
+            <span class="chip" *ngIf="certificadoSeleccionado">{{ periodo(certificadoSeleccionado) }}</span>
+            <span class="chip" *ngIf="hojaPendienteSeleccionada">
+              {{ hojaPendienteSeleccionada.fechaInicio }} / {{ hojaPendienteSeleccionada.fechaFin }}
+            </span>
+            <button
+              *ngIf="certificadoSeleccionado"
+              type="button"
+              class="row-action print"
+              [disabled]="!certificadoSeleccionado || isPrintingCertificado"
+              (click)="imprimirCertificado()"
+            >
+              {{ isPrintingCertificado ? 'Generando...' : 'Imprimir certificado' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="loading" *ngIf="isLoadingDetalle">Cargando hojas y tickets...</div>
+
+        <div
+          class="empty-state"
+          *ngIf="!isLoadingDetalle && !certificadoSeleccionado && !hojaPendienteSeleccionada"
+        >
+          Seleccione un certificado procesado o una hoja de ruta pendiente para ver sus tickets.
+        </div>
+
+        <article class="ticket-detail" *ngIf="ticketSeleccionado">
+          <header class="panel-header ticket-detail-header" id="ticket-detail-header">
+            <div>
+              <p class="eyebrow">Manifiesto seleccionado</p>
+              <h2>{{ etiquetaTicketCompleta(ticketSeleccionado) }}</h2>
+            </div>
+            <button
+              *ngIf="hojaPendienteSeleccionada"
+              type="button"
+              class="row-action"
+              (click)="editarTicket(ticketSeleccionado)"
+            >
+              Editar manifiesto
+            </button>
+            <button
+              type="button"
+              class="row-action print"
+              [disabled]="isPrintingTicket"
+              (click)="imprimirManifiesto(ticketSeleccionado)"
+            >
+              {{ isPrintingTicket ? 'Generando...' : 'Imprimir manifiesto' }}
+            </button>
+          </header>
+
+          <div class="ticket-detail-grid">
+            <div>
+              <small>Hoja de ruta</small>
+              <strong>{{ etiquetaHojaDeTicket(ticketSeleccionado) }}</strong>
+            </div>
+            <div>
+              <small>Fecha</small>
+              <strong>{{ ticketSeleccionado.fechaEmision }}</strong>
+            </div>
+            <div>
+              <small>Horario</small>
+              <strong>{{ ticketSeleccionado.horario }}</strong>
+            </div>
+            <div>
+              <small>Estado</small>
+              <strong>{{ estadoTicket(ticketSeleccionado) }}</strong>
+            </div>
+            <div>
+              <small>Generador</small>
+              <strong>{{ nombreGenerador(ticketSeleccionado.generadorId) }}</strong>
+            </div>
+            <div>
+              <small>Peso total</small>
+              <strong>{{ peso(ticketSeleccionado.pesoTotal) }}</strong>
+            </div>
+          </div>
+
+          <div class="residue-detail" *ngIf="ticketSeleccionado.residuos.length; else sinResiduosTicket">
+            <div class="residue-detail-row" *ngFor="let residuo of ticketSeleccionado.residuos">
+              <span>{{ residuoNombre(residuo) }}</span>
+              <strong>{{ peso(residuo.peso) }}</strong>
+            </div>
+          </div>
+
+          <ng-template #sinResiduosTicket>
+            <div class="empty-state">Este ticket no tiene residuos detallados.</div>
+          </ng-template>
+        </article>
+
+        <div class="route-stack" *ngIf="!isLoadingDetalle && hojas.length">
+          <article class="route-card" *ngFor="let hoja of hojas">
+            <header class="route-header">
+              <div>
+                <span>{{ etiquetaHojaRuta(hoja) }}</span>
+                <strong>{{ hoja.fechaInicio }} / {{ hoja.fechaFin }}</strong>
+              </div>
+              <div>
+                <small>{{ hoja.tickets.length }} tickets</small>
+                <strong>{{ peso(hoja.pesoTotal) }}</strong>
+              </div>
+            </header>
+
+            <div class="ticket-table" *ngIf="hoja.tickets.length; else sinTickets">
+              <div class="table-summary">
+                <span class="chip">
+                  {{ ticketRangeStart(hoja) }}-{{ ticketRangeEnd(hoja) }} de {{ hoja.tickets.length }} tickets
+                </span>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Fecha</th>
+                    <th>Generador</th>
+                    <th>Estado</th>
+                    <th>Peso</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="clickable-row"
+                    *ngFor="let ticket of ticketsPaginados(hoja)"
+                    [class.selected]="ticketSeleccionado?.idTicket === ticket.idTicket"
+                    (click)="abrirTicket(ticket)"
+                  >
+                    <td>
+                      <strong>{{ etiquetaTicket(ticket) }}</strong>
+                      <small>{{ etiquetaHojaDeTicket(ticket) }}</small>
+                    </td>
+                    <td>{{ ticket.fechaEmision }}</td>
+                    <td>
+                      <strong>{{ nombreGenerador(ticket.generadorId) }}</strong>
+                      <small>ID {{ ticket.generadorId }}</small>
+                    </td>
+                    <td>
+                      <span class="state" [class.done]="ticket.estado">{{ estadoTicket(ticket) }}</span>
+                    </td>
+                    <td>{{ peso(ticket.pesoTotal) }}</td>
+                    <td>
+                      <div class="ticket-actions">
+                        <button type="button" class="row-action" (click)="abrirTicket(ticket); $event.stopPropagation()">Ver</button>
+                        <button
+                          *ngIf="hojaPendienteSeleccionada"
+                          type="button"
+                          class="row-action"
+                          (click)="editarTicket(ticket); $event.stopPropagation()"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          class="row-action print"
+                          [disabled]="isPrintingTicket"
+                          (click)="imprimirManifiesto(ticket); $event.stopPropagation()"
+                        >
+                          Imprimir
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="pagination-controls" *ngIf="hoja.tickets.length > pageSize">
+                <button
+                  type="button"
+                  [disabled]="ticketPage(hoja) === 1"
+                  (click)="setTicketPage(hoja, ticketPage(hoja) - 1)"
+                >
+                  Anterior
+                </button>
+                <span>Pagina {{ ticketPage(hoja) }} de {{ ticketTotalPages(hoja) }}</span>
+                <button
+                  type="button"
+                  [disabled]="ticketPage(hoja) === ticketTotalPages(hoja)"
+                  (click)="setTicketPage(hoja, ticketPage(hoja) + 1)"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+
+            <ng-template #sinTickets>
+              <div class="empty-state">
+                {{
+                  hojaPendienteSeleccionada
+                    ? 'No hay tickets asociados a esta hoja de ruta pendiente.'
+                    : 'No hay tickets asociados a esta hoja dentro del certificado.'
+                }}
+              </div>
+            </ng-template>
+          </article>
+        </div>
+
+        <div class="empty-state" *ngIf="!isLoadingDetalle && certificadoSeleccionado && !hojas.length">
+          Este certificado todavia no tiene hojas de ruta con tickets asociados.
+        </div>
+      </section>
+    </section>
+  </section>
+</main>

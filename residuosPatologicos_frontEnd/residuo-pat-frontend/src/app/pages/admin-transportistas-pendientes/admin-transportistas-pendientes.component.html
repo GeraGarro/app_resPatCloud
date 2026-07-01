@@ -1,0 +1,128 @@
+<section class="admin-shell">
+  <aside class="admin-sidebar">
+    <div>
+      <div class="brand-mark">RP</div>
+      <p class="eyebrow">Administrador</p>
+      <h1>Solicitudes de transportistas</h1>
+    </div>
+
+    <nav aria-label="Administracion">
+      <a routerLink="/admin/transportistas-pendientes" routerLinkActive="active">Pendientes</a>
+    </nav>
+
+    <button type="button" class="logout-button" (click)="logout()">Cerrar sesion</button>
+  </aside>
+
+  <main class="admin-content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Control de altas</p>
+        <h2>Transportistas pendientes de aprobacion</h2>
+      </div>
+      <button type="button" class="refresh-button" (click)="loadPendientes()" [disabled]="isLoading">
+        {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </header>
+
+    <section class="status-message success" *ngIf="successMessage">
+      {{ successMessage }}
+    </section>
+
+    <section class="status-message error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </section>
+
+    <section class="summary-grid">
+      <article>
+        <small>Pendientes</small>
+        <strong>{{ usuarios.length }}</strong>
+        <span>Solicitudes esperando revision</span>
+      </article>
+      <article>
+        <small>Regla activa</small>
+        <strong>Admin</strong>
+        <span>Solo un administrador puede aprobar el acceso</span>
+      </article>
+      <article>
+        <small>Acceso operativo</small>
+        <strong>Bloqueado</strong>
+        <span>Hasta que la cuenta quede aprobada</span>
+      </article>
+    </section>
+
+    <section class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Revision</p>
+          <h3>Usuarios registrados como transportista</h3>
+        </div>
+      </header>
+
+      <div class="loading-state" *ngIf="isLoading">
+        Cargando solicitudes...
+      </div>
+
+      <div class="table-wrap" *ngIf="!isLoading && usuarios.length; else emptyState">
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Perfil</th>
+              <th>Registro</th>
+              <th>Email</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuarios">
+              <td data-label="Usuario">
+                <strong>{{ usuario.email }}</strong>
+                <small>ID {{ usuario.id }}</small>
+              </td>
+              <td data-label="Perfil">
+                <strong>{{ nombreVisible(usuario) }}</strong>
+                <small>{{ usuario.transportistaId ? 'Perfil cargado' : 'Sin perfil operativo' }}</small>
+              </td>
+              <td data-label="Registro">{{ fechaVisible(usuario.fechaRegistro) }}</td>
+              <td data-label="Email">
+                <span class="state" [class.done]="usuario.emailVerificado">
+                  {{ usuario.emailVerificado ? 'Verificado' : 'Sin verificar' }}
+                </span>
+              </td>
+              <td data-label="Estado">
+                <span class="state pending">{{ usuario.estadoCuenta }}</span>
+              </td>
+              <td data-label="Acciones">
+                <div class="row-actions">
+                  <button
+                    type="button"
+                    class="approve"
+                    [disabled]="actionUserId === usuario.id"
+                    (click)="ejecutarAccion(usuario, 'aprobar')"
+                  >
+                    Aprobar
+                  </button>
+                  <button
+                    type="button"
+                    class="reject"
+                    [disabled]="actionUserId === usuario.id"
+                    (click)="ejecutarAccion(usuario, 'rechazar')"
+                  >
+                    Rechazar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state" *ngIf="!isLoading">
+          No hay transportistas pendientes de aprobacion.
+        </div>
+      </ng-template>
+    </section>
+  </main>
+</section>

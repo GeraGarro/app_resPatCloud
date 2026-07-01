@@ -1,0 +1,233 @@
+<section class="transport-layout">
+  <app-transportista-sidebar></app-transportista-sidebar>
+  <main class="transport-content">
+<section class="entity-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Transportista / Generadores</p>
+      <h1>Clientes y puntos de retiro</h1>
+      <p>Alta y seguimiento de generadores habilitados para recoleccion.</p>
+    </div>
+  </header>
+
+  <div class="message setup-warning" *ngIf="!isLoadingProfile && !profileStatus?.completo">
+    <strong>Perfil operativo pendiente</strong>
+    <span *ngFor="let pendiente of profileStatus?.pendientes ?? []">{{ pendiente }}</span>
+    <a routerLink="/transportista/perfil">Configurar perfil transportista</a>
+  </div>
+
+  <div class="page-grid">
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">{{ selectedGenerador ? (isReadOnlySelected ? 'Consulta' : 'Edicion') : 'Nuevo generador' }}</p>
+          <h2>{{ selectedGenerador ? nombreGenerador(selectedGenerador) : 'Registrar cliente' }}</h2>
+        </div>
+        <div class="header-actions">
+          <button
+            type="button"
+            class="secondary-button"
+            *ngIf="selectedGenerador && isReadOnlySelected"
+            (click)="editSelectedGenerador()"
+          >
+            Editar
+          </button>
+          <button type="button" class="secondary-button" *ngIf="selectedGenerador" (click)="cancelEdit()">
+            Nuevo generador
+          </button>
+        </div>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <fieldset [disabled]="isReadOnlySelected">
+        <label>
+          <span>Tipo</span>
+          <select formControlName="tipo">
+            <option value="EMPRESA">Empresa</option>
+            <option value="AUTONOMO">Autonomo</option>
+          </select>
+        </label>
+
+        <div class="two-columns" *ngIf="tipo === 'EMPRESA'; else autonomoFields">
+          <label>
+            <span>Razon social</span>
+            <input formControlName="razonSocial" placeholder="Clinica / empresa">
+          </label>
+          <label>
+            <span>CUIT</span>
+            <input formControlName="cuit" placeholder="11 digitos">
+            <small class="field-warning" *ngIf="showDocumentWarning('cuit')">El CUIT debe tener exactamente 11 digitos.</small>
+          </label>
+          <label class="wide">
+            <span>Nombre fantasia</span>
+            <input formControlName="nombreFantasia" placeholder="Nombre operativo">
+          </label>
+        </div>
+
+        <ng-template #autonomoFields>
+          <div class="two-columns">
+            <label>
+              <span>Nombre</span>
+              <input formControlName="nombre">
+            </label>
+            <label>
+              <span>Apellido</span>
+              <input formControlName="apellido">
+            </label>
+            <label class="wide">
+              <span>CUIL</span>
+              <input formControlName="cuil" placeholder="11 digitos">
+              <small class="field-warning" *ngIf="showDocumentWarning('cuil')">El CUIL debe tener exactamente 11 digitos.</small>
+            </label>
+          </div>
+        </ng-template>
+
+        <div class="two-columns">
+          <label>
+            <span>Email</span>
+            <input type="email" formControlName="email" placeholder="Opcional">
+          </label>
+          <label>
+            <span>Legajo</span>
+            <input formControlName="legajo" placeholder="Codigo interno">
+          </label>
+          <label class="wide">
+            <span>Tipo de domicilio</span>
+            <select formControlName="domicilioTipo">
+              <option value="CALLE">Calle y numeracion</option>
+              <option value="BARRIO">Barrio</option>
+            </select>
+          </label>
+          <label class="wide" *ngIf="domicilioTipo === 'BARRIO'">
+            <span>Barrio</span>
+            <input formControlName="barrio" placeholder="Nombre del barrio">
+          </label>
+          <label *ngIf="domicilioTipo === 'CALLE'">
+            <span>Calle</span>
+            <input formControlName="calle">
+          </label>
+          <label *ngIf="domicilioTipo === 'CALLE'">
+            <span>Altura</span>
+            <input type="number" formControlName="altura">
+          </label>
+          <label>
+            <span>Codigo postal</span>
+            <input type="number" formControlName="codigoPostal">
+          </label>
+          <label>
+            <span>Localidad</span>
+            <input formControlName="localidad">
+          </label>
+          <label>
+            <span>Provincia</span>
+            <input formControlName="provincia">
+          </label>
+        </div>
+
+        <section class="phone-section" formArrayName="telefonos">
+          <div class="section-title">
+            <div>
+              <span>Telefonos del generador</span>
+              <small>Completa el ultimo registro antes de agregar otro.</small>
+            </div>
+            <button
+              type="button"
+              class="secondary-button"
+              (click)="addTelefono()"
+              [disabled]="!canAddTelefono"
+            >
+              Agregar otro telefono
+            </button>
+          </div>
+
+          <div class="phone-list">
+            <div
+              class="phone-row"
+              *ngFor="let telefono of telefonos.controls; let i = index"
+              [class.primary-phone]="i === 0"
+              [class.phone-tone-a]="i % 3 === 0"
+              [class.phone-tone-b]="i % 3 === 1"
+              [class.phone-tone-c]="i % 3 === 2"
+              [formGroupName]="i"
+            >
+              <div class="phone-row-header">
+                <span>{{ i === 0 ? 'Telefono principal' : 'Telefono adicional ' + i }}</span>
+                <button
+                  type="button"
+                  class="icon-button remove-phone-button"
+                  aria-label="Eliminar telefono"
+                  (click)="removeTelefono(i)"
+                >
+                  x
+                </button>
+              </div>
+              <label>
+                <span>Numero</span>
+                <input formControlName="numero" placeholder="Numero de contacto">
+              </label>
+              <label>
+                <span>Tipo</span>
+                <select formControlName="tipo">
+                  <option value="WHATSAPP">WhatsApp</option>
+                  <option value="CELULAR">Celular</option>
+                  <option value="FIJO">Fijo</option>
+                </select>
+              </label>
+              <label class="check">
+                <input type="checkbox" formControlName="estado">
+                <span>Activo</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <div class="message" *ngIf="message">{{ message }}</div>
+        <button type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !profileStatus?.completo">
+          {{ isSaving ? 'Guardando...' : (selectedGenerador ? 'Guardar cambios' : 'Registrar generador') }}
+        </button>
+        </fieldset>
+      </form>
+    </article>
+
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Cartera activa</p>
+          <h2>Generadores registrados</h2>
+        </div>
+        <span class="chip">{{ generadores.length }}</span>
+      </header>
+
+      <div class="list" *ngIf="generadores.length; else empty">
+        <div class="list-row clickable" *ngFor="let generador of generadores" (click)="selectGenerador(generador)">
+          <div>
+            <strong>{{ nombreGenerador(generador) }}</strong>
+            <small>{{ generador.tipo }} - {{ generador.legajo ?? 'Sin legajo' }}</small>
+            <div class="phone-chips" *ngIf="telefonosVisibles(generador).length; else sinTelefonos">
+              <span
+                class="phone-chip"
+                *ngFor="let telefono of telefonosVisibles(generador)"
+                [class.inactive]="!telefono.estado"
+              >
+                {{ telefonoLabel(telefono) }}
+              </span>
+            </div>
+            <ng-template #sinTelefonos>
+              <small>Sin telefonos registrados</small>
+            </ng-template>
+          </div>
+          <div class="row-actions">
+            <span>{{ ubicacion(generador) }}</span>
+            <button type="button" class="secondary-button" (click)="selectGenerador(generador); $event.stopPropagation()">Ver</button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty">{{ isLoading ? 'Cargando generadores...' : 'No hay generadores activos cargados.' }}</div>
+      </ng-template>
+    </article>
+  </div>
+</section>
+  </main>
+</section>

@@ -1,0 +1,101 @@
+<section class="login-page">
+  <div class="brand-panel">
+    <div class="brand-mark">RP</div>
+    <div>
+      <p class="eyebrow">Administracion transportista</p>
+      <h1>Trazabilidad de residuos patologicos</h1>
+      <p class="summary">
+        Gestion de generadores, recolecciones semanales, manifiestos, tickets,
+        pesos por tipo de residuo e informes operativos.
+      </p>
+    </div>
+
+    <div class="flow-card" aria-label="Flujo operativo">
+      <div class="flow-step active">
+        <span>01</span>
+        <strong>Generador</strong>
+        <small>Cliente y punto de retiro</small>
+      </div>
+      <div class="flow-line"></div>
+      <div class="flow-step active">
+        <span>02</span>
+        <strong>Recoleccion</strong>
+        <small>Ticket, tipo y peso</small>
+      </div>
+      <div class="flow-line"></div>
+      <div class="flow-step">
+        <span>03</span>
+        <strong>Tratamiento</strong>
+        <small>Informe y certificado</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-card">
+    <div class="card-header">
+      <p class="eyebrow">Acceso seguro</p>
+      <h2>Ingresar al sistema</h2>
+      <p>Usa tu cuenta registrada para operar rutas, manifiestos y reportes.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="role-selector" aria-label="Perfil de acceso">
+        <button
+          *ngFor="let role of accessRoles"
+          type="button"
+          [class.active]="isSelectedRole(role.value)"
+          (click)="selectRole(role.value)">
+          <strong>{{ role.label }}</strong>
+          <small>{{ role.description }}</small>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Email</span>
+        <input
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="usuario@empresa.com"
+          [class.invalid]="email.invalid && email.touched">
+        <small *ngIf="email.invalid && email.touched">Ingresá un email válido.</small>
+      </label>
+
+      <label class="field">
+        <span>Contraseña</span>
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Tu contraseña"
+            [class.invalid]="password.invalid && password.touched">
+          <button type="button" (click)="togglePassword()">
+            {{ showPassword ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+        <small *ngIf="password.invalid && password.touched">La contraseña es obligatoria.</small>
+      </label>
+
+      <label class="remember">
+        <input type="checkbox" formControlName="rememberMe">
+        <span>Mantener sesion en este equipo</span>
+      </label>
+
+      <div class="alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button class="submit-button" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Validando acceso...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <a class="register-link" routerLink="/registro">Crear una cuenta nueva</a>
+
+    <div class="login-footer">
+      <span>Backend esperado</span>
+      <strong>/api/auth/login</strong>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+<section class="confirm-page">
+  <div class="confirm-card">
+    <div class="brand-mark">RP</div>
+    <p class="eyebrow">Confirmacion de correo</p>
+    <h1>{{ isLoading ? 'Validando email' : (isConfirmed ? 'Cuenta activada' : 'No pudimos confirmar') }}</h1>
+    <p>{{ message }}</p>
+
+    <div class="status-indicator" [class.success]="isConfirmed" [class.error]="!isLoading && !isConfirmed">
+      <span *ngIf="isLoading">Validando token...</span>
+      <span *ngIf="isConfirmed">Email verificado correctamente</span>
+      <span *ngIf="!isLoading && !isConfirmed">Link invalido o vencido</span>
+    </div>
+
+    <div class="actions">
+      <button *ngIf="isConfirmed" type="button" (click)="goHome()">Entrar al sistema</button>
+      <a *ngIf="!isLoading && !isConfirmed" routerLink="/registro">Volver al registro</a>
+      <a routerLink="/login">Ir al login</a>
+    </div>
+  </div>
+</section>

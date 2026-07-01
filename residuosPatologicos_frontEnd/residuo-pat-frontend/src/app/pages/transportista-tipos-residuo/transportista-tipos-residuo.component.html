@@ -1,0 +1,90 @@
+<section class="transport-layout">
+  <app-transportista-sidebar></app-transportista-sidebar>
+  <main class="transport-content">
+<section class="entity-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Transportista / Tipos de residuo</p>
+      <h1>Tipos de residuo</h1>
+      <p>Alta, edicion y estado operativo de todos los tipos existentes.</p>
+    </div>
+  </header>
+
+  <div class="message setup-warning" *ngIf="!isLoadingProfile && !profileStatus?.completo">
+    <strong>Perfil operativo pendiente</strong>
+    <span *ngFor="let pendiente of profileStatus?.pendientes ?? []">{{ pendiente }}</span>
+    <a routerLink="/transportista/perfil">Configurar perfil transportista</a>
+  </div>
+
+  <div class="page-grid">
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">{{ selectedTipo ? 'Editar tipo' : 'Nuevo tipo' }}</p>
+          <h2>{{ selectedTipo ? 'Editar residuo' : 'Registrar residuo' }}</h2>
+        </div>
+        <button type="button" class="secondary-button" *ngIf="selectedTipo" (click)="cancelEdit()">Cancelar</button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          <span>Codigo</span>
+          <input formControlName="codigo" placeholder="RP-01">
+        </label>
+
+        <label>
+          <span>Nombre</span>
+          <input formControlName="nombre" placeholder="Biosanitario / cortopunzante">
+        </label>
+
+        <label class="check">
+          <input type="checkbox" formControlName="estadoActividad">
+          <span>Activo para crear tickets</span>
+        </label>
+
+        <div class="message" *ngIf="message">{{ message }}</div>
+        <button type="submit" [disabled]="isSaving || !profileStatus?.completo">
+          {{ isSaving ? 'Guardando...' : (selectedTipo ? 'Guardar cambios' : 'Registrar tipo') }}
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Catalogo completo</p>
+          <h2>Todos los tipos existentes</h2>
+        </div>
+        <div class="summary-chips">
+          <span class="chip">{{ tiposResiduo.length }} total</span>
+          <span class="chip active">{{ activosCount }} activos</span>
+        </div>
+      </header>
+
+      <div class="list" *ngIf="tiposResiduo.length; else empty">
+        <div class="list-row clickable" *ngFor="let tipo of tiposResiduo" (click)="editTipo(tipo)">
+          <div>
+            <strong>{{ tipo.nombre }}</strong>
+            <small>{{ tipo.codigo }}</small>
+          </div>
+          <div class="row-actions">
+            <button
+              type="button"
+              class="state-button"
+              [class.active]="tipo.estadoActividad"
+              (click)="toggleEstado(tipo); $event.stopPropagation()">
+              {{ tipo.estadoActividad ? 'Activo' : 'Inactivo' }}
+            </button>
+            <button type="button" class="secondary-button" (click)="editTipo(tipo); $event.stopPropagation()">Editar</button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty">{{ isLoading ? 'Cargando tipos de residuo...' : 'No hay tipos de residuo cargados.' }}</div>
+      </ng-template>
+    </article>
+  </div>
+</section>
+  </main>
+</section>

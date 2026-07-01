@@ -1,0 +1,136 @@
+<section class="transport-layout">
+  <app-transportista-sidebar></app-transportista-sidebar>
+  <main class="transport-content">
+<section class="entity-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Transportista / Manifiestos</p>
+      <h1>{{ pageTitle }}</h1>
+      <p *ngIf="!isEditMode">Programa la visita al generador dentro de la hoja de ruta seleccionada.</p>
+      <p *ngIf="isEditMode">Completa los tipos de residuo recolectados y su kilaje.</p>
+    </div>
+  </header>
+
+  <section class="context-card">
+    <div>
+      <span>{{ hojaContextLabel }}</span>
+      <strong *ngIf="hojaActual; else sinHoja">
+        {{ etiquetaHojaRuta(hojaActual) }} - {{ hojaActual.fechaInicio }} / {{ hojaActual.fechaFin }}
+      </strong>
+      <ng-template #sinHoja>
+        <strong>Sin hoja de ruta seleccionada</strong>
+      </ng-template>
+    </div>
+    <div *ngIf="ticketActual">
+      <span>Manifiesto</span>
+      <strong>{{ etiquetaTicket(ticketActual) }}</strong>
+    </div>
+    <div>
+      <span>Estado</span>
+      <strong>{{ ticketActual?.estado ? 'Procesado' : 'Pendiente' }}</strong>
+    </div>
+  </section>
+
+  <div class="page-grid">
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">{{ isEditMode ? 'Completar' : 'Programar' }}</p>
+          <h2>{{ isEditMode ? 'Datos recolectados' : 'Datos de visita' }}</h2>
+        </div>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          <span>Generador activo</span>
+          <select formControlName="generadorId">
+            <option [ngValue]="null">Seleccionar generador</option>
+            <option *ngFor="let generador of generadores" [ngValue]="generador.id">
+              {{ nombreGenerador(generador) }} - {{ generador.legajo ?? 'Sin legajo' }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Fecha presunta de visita</span>
+          <input type="date" formControlName="fechaEmision" [min]="minFecha" [max]="maxFecha">
+        </label>
+
+        <section class="residue-section" formArrayName="residuos" *ngIf="isEditMode">
+          <div class="section-title">
+            <span>Residuos recolectados</span>
+            <button type="button" class="secondary-button" (click)="addResiduo()" [disabled]="!tiposActivos.length">
+              Agregar residuo
+            </button>
+          </div>
+
+          <div class="residue-row" *ngFor="let residuo of residuos.controls; let i = index" [formGroupName]="i">
+            <label>
+              <span>Tipo activo</span>
+              <select formControlName="tipoResiduoId">
+                <option [ngValue]="null">Seleccionar tipo</option>
+                <option *ngFor="let tipo of tiposActivos" [ngValue]="tipo.id">
+                  {{ tipo.codigo }} - {{ tipo.nombre }}
+                </option>
+              </select>
+            </label>
+            <label>
+              <span>Peso kg</span>
+              <input
+                type="number"
+                min="0.001"
+                step="0.001"
+                inputmode="decimal"
+                formControlName="peso"
+                (keydown)="preventInvalidPesoInput($event)"
+              >
+              <small class="field-warning" *ngIf="showPesoWarning(i)">El peso debe ser un numero positivo.</small>
+            </label>
+            <button type="button" class="secondary-button" (click)="removeResiduo(i)">Quitar</button>
+          </div>
+        </section>
+
+        <div class="total-row" *ngIf="isEditMode">
+          <span>Peso total</span>
+          <strong>{{ totalPeso | number: '1.0-3' }} kg</strong>
+        </div>
+
+        <div class="message" *ngIf="message">{{ message }}</div>
+        <button type="submit" [disabled]="isSaving || isLoading || !hojaActual || !generadores.length">
+          {{ submitLabel }}
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">{{ isEditMode ? 'Tipos activos' : 'Criterio' }}</p>
+          <h2>{{ isEditMode ? 'Disponibles para completar' : 'Manifiesto pendiente' }}</h2>
+        </div>
+        <span class="chip">{{ isEditMode ? tiposActivos.length : generadores.length }}</span>
+      </header>
+
+      <div class="list" *ngIf="isEditMode && tiposActivos.length; else infoPanel">
+        <div class="list-row" *ngFor="let tipo of tiposActivos">
+          <div>
+            <strong>{{ tipo.nombre }}</strong>
+            <small>{{ tipo.codigo }}</small>
+          </div>
+          <span>Activo</span>
+        </div>
+      </div>
+
+      <ng-template #infoPanel>
+        <div class="empty" *ngIf="isEditMode">
+          {{ isLoading ? 'Cargando tipos activos...' : 'No hay tipos activos para completar manifiestos.' }}
+        </div>
+        <div class="empty" *ngIf="!isEditMode">
+          El nuevo manifiesto queda como ticket pendiente. La carga de residuos y kilaje se realiza desde el registro en el home.
+        </div>
+      </ng-template>
+    </article>
+  </div>
+</section>
+  </main>
+</section>

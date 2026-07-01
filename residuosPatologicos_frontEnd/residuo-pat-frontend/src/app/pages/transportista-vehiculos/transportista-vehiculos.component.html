@@ -1,0 +1,103 @@
+<section class="transport-layout">
+  <app-transportista-sidebar></app-transportista-sidebar>
+  <main class="transport-content">
+<section class="entity-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Transportista / Vehiculos</p>
+      <h1>Flota asignada</h1>
+      <p>Registro y control de vehiculos relacionados al transportista autenticado.</p>
+    </div>
+  </header>
+
+  <section class="context-card">
+    <span>Transportista determinado</span>
+    <strong *ngIf="transportista; else noTransportista">
+      {{ transportista.nombre }} {{ transportista.apellido }} - ID {{ transportista.idTransportista }}
+    </strong>
+    <ng-template #noTransportista>
+      <strong>Sin transportista asociado</strong>
+    </ng-template>
+  </section>
+
+  <div class="page-grid">
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">{{ selectedVehiculo ? 'Editar vehiculo' : 'Nuevo vehiculo' }}</p>
+          <h2>{{ selectedVehiculo ? 'Modificar datos de flota' : 'Registrar en la flota' }}</h2>
+        </div>
+        <button type="button" class="secondary-button" (click)="newVehicle()" *ngIf="selectedVehiculo">
+          Nuevo
+        </button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="two-columns">
+          <label>
+            <span>Marca</span>
+            <input formControlName="marca" placeholder="Mercedes Benz">
+          </label>
+          <label>
+            <span>Modelo</span>
+            <input formControlName="modelo" placeholder="Sprinter">
+          </label>
+          <label>
+            <span>Dominio</span>
+            <input formControlName="dominio" placeholder="AA000AA">
+          </label>
+          <label>
+            <span>Anio</span>
+            <input type="number" formControlName="anio" placeholder="2024">
+          </label>
+          <label class="wide">
+            <span>Chasis</span>
+            <input formControlName="chasis" placeholder="Identificador de chasis">
+          </label>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" formControlName="activo">
+          <span>Vehiculo activo para recolecciones</span>
+        </label>
+
+        <div class="message" *ngIf="message">{{ message }}</div>
+        <button type="submit" [disabled]="isSaving || !transportista">
+          {{ isSaving ? 'Guardando...' : (selectedVehiculo ? 'Guardar cambios' : 'Registrar vehiculo') }}
+        </button>
+      </form>
+    </article>
+
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Flota</p>
+          <h2>Vehiculos del transportista</h2>
+        </div>
+        <span class="chip">{{ vehiculos.length }}</span>
+      </header>
+
+      <div class="vehicle-grid" *ngIf="vehiculos.length; else empty">
+        <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
+          <div>
+            <strong>{{ vehiculo.dominio }}</strong>
+            <span>{{ vehiculo.marca }} {{ vehiculo.modelo }}</span>
+            <small>{{ vehiculo.anio ?? 'Sin anio' }} - Chasis {{ vehiculo.chasis ?? '-' }}</small>
+          </div>
+          <div class="vehicle-actions">
+            <button type="button" class="secondary-button" (click)="editVehicle(vehiculo)">Editar</button>
+            <button type="button" class="status-button" [class.active]="vehiculo.activo" (click)="toggleEstado(vehiculo)">
+              {{ vehiculo.activo ? 'Activo' : 'Inactivo' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty">{{ isLoading ? 'Cargando vehiculos...' : 'No hay vehiculos cargados para este transportista.' }}</div>
+      </ng-template>
+    </article>
+  </div>
+</section>
+  </main>
+</section>

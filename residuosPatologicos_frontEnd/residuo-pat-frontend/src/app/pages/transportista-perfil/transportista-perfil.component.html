@@ -1,0 +1,168 @@
+<section class="transport-layout">
+  <app-transportista-sidebar [displayName]="transportista ? transportista.nombre + ' ' + transportista.apellido : ''"></app-transportista-sidebar>
+  <main class="transport-content">
+<section class="profile-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Transportista / Perfil operativo</p>
+      <h1>Configurar datos del transportista</h1>
+      <p>Revisa los datos asociados a tu usuario y completa la ficha operativa cuando corresponda.</p>
+    </div>
+  </header>
+
+  <section class="warning" *ngIf="status && !status.completo">
+    <strong>Perfil pendiente</strong>
+    <span *ngFor="let item of status.pendientes">{{ item }}</span>
+  </section>
+
+  <section class="ready" *ngIf="status?.completo">
+    Perfil operativo completo. Ya puedes registrar generadores y operar tipos de residuo.
+  </section>
+
+  <section class="summary-card user-summary" *ngIf="!transportista">
+    <div class="profile-avatar" aria-label="Foto de perfil pendiente">
+      {{ profileInitials }}
+    </div>
+    <div>
+      <p class="eyebrow">Usuario autenticado</p>
+      <strong>{{ userEmail || 'Sesion activa' }}</strong>
+      <span>{{ userRole || 'Rol no informado' }}</span>
+      <small>Foto de perfil disponible para integrar.</small>
+    </div>
+  </section>
+
+  <section class="summary-card" *ngIf="transportista && !isEditingProfile">
+    <div class="profile-avatar" aria-label="Foto de perfil pendiente">
+      {{ profileInitials }}
+    </div>
+    <div>
+      <p class="eyebrow">Datos registrados</p>
+      <strong>{{ transportista.nombre }} {{ transportista.apellido }}</strong>
+      <span *ngIf="transportista.nombreFantasia">Nombre fantasia {{ transportista.nombreFantasia }}</span>
+      <span>CUIL {{ transportista.cuil }} - {{ transportista.email }}</span>
+      <span>{{ transportista.telefono ?? 'Sin telefono' }}</span>
+      <span>
+        {{ transportista.domicilio?.barrio ? 'Barrio ' + transportista.domicilio?.barrio : (transportista.domicilio?.calle ?? 'Sin calle') }}
+        {{ transportista.domicilio?.barrio ? '' : (transportista.domicilio?.altura ?? '') }}
+        - {{ transportista.domicilio?.localidad ?? 'Sin localidad' }}
+        - CP {{ transportista.domicilio?.codigoPostal ?? '-' }}
+      </span>
+      <small>Foto de perfil disponible para integrar.</small>
+    </div>
+    <button type="button" class="secondary-button" (click)="editProfile()">Solicitar edicion de datos</button>
+  </section>
+
+  <section class="vehicle-cta" *ngIf="transportista && !isEditingProfile && !status?.vehiculoRegistrado">
+    <div>
+      <p class="eyebrow">Flota pendiente</p>
+      <strong>No hay vehiculos registrados para este transportista.</strong>
+      <span>Para completar el perfil operativo, registra la flota desde la vista de vehiculos.</span>
+    </div>
+    <a routerLink="/transportista/vehiculos">Ir a vehiculos</a>
+  </section>
+
+  <article class="panel profile-panel" *ngIf="!transportista || isEditingProfile">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow">{{ transportista ? 'Edicion' : 'Alta requerida' }}</p>
+        <h2>{{ transportista ? 'Actualizar datos del transportista' : 'Completar datos del transportista' }}</h2>
+      </div>
+    </header>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="two-columns">
+        <label>
+          <span>Nombre</span>
+          <input formControlName="nombre">
+        </label>
+        <label>
+          <span>Apellido</span>
+          <input formControlName="apellido">
+        </label>
+        <label>
+          <span>Nombre fantasia</span>
+          <input formControlName="nombreFantasia">
+        </label>
+        <label>
+          <span>CUIL</span>
+          <input
+            formControlName="cuil"
+            inputmode="numeric"
+            maxlength="11"
+            placeholder="11 digitos"
+            [class.invalid]="showCuilWarning">
+          <small class="field-warning" *ngIf="showCuilWarning">
+            El CUIL debe tener 11 digitos. Ingresaste {{ cuilDigitsCount }}.
+          </small>
+        </label>
+        <label>
+          <span>Email</span>
+          <div class="locked-field">
+            <input formControlName="email">
+            <button
+              type="button"
+              class="lock-button"
+              [class.unlocked]="emailEditable"
+              (click)="toggleEmailEdit()"
+              [attr.aria-label]="emailEditable ? 'Bloquear edicion de email' : 'Habilitar edicion de email'"
+            >
+              {{ emailEditable ? '🔓' : '🔒' }}
+            </button>
+          </div>
+        </label>
+        <label>
+          <span>Telefono</span>
+          <input formControlName="telefono">
+        </label>
+        <label class="wide">
+          <span>Tipo de domicilio</span>
+          <select formControlName="domicilioTipo">
+            <option value="CALLE">Calle y numeracion</option>
+            <option value="BARRIO">Barrio</option>
+          </select>
+        </label>
+        <label class="wide" *ngIf="domicilioTipo === 'BARRIO'">
+          <span>Barrio</span>
+          <input formControlName="barrio" placeholder="Nombre del barrio">
+        </label>
+        <label *ngIf="domicilioTipo === 'CALLE'">
+          <span>Calle</span>
+          <input formControlName="calle">
+        </label>
+        <label *ngIf="domicilioTipo === 'CALLE'">
+          <span>Altura</span>
+          <input type="number" formControlName="altura">
+        </label>
+        <label>
+          <span>Codigo postal</span>
+          <input type="number" formControlName="codigoPostal">
+        </label>
+        <label>
+          <span>Localidad</span>
+          <input formControlName="localidad">
+        </label>
+        <label>
+          <span>Provincia</span>
+          <input formControlName="provincia">
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="isSavingProfile">
+          {{ isSavingProfile ? 'Guardando...' : (transportista ? 'Guardar cambios' : 'Guardar datos') }}
+        </button>
+        <button
+          *ngIf="transportista"
+          type="button"
+          class="secondary-button"
+          (click)="cancelProfileEdit()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </article>
+
+  <div class="message" *ngIf="message">{{ message }}</div>
+</section>
+  </main>
+</section>

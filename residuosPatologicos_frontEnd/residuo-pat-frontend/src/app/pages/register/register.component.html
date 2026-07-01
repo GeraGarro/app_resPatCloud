@@ -1,0 +1,118 @@
+<section class="register-page">
+  <div class="register-card">
+    <div class="card-header">
+      <a class="back-link" routerLink="/login">Volver al ingreso</a>
+      <p class="eyebrow">Alta de usuario</p>
+      <h1>Crear cuenta</h1>
+      <p>Registra el perfil que va a operar dentro de ResPat Cloud.</p>
+    </div>
+
+    <div class="success-panel" *ngIf="successMessage">
+      <strong>Solicitud recibida</strong>
+      <p>{{ successMessage }}</p>
+      <small *ngIf="registeredEmail">Enviamos el correo a {{ registeredEmail }}.</small>
+      <a *ngIf="confirmationUrl" [href]="confirmationUrl">Abrir link de confirmacion local</a>
+      <button type="button" (click)="resendConfirmation()" [disabled]="isResending">
+        {{ isResending ? 'Reenviando...' : 'Reenviar correo' }}
+      </button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="role-selector" aria-label="Perfil de usuario">
+        <button
+          *ngFor="let role of roles"
+          type="button"
+          [class.active]="isSelectedRole(role.value)"
+          (click)="selectRole(role.value)">
+          <strong>{{ role.label }}</strong>
+          <small>{{ role.description }}</small>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Email</span>
+        <input
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="usuario@empresa.com"
+          [class.invalid]="email.invalid && email.touched">
+        <small *ngIf="email.invalid && email.touched">Ingresa un email valido.</small>
+      </label>
+
+      <label class="field">
+        <span>Contrasena</span>
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="Minimo 8 caracteres"
+            [class.invalid]="password.invalid && password.touched">
+          <button type="button" (click)="togglePassword()">
+            {{ showPassword ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+        <small *ngIf="password.invalid && password.touched">Usa al menos 8 caracteres.</small>
+      </label>
+
+      <label class="field">
+        <span>Confirmar contrasena</span>
+        <div class="password-field">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Repite la contrasena"
+            [class.invalid]="(confirmPassword.invalid || form.hasError('passwordMismatch')) && confirmPassword.touched">
+          <button type="button" (click)="toggleConfirmPassword()">
+            {{ showConfirmPassword ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+        <small *ngIf="confirmPassword.invalid && confirmPassword.touched">Confirma la contrasena.</small>
+        <small *ngIf="form.hasError('passwordMismatch') && confirmPassword.touched">Las contrasenas no coinciden.</small>
+      </label>
+
+      <div class="alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button class="submit-button" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Creando cuenta...' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <div class="register-footer">
+      <span>Endpoint conectado</span>
+      <strong>/api/auth/register</strong>
+    </div>
+  </div>
+
+  <aside class="verification-panel">
+    <div class="brand-mark">RP</div>
+    <p class="eyebrow">Verificacion de correo</p>
+    <h2>Alta revisada antes de operar</h2>
+    <p>
+      El backend registra la solicitud y evita duplicados. El usuario transportista queda pendiente
+      hasta que un administrador apruebe el acceso operativo.
+    </p>
+
+    <div class="verification-steps" aria-label="Pasos de verificacion">
+      <div>
+        <span>01</span>
+        <strong>Registro</strong>
+        <small>Se guarda el usuario como pendiente.</small>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Email</strong>
+        <small>Se envia un codigo temporal.</small>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Aprobacion</strong>
+        <small>El administrador habilita la cuenta.</small>
+      </div>
+    </div>
+  </aside>
+</section>
