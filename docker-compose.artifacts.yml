@@ -1,0 +1,16 @@
+services:
+  backend:
+    build:
+      context: ./residuosPatologicos_backEnd
+      dockerfile: Dockerfile.artifact
+      args:
+        RUNTIME_IMAGE: "${BACKEND_RUNTIME_IMAGE:-eclipse-temurin:17-jre-alpine}"
+    healthcheck:
+      test: ["CMD-SHELL", "ps | grep -q '[j]ava' || exit 1"]
+
+  frontend:
+    build:
+      context: ./residuosPatologicos_frontEnd/residuo-pat-frontend
+      dockerfile: Dockerfile.artifact
+      args:
+        NGINX_IMAGE: "${FRONTEND_NGINX_IMAGE:-nginx:latest}"
