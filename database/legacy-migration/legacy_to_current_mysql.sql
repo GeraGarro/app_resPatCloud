@@ -140,7 +140,7 @@ INSERT INTO admin_residuosDB.tipo_residuo (
 )
 SELECT
     tr.id,
-    COALESCE(NULLIF(TRIM(tr.codigo), ''), CONCAT('LEGACY-', tr.id)),
+    LEFT(COALESCE(NULLIF(TRIM(tr.codigo), ''), CONCAT('LEGACY-', tr.id)), 20),
     COALESCE(NULLIF(TRIM(tr.nombre), ''), CONCAT('Tipo legacy ', tr.id)),
     CAST(tr.estado AS UNSIGNED),
     @default_transportista_id
