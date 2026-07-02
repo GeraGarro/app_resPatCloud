@@ -21,6 +21,7 @@ SET @temporary_password_hash := '$2a$10$invalidMigrationHashReplaceBeforeLogin';
 -- Usuarios y transportistas
 -- ---------------------------------------------------------------------------
 INSERT INTO admin_residuosDB.usuarios (
+    id,
     email,
     password,
     rol,
@@ -29,6 +30,7 @@ INSERT INTO admin_residuosDB.usuarios (
     fecha_registro
 )
 SELECT
+    t.id_transportista,
     COALESCE(NULLIF(TRIM(t.email), ''), CONCAT('transportista-', t.id_transportista, '@legacy.local')),
     @temporary_password_hash,
     'TRANSPORTISTA',
@@ -40,6 +42,32 @@ ON DUPLICATE KEY UPDATE
     rol = VALUES(rol),
     email_verificado = VALUES(email_verificado),
     estado_cuenta = VALUES(estado_cuenta);
+
+SET @next_usuario_id := (
+    SELECT COALESCE(MAX(id), 0) + 1
+    FROM admin_residuosDB.usuarios
+);
+
+SET @usuario_sequence_table := (
+    SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema = @target_schema
+      AND table_name IN ('usuarios_SEQ', 'usuarios_seq')
+    LIMIT 1
+);
+
+SET @usuario_sequence_sql := IF(
+    @usuario_sequence_table IS NULL,
+    'SELECT 1',
+    CONCAT(
+        'UPDATE ', @target_schema, '.', @usuario_sequence_table,
+        ' SET next_val = GREATEST(next_val, ', @next_usuario_id, ')'
+    )
+);
+
+PREPARE usuario_sequence_stmt FROM @usuario_sequence_sql;
+EXECUTE usuario_sequence_stmt;
+DEALLOCATE PREPARE usuario_sequence_stmt;
 
 INSERT INTO admin_residuosDB.transportista (
     id_transportista,
