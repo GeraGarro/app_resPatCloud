@@ -12,6 +12,7 @@ FROM nginx:1.27-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/residuo-pat-frontend/browser /usr/share/nginx/html
+RUN cp /usr/share/nginx/html/index.csr.html /usr/share/nginx/html/index.html
 
 EXPOSE 80
 
