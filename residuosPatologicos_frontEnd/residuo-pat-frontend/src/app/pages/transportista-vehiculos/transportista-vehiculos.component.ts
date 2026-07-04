@@ -17,6 +17,8 @@ export class TransportistaVehiculosComponent implements OnInit {
   isLoading = true;
   isSaving = false;
   message = '';
+  isEditingVehiculo = true;
+  isFormModalOpen = false;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -93,6 +95,7 @@ export class TransportistaVehiculosComponent implements OnInit {
           ? 'Vehiculo actualizado correctamente.'
           : 'Vehiculo registrado correctamente.';
         this.newVehicle();
+        this.closeFormModal();
         this.loadVehiculos();
       },
       error: () => {
@@ -106,11 +109,23 @@ export class TransportistaVehiculosComponent implements OnInit {
 
   newVehicle(): void {
     this.selectedVehiculo = null;
+    this.isEditingVehiculo = true;
     this.form.reset({ activo: true });
+  }
+
+  openNewVehicle(): void {
+    this.newVehicle();
+    this.message = '';
+    this.openFormModal();
+  }
+
+  showExistingVehicles(): void {
+    this.closeFormModal();
   }
 
   editVehicle(vehiculo: Vehiculo): void {
     this.selectedVehiculo = vehiculo;
+    this.isEditingVehiculo = false;
     this.form.patchValue({
       marca: vehiculo.marca,
       modelo: vehiculo.modelo,
@@ -119,6 +134,38 @@ export class TransportistaVehiculosComponent implements OnInit {
       anio: vehiculo.anio,
       activo: vehiculo.activo,
     });
+    this.message = 'Vehiculo seleccionado en modo consulta.';
+    this.openFormModal();
+  }
+
+  enableVehicleEdit(): void {
+    if (!this.selectedVehiculo) {
+      return;
+    }
+
+    this.isEditingVehiculo = true;
+    this.message = 'Edicion habilitada para el vehiculo seleccionado.';
+    this.openFormModal();
+  }
+
+  get isReadOnlySelected(): boolean {
+    return Boolean(this.selectedVehiculo && !this.isEditingVehiculo);
+  }
+
+  get submitButtonLabel(): string {
+    if (this.isSaving) {
+      return 'Guardando...';
+    }
+
+    return this.selectedVehiculo ? 'Guardar cambios del vehiculo' : 'Guardar nuevo vehiculo';
+  }
+
+  openFormModal(): void {
+    this.isFormModalOpen = true;
+  }
+
+  closeFormModal(): void {
+    this.isFormModalOpen = false;
   }
 
   toggleEstado(vehiculo: Vehiculo): void {

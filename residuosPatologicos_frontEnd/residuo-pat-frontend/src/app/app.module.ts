@@ -20,6 +20,7 @@ import { TransportistaTiposResiduoComponent } from './pages/transportista-tipos-
 import { TransportistaTicketFormComponent } from './pages/transportista-ticket-form/transportista-ticket-form.component';
 import { TransportistaCertificadosComponent } from './pages/transportista-certificados/transportista-certificados.component';
 import { TransportistaSidebarComponent } from './shared/transportista-sidebar/transportista-sidebar.component';
+import { MobileSelectModalDirective } from './shared/mobile-select-modal.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TransportistaSidebarComponent } from './shared/transportista-sidebar/tr
     TransportistaTiposResiduoComponent,
     TransportistaTicketFormComponent,
     TransportistaCertificadosComponent,
-    TransportistaSidebarComponent
+    TransportistaSidebarComponent,
+    MobileSelectModalDirective
 
   ],
   imports: [

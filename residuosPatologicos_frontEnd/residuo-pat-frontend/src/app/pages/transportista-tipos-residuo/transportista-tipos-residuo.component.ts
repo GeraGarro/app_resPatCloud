@@ -18,6 +18,8 @@ export class TransportistaTiposResiduoComponent implements OnInit {
   isLoadingProfile = true;
   isSaving = false;
   message = '';
+  isEditingTipo = true;
+  isFormModalOpen = false;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -97,6 +99,7 @@ export class TransportistaTiposResiduoComponent implements OnInit {
           ? 'Tipo de residuo actualizado correctamente.'
           : 'Tipo de residuo registrado correctamente.';
         this.resetForm();
+        this.closeFormModal();
         this.load();
       },
       error: (error) => {
@@ -108,17 +111,59 @@ export class TransportistaTiposResiduoComponent implements OnInit {
 
   editTipo(tipo: TipoResiduo): void {
     this.selectedTipo = tipo;
+    this.isEditingTipo = false;
     this.form.patchValue({
       codigo: tipo.codigo,
       nombre: tipo.nombre,
       estadoActividad: tipo.estadoActividad,
     });
-    this.message = 'Editando tipo de residuo seleccionado.';
+    this.message = 'Tipo de residuo seleccionado en modo consulta.';
+    this.openFormModal();
+  }
+
+  enableTipoEdit(): void {
+    if (!this.selectedTipo) {
+      return;
+    }
+
+    this.isEditingTipo = true;
+    this.message = 'Edicion habilitada para el tipo de residuo seleccionado.';
+    this.openFormModal();
   }
 
   cancelEdit(): void {
     this.resetForm();
     this.message = '';
+  }
+
+  openNewTipo(): void {
+    this.resetForm();
+    this.message = '';
+    this.openFormModal();
+  }
+
+  showExistingTipos(): void {
+    this.closeFormModal();
+  }
+
+  get isReadOnlySelected(): boolean {
+    return Boolean(this.selectedTipo && !this.isEditingTipo);
+  }
+
+  get submitButtonLabel(): string {
+    if (this.isSaving) {
+      return 'Guardando...';
+    }
+
+    return this.selectedTipo ? 'Guardar cambios del tipo' : 'Guardar nuevo tipo';
+  }
+
+  openFormModal(): void {
+    this.isFormModalOpen = true;
+  }
+
+  closeFormModal(): void {
+    this.isFormModalOpen = false;
   }
 
   toggleEstado(tipo: TipoResiduo): void {
@@ -150,6 +195,7 @@ export class TransportistaTiposResiduoComponent implements OnInit {
 
   private resetForm(): void {
     this.selectedTipo = null;
+    this.isEditingTipo = true;
     this.form.reset({ estadoActividad: true });
   }
 

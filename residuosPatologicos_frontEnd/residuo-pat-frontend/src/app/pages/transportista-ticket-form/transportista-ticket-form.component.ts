@@ -83,7 +83,7 @@ export class TransportistaTicketFormComponent implements OnInit {
       return 'Generar manifiesto pendiente';
     }
 
-    return this.ticketActual?.estado ? 'Guardar cambios' : 'Guardar kilaje y procesar';
+    return this.ticketActual?.estado ? 'Actualizar manifiesto' : 'Guardar kilaje y procesar';
   }
 
   get hojaContextLabel(): string {

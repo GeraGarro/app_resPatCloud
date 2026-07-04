@@ -19,6 +19,13 @@ export class TransportistaGeneradoresComponent implements OnInit {
   isLoadingProfile = true;
   isSaving = false;
   message = '';
+  searchTerm = '';
+  tipoFiltro: 'TODOS' | 'EMPRESA' | 'AUTONOMO' = 'TODOS';
+  currentPage = 0;
+  pageSize = 10;
+  readonly pageSizeOptions = [10, 25, 50];
+  isFilterModalOpen = false;
+  isFormModalOpen = false;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -73,6 +80,14 @@ export class TransportistaGeneradoresComponent implements OnInit {
     return Boolean(this.selectedGenerador && !this.isEditingGenerador);
   }
 
+  get submitButtonLabel(): string {
+    if (this.isSaving) {
+      return 'Guardando...';
+    }
+
+    return this.selectedGenerador ? 'Guardar cambios del generador' : 'Guardar nuevo generador';
+  }
+
   get domicilioTipo(): 'BARRIO' | 'CALLE' {
     return this.form.get('domicilioTipo')?.value as 'BARRIO' | 'CALLE';
   }
@@ -87,11 +102,65 @@ export class TransportistaGeneradoresComponent implements OnInit {
     return Boolean(this.normalizeText(ultimoTelefono.get('numero')?.value));
   }
 
+  get filteredGeneradores(): Generador[] {
+    const needle = this.normalizeSearch(this.searchTerm);
+
+    return this.generadores.filter((generador) => {
+      const matchesTipo = this.tipoFiltro === 'TODOS' || generador.tipo === this.tipoFiltro;
+      if (!matchesTipo) {
+        return false;
+      }
+
+      if (!needle) {
+        return true;
+      }
+
+      const telefonos = this.telefonosVisibles(generador)
+        .map((telefono) => `${telefono.tipo} ${telefono.numero}`)
+        .join(' ');
+      const searchable = [
+        this.nombreGenerador(generador),
+        generador.legajo,
+        generador.email,
+        generador.cuit,
+        generador.cuil,
+        generador.tipo,
+        generador.domicilio?.localidad,
+        generador.domicilio?.provincia,
+        telefonos,
+      ].join(' ');
+
+      return this.normalizeSearch(searchable).includes(needle);
+    });
+  }
+
+  get paginatedGeneradores(): Generador[] {
+    const start = this.currentPage * this.pageSize;
+    return this.filteredGeneradores.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredGeneradores.length / this.pageSize));
+  }
+
+  get pageStart(): number {
+    if (!this.filteredGeneradores.length) {
+      return 0;
+    }
+
+    return this.currentPage * this.pageSize + 1;
+  }
+
+  get pageEnd(): number {
+    return Math.min((this.currentPage + 1) * this.pageSize, this.filteredGeneradores.length);
+  }
+
   load(): void {
     this.isLoading = true;
     this.generadorService.listActivos().subscribe({
       next: (generadores) => {
         this.generadores = generadores;
+        this.currentPage = 0;
         this.isLoading = false;
       },
       error: () => {
@@ -149,6 +218,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
           ? 'Generador actualizado correctamente.'
           : 'Generador registrado correctamente.';
         this.resetForm();
+        this.closeFormModal();
         this.load();
       },
       error: (error) => {
@@ -192,6 +262,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.configureTipoValidators(generador.tipo);
     this.configureDomicilioValidators(domicilioTipo);
     this.message = 'Generador seleccionado en modo consulta.';
+    this.openFormModal();
   }
 
   editSelectedGenerador(): void {
@@ -201,11 +272,64 @@ export class TransportistaGeneradoresComponent implements OnInit {
 
     this.isEditingGenerador = true;
     this.message = 'Edicion habilitada para el generador seleccionado.';
+    this.openFormModal();
   }
 
   cancelEdit(): void {
     this.resetForm();
     this.message = '';
+  }
+
+  openNewGenerador(): void {
+    this.resetForm();
+    this.message = '';
+    this.openFormModal();
+  }
+
+  showExistingGeneradores(): void {
+    this.closeFormModal();
+  }
+
+  openFormModal(): void {
+    this.isFormModalOpen = true;
+  }
+
+  closeFormModal(): void {
+    this.isFormModalOpen = false;
+  }
+
+  onSearchTermChange(event: Event): void {
+    this.searchTerm = (event.target as HTMLInputElement).value;
+    this.currentPage = 0;
+  }
+
+  onTipoFiltroChange(event: Event): void {
+    this.tipoFiltro = (event.target as HTMLSelectElement).value as 'TODOS' | 'EMPRESA' | 'AUTONOMO';
+    this.currentPage = 0;
+  }
+
+  onPageSizeChange(event: Event): void {
+    this.pageSize = Number((event.target as HTMLSelectElement).value);
+    this.currentPage = 0;
+  }
+
+  goToPage(delta: number): void {
+    const nextPage = this.currentPage + delta;
+    this.currentPage = Math.min(Math.max(nextPage, 0), this.totalPages - 1);
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.tipoFiltro = 'TODOS';
+    this.currentPage = 0;
+  }
+
+  openFilterModal(): void {
+    this.isFilterModalOpen = true;
+  }
+
+  closeFilterModal(): void {
+    this.isFilterModalOpen = false;
   }
 
   addTelefono(telefono?: Partial<Telefono>): void {
@@ -349,6 +473,10 @@ export class TransportistaGeneradoresComponent implements OnInit {
 
     const normalized = value.trim();
     return normalized || undefined;
+  }
+
+  private normalizeSearch(value: unknown): string {
+    return String(value ?? '').trim().toLowerCase();
   }
 
   private getErrorMessage(error: unknown): string {

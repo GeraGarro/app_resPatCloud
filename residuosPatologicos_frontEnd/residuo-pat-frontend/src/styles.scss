@@ -4,8 +4,10 @@
 
 html,
 body {
+  width: 100%;
   min-height: 100%;
   margin: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -19,6 +21,29 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+select.mobile-select-source {
+  min-height: 42px;
+  padding-right: 40px !important;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #1f7a5c 50%),
+    linear-gradient(135deg, #1f7a5c 50%, transparent 50%),
+    linear-gradient(180deg, #ffffff, #f8fbf9) !important;
+  background-position:
+    calc(100% - 21px) 50%,
+    calc(100% - 15px) 50%,
+    0 0 !important;
+  background-size:
+    6px 6px,
+    6px 6px,
+    100% 100% !important;
+  background-repeat: no-repeat !important;
+}
+
+select.mobile-select-source:disabled {
+  opacity: 0.82;
 }
 
 a {
@@ -122,10 +147,21 @@ a {
   .entity-page {
     width: 100%;
     min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .transport-layout,
+  .transport-shell {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .entity-page {
     padding: 12px !important;
+    overflow-x: hidden;
   }
 
   h1 {
@@ -226,6 +262,137 @@ a {
   .floating-warning span {
     font-size: 11px;
   }
+
+  .mobile-select-open {
+    overflow: hidden;
+  }
+
+  .mobile-select-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: rgba(14, 24, 20, 0.46);
+  }
+
+  .mobile-select-sheet {
+    display: grid;
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100dvh - 24px);
+    overflow: hidden;
+    border: 1px solid #d8e6df;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 22px 54px rgba(14, 24, 20, 0.28);
+  }
+
+  .mobile-select-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #e1ebe6;
+    background: #f8fbf9;
+  }
+
+  .mobile-select-eyebrow {
+    margin: 0 0 4px;
+    color: #1f7a5c;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .mobile-select-header h3 {
+    margin: 0;
+    color: #17211d;
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .mobile-select-header button {
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid #d8aaaa;
+    border-radius: 10px;
+    background: #fff6f6;
+    color: #7b2d2d;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .mobile-select-options {
+    display: grid;
+    gap: 8px;
+    max-height: min(560px, calc(100dvh - 154px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 12px;
+    scrollbar-color: #1f7a5c #edf4f0;
+    scrollbar-width: thin;
+  }
+
+  .mobile-select-options::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .mobile-select-options::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: #edf4f0;
+  }
+
+  .mobile-select-options::-webkit-scrollbar-thumb {
+    border: 2px solid #edf4f0;
+    border-radius: 999px;
+    background: #1f7a5c;
+  }
+
+  .mobile-select-sheet.has-scroll .mobile-select-options {
+    box-shadow:
+      inset 0 14px 14px -16px rgba(14, 24, 20, 0.4),
+      inset 0 -20px 18px -18px rgba(14, 24, 20, 0.4);
+  }
+
+  .mobile-select-option {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dbe8e2;
+    border-radius: 10px;
+    background: #fbfdfb;
+    color: #21362e;
+    font: inherit;
+    font-weight: 850;
+    text-align: left;
+  }
+
+  .mobile-select-option.selected {
+    border-color: #1f7a5c;
+    background: #e9f4ef;
+    color: #1f7a5c;
+    box-shadow: inset 4px 0 0 #1f7a5c;
+  }
+
+  .mobile-select-option:disabled {
+    color: #8a9791;
+    background: #f2f5f3;
+  }
+
+  .mobile-select-hint {
+    padding: 10px 14px 12px;
+    border-top: 1px solid #e1ebe6;
+    background: #f8fbf9;
+    color: #66766e;
+    font-size: 11px;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+  }
 }
 
 @media (max-width: 420px) {
@@ -254,5 +421,17 @@ a {
     opacity: 0;
     transform: translateY(-100%);
     visibility: hidden;
+  }
+}
+
+@keyframes detailReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

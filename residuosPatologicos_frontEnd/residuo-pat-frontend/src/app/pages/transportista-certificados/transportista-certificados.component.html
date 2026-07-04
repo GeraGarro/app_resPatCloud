@@ -36,52 +36,35 @@
       </article>
     </section>
 
-    <section class="pending-panel" *ngIf="hojasPendientes.length">
-      <div class="panel-header">
-        <div>
-          <p class="eyebrow">Pendientes de certificado</p>
-          <h2>Hojas disponibles para completar</h2>
-        </div>
-        <span class="chip">{{ hojasPendientes.length }} hojas</span>
-      </div>
-
-      <div class="pending-list">
-        <article
-          class="pending-item"
-          role="button"
-          tabindex="0"
-          *ngFor="let hoja of hojasPendientes"
-          [class.active]="hojaPendienteSeleccionada?.id === hoja.id"
-          (click)="seleccionarHojaPendiente(hoja)"
-          (keydown.enter)="seleccionarHojaPendiente(hoja)"
-          (keydown.space)="$event.preventDefault(); seleccionarHojaPendiente(hoja)"
-        >
-          <div>
-            <strong>{{ etiquetaHojaRuta(hoja) }}</strong>
-            <small>{{ hoja.fechaInicio }} / {{ hoja.fechaFin }}</small>
-          </div>
-          <button type="button" class="row-action" (click)="nuevoTicketEnHoja(hoja); $event.stopPropagation()">
-            Agregar ticket
-          </button>
-        </article>
-      </div>
-    </section>
-
-    <section class="certificate-layout">
+    <section
+      class="certificate-layout"
+      [class.has-selection]="certificadoSeleccionado || hojaPendienteSeleccionada"
+    >
       <aside class="certificate-list">
-        <div class="panel-header">
+        <div class="panel-header certificate-header">
           <div>
-            <p class="eyebrow">Seleccion</p>
-            <h2>Certificados</h2>
+            <p class="eyebrow">Seleccion principal</p>
+            <h2>Certificados generados</h2>
           </div>
+          <label class="year-filter" *ngIf="aniosCertificados.length">
+            <span>Anio</span>
+            <select [value]="anioFiltro" (change)="onAnioFiltroChange($event)">
+              <option value="TODOS">Todos</option>
+              <option *ngFor="let anio of aniosCertificados" [value]="anio">{{ anio }}</option>
+            </select>
+          </label>
         </div>
 
         <div class="loading" *ngIf="isLoading">Cargando certificados...</div>
 
+        <div class="certificate-summary" *ngIf="!isLoading && certificadosFiltrados.length">
+          {{ certificadosDesde }}-{{ certificadosHasta }} de {{ certificadosFiltrados.length }} certificados
+        </div>
+
         <button
           type="button"
           class="certificate-item"
-          *ngFor="let certificado of certificados"
+          *ngFor="let certificado of certificadosPaginados"
           [class.active]="certificadoSeleccionado?.id === certificado.id"
           (click)="seleccionarCertificado(certificado)">
           <span>{{ etiquetaCertificado(certificado) }}</span>
@@ -91,6 +74,30 @@
 
         <div class="empty-state" *ngIf="!isLoading && !certificados.length">
           No hay certificados generados para este transportista.
+        </div>
+
+        <div class="empty-state" *ngIf="!isLoading && certificados.length && !certificadosFiltrados.length">
+          No hay certificados generados para el anio seleccionado.
+        </div>
+
+        <div class="certificate-pagination" *ngIf="certificadosFiltrados.length > certificadosPageSize">
+          <button
+            type="button"
+            class="row-action"
+            [disabled]="certificadosPaginaActual === 1"
+            (click)="setCertificadosPage(certificadosPaginaActual - 1)"
+          >
+            Anterior
+          </button>
+          <span>Pagina {{ certificadosPaginaActual }} de {{ certificadosTotalPages }}</span>
+          <button
+            type="button"
+            class="row-action"
+            [disabled]="certificadosPaginaActual === certificadosTotalPages"
+            (click)="setCertificadosPage(certificadosPaginaActual + 1)"
+          >
+            Siguiente
+          </button>
         </div>
       </aside>
 
@@ -308,6 +315,37 @@
           Este certificado todavia no tiene hojas de ruta con tickets asociados.
         </div>
       </section>
+    </section>
+
+    <section class="pending-panel" *ngIf="hojasPendientes.length">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Pendientes de certificado</p>
+          <h2>Hojas disponibles para completar</h2>
+        </div>
+        <span class="chip">{{ hojasPendientes.length }} hojas</span>
+      </div>
+
+      <div class="pending-list">
+        <article
+          class="pending-item"
+          role="button"
+          tabindex="0"
+          *ngFor="let hoja of hojasPendientes"
+          [class.active]="hojaPendienteSeleccionada?.id === hoja.id"
+          (click)="seleccionarHojaPendiente(hoja)"
+          (keydown.enter)="seleccionarHojaPendiente(hoja)"
+          (keydown.space)="$event.preventDefault(); seleccionarHojaPendiente(hoja)"
+        >
+          <div>
+            <strong>{{ etiquetaHojaRuta(hoja) }}</strong>
+            <small>{{ hoja.fechaInicio }} / {{ hoja.fechaFin }}</small>
+          </div>
+          <button type="button" class="row-action" (click)="nuevoTicketEnHoja(hoja); $event.stopPropagation()">
+            Agregar ticket
+          </button>
+        </article>
+      </div>
     </section>
   </section>
 </main>

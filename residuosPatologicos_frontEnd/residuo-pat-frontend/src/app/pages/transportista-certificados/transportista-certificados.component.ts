@@ -37,8 +37,11 @@ export class TransportistaCertificadosComponent implements OnInit {
   isPrintingCertificado = false;
   message = '';
   ticketPages: Record<number, number> = {};
+  anioFiltro = 'TODOS';
+  certificadosPaginaActual = 1;
 
   readonly pageSize = 12;
+  readonly certificadosPageSize = 10;
 
   constructor(
     private readonly certificadoService: CertificadoService,
@@ -112,6 +115,54 @@ export class TransportistaCertificadosComponent implements OnInit {
     }
 
     return `${this.transportista.nombre} ${this.transportista.apellido}`;
+  }
+
+  get aniosCertificados(): number[] {
+    return [...new Set(this.certificados.map((certificado) => certificado.anio))]
+      .sort((a, b) => b - a);
+  }
+
+  get certificadosFiltrados(): Certificado[] {
+    if (this.anioFiltro === 'TODOS') {
+      return this.certificados;
+    }
+
+    const anio = Number(this.anioFiltro);
+    return this.certificados.filter((certificado) => certificado.anio === anio);
+  }
+
+  get certificadosPaginados(): Certificado[] {
+    const start = (this.certificadosPaginaActual - 1) * this.certificadosPageSize;
+    return this.certificadosFiltrados.slice(start, start + this.certificadosPageSize);
+  }
+
+  get certificadosTotalPages(): number {
+    return Math.max(1, Math.ceil(this.certificadosFiltrados.length / this.certificadosPageSize));
+  }
+
+  get certificadosDesde(): number {
+    if (!this.certificadosFiltrados.length) {
+      return 0;
+    }
+
+    return (this.certificadosPaginaActual - 1) * this.certificadosPageSize + 1;
+  }
+
+  get certificadosHasta(): number {
+    return Math.min(this.certificadosPaginaActual * this.certificadosPageSize, this.certificadosFiltrados.length);
+  }
+
+  onAnioFiltroChange(event: Event): void {
+    this.anioFiltro = (event.target as HTMLSelectElement).value;
+    this.certificadosPaginaActual = 1;
+
+    if (this.certificadoSeleccionado && !this.certificadosFiltrados.some((certificado) => certificado.id === this.certificadoSeleccionado?.id)) {
+      this.limpiarSeleccion();
+    }
+  }
+
+  setCertificadosPage(page: number): void {
+    this.certificadosPaginaActual = Math.min(Math.max(page, 1), this.certificadosTotalPages);
   }
 
   seleccionarCertificado(certificado: Certificado): void {
@@ -352,6 +403,7 @@ export class TransportistaCertificadosComponent implements OnInit {
     this.certificadoService.getByTransportista(transportistaId).subscribe({
       next: (certificados) => {
         this.certificados = certificados;
+        this.certificadosPaginaActual = 1;
         this.isLoading = false;
       },
       error: () => {
@@ -392,6 +444,14 @@ export class TransportistaCertificadosComponent implements OnInit {
         this.message = 'No se pudieron cargar las hojas de ruta del certificado.';
       },
     });
+  }
+
+  private limpiarSeleccion(): void {
+    this.certificadoSeleccionado = null;
+    this.hojaPendienteSeleccionada = null;
+    this.ticketSeleccionado = null;
+    this.hojas = [];
+    this.ticketPages = {};
   }
 
   private nombreMes(mes: string): string {

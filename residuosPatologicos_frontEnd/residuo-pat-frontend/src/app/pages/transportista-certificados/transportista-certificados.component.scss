@@ -125,16 +125,10 @@ h2 {
   font-size: 13px;
 }
 
-.certificate-layout {
-  display: grid;
-  grid-template-columns: 330px minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
-}
-
 .pending-panel {
   display: grid;
   gap: 12px;
+  margin-top: 16px;
   margin-bottom: 16px;
   padding: 18px;
 }
@@ -172,10 +166,6 @@ h2 {
   display: block;
 }
 
-.pending-item strong {
-  color: #1f7a5c;
-}
-
 .pending-item small {
   margin-top: 4px;
   color: #65746d;
@@ -186,16 +176,91 @@ h2 {
   padding: 18px;
 }
 
+.certificate-layout {
+  display: grid;
+  grid-template-columns: minmax(440px, 760px);
+  justify-content: center;
+  gap: 16px;
+  align-items: start;
+}
+
+.certificate-layout.has-selection {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  justify-content: stretch;
+}
+
 .certificate-list {
+  position: relative;
   display: grid;
   gap: 10px;
+  border: 2px solid #1f7a5c;
+  background:
+    linear-gradient(180deg, rgba(31, 122, 92, 0.08), rgba(255, 255, 255, 0) 110px),
+    #ffffff;
+  box-shadow: 0 22px 48px rgba(31, 122, 92, 0.16);
+}
+
+.year-filter {
+  display: grid;
+  min-width: 126px;
+  gap: 5px;
+}
+
+.year-filter span,
+.certificate-summary,
+.certificate-pagination {
+  color: #65746d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.certificate-summary {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: #f4fbf7;
+}
+
+.certificate-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.certificate-list::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #1f7a5c, #9a6a19);
+  content: "";
+}
+
+.certificate-layout.has-selection .certificate-list {
+  order: 2;
+  position: sticky;
+  top: 26px;
+  max-height: calc(100vh - 52px);
+  overflow-y: auto;
+  border-color: #cfe4da;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(28, 45, 37, 0.08);
+}
+
+.certificate-layout:not(.has-selection) .detail-panel {
+  display: none;
+}
+
+.certificate-layout.has-selection .detail-panel {
+  order: 1;
+  animation: detailReveal 280ms ease both;
 }
 
 .certificate-item {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid #dce7e1;
   border-radius: 12px;
   background: #fbfdfb;
@@ -204,9 +269,15 @@ h2 {
   cursor: pointer;
 }
 
+.certificate-item:hover {
+  border-color: #8fcbb1;
+  background: #f4fbf7;
+}
+
 .certificate-item.active {
   border-color: #21815f;
   background: #e7f5ee;
+  box-shadow: inset 5px 0 0 #1f7a5c;
 }
 
 .certificate-item span,

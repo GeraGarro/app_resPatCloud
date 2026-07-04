@@ -102,7 +102,7 @@
       </form>
     </article>
 
-    <article class="panel">
+    <article class="panel support-panel" [class.mobile-hidden-on-edit]="isEditMode">
       <header class="panel-header">
         <div>
           <p class="eyebrow">{{ isEditMode ? 'Tipos activos' : 'Criterio' }}</p>

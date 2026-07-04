@@ -17,20 +17,15 @@
   </div>
 
   <div class="page-grid">
-    <article class="panel">
+    <article class="panel form-panel" [class.form-modal-open]="isFormModalOpen">
       <header class="panel-header">
         <div>
           <p class="eyebrow">{{ selectedGenerador ? (isReadOnlySelected ? 'Consulta' : 'Edicion') : 'Nuevo generador' }}</p>
           <h2>{{ selectedGenerador ? nombreGenerador(selectedGenerador) : 'Registrar cliente' }}</h2>
         </div>
         <div class="header-actions">
-          <button
-            type="button"
-            class="secondary-button"
-            *ngIf="selectedGenerador && isReadOnlySelected"
-            (click)="editSelectedGenerador()"
-          >
-            Editar
+          <button type="button" class="mobile-close-button" aria-label="Cerrar formulario" (click)="closeFormModal()">
+            Cerrar
           </button>
           <button type="button" class="secondary-button" *ngIf="selectedGenerador" (click)="cancelEdit()">
             Nuevo generador
@@ -181,25 +176,75 @@
           </div>
         </section>
 
-        <div class="message" *ngIf="message">{{ message }}</div>
-        <button type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !profileStatus?.completo">
-          {{ isSaving ? 'Guardando...' : (selectedGenerador ? 'Guardar cambios' : 'Registrar generador') }}
-        </button>
         </fieldset>
+
+        <div class="message" *ngIf="message">{{ message }}</div>
+        <div class="modal-action-bar" *ngIf="selectedGenerador && isReadOnlySelected">
+          <span>Modo consulta</span>
+          <button type="button" class="edit-enable-button" (click)="editSelectedGenerador()">Habilitar edicion</button>
+        </div>
+        <button class="submit-button" type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !profileStatus?.completo">
+          {{ submitButtonLabel }}
+        </button>
       </form>
     </article>
 
-    <article class="panel">
+    <article class="panel records-panel">
       <header class="panel-header">
         <div>
           <p class="eyebrow">Cartera activa</p>
           <h2>Generadores registrados</h2>
         </div>
-        <span class="chip">{{ generadores.length }}</span>
+        <div class="records-header-actions">
+          <span class="chip">{{ filteredGeneradores.length }} / {{ generadores.length }}</span>
+          <button type="button" class="record-add-button" (click)="openNewGenerador()">Agregar generador</button>
+        </div>
       </header>
 
-      <div class="list" *ngIf="generadores.length; else empty">
-        <div class="list-row clickable" *ngFor="let generador of generadores" (click)="selectGenerador(generador)">
+      <ng-template #generadorFilters>
+        <label class="filter-field">
+          <span>Buscar</span>
+          <input
+            type="search"
+            placeholder="Nombre, legajo, CUIT/CUIL, localidad"
+            [value]="searchTerm"
+            (input)="onSearchTermChange($event)"
+          >
+        </label>
+        <label class="filter-field">
+          <span>Tipo</span>
+          <select [value]="tipoFiltro" (change)="onTipoFiltroChange($event)">
+            <option value="TODOS">Todos</option>
+            <option value="EMPRESA">Empresa</option>
+            <option value="AUTONOMO">Autonomo</option>
+          </select>
+        </label>
+        <button type="button" class="secondary-button" (click)="clearFilters()">Limpiar</button>
+      </ng-template>
+
+      <div class="filters-bar desktop-filters">
+        <ng-container *ngTemplateOutlet="generadorFilters"></ng-container>
+      </div>
+
+      <button type="button" class="secondary-button mobile-filter-button" (click)="openFilterModal()">
+        Filtrar generadores
+      </button>
+
+      <div class="filter-modal-backdrop" *ngIf="isFilterModalOpen" (click)="closeFilterModal()">
+        <div class="filter-modal" (click)="$event.stopPropagation()">
+          <header class="filter-modal-header">
+            <h3>Filtros</h3>
+            <button type="button" class="icon-button" aria-label="Cerrar filtros" (click)="closeFilterModal()">x</button>
+          </header>
+          <div class="filters-bar modal-filters">
+            <ng-container *ngTemplateOutlet="generadorFilters"></ng-container>
+          </div>
+          <button type="button" (click)="closeFilterModal()">Aplicar filtros</button>
+        </div>
+      </div>
+
+      <div class="list" *ngIf="filteredGeneradores.length; else empty">
+        <div class="list-row clickable" *ngFor="let generador of paginatedGeneradores" (click)="selectGenerador(generador)">
           <div>
             <strong>{{ nombreGenerador(generador) }}</strong>
             <small>{{ generador.tipo }} - {{ generador.legajo ?? 'Sin legajo' }}</small>
@@ -223,8 +268,23 @@
         </div>
       </div>
 
+      <footer class="pagination" *ngIf="filteredGeneradores.length">
+        <span>{{ pageStart }}-{{ pageEnd }} de {{ filteredGeneradores.length }}</span>
+        <label class="page-size">
+          <span>Por pagina</span>
+          <select [value]="pageSize" (change)="onPageSizeChange($event)">
+            <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+          </select>
+        </label>
+        <div class="pager-buttons">
+          <button type="button" class="secondary-button" (click)="goToPage(-1)" [disabled]="currentPage === 0">Anterior</button>
+          <span>Pagina {{ currentPage + 1 }} de {{ totalPages }}</span>
+          <button type="button" class="secondary-button" (click)="goToPage(1)" [disabled]="currentPage + 1 >= totalPages">Siguiente</button>
+        </div>
+      </footer>
+
       <ng-template #empty>
-        <div class="empty">{{ isLoading ? 'Cargando generadores...' : 'No hay generadores activos cargados.' }}</div>
+        <div class="empty">{{ isLoading ? 'Cargando generadores...' : 'No hay generadores para los filtros aplicados.' }}</div>
       </ng-template>
     </article>
   </div>

@@ -21,18 +21,22 @@
   </section>
 
   <div class="page-grid">
-    <article class="panel">
+    <article class="panel form-panel" [class.form-modal-open]="isFormModalOpen">
       <header class="panel-header">
         <div>
-          <p class="eyebrow">{{ selectedVehiculo ? 'Editar vehiculo' : 'Nuevo vehiculo' }}</p>
-          <h2>{{ selectedVehiculo ? 'Modificar datos de flota' : 'Registrar en la flota' }}</h2>
+          <p class="eyebrow">{{ selectedVehiculo ? (isReadOnlySelected ? 'Consulta' : 'Editar vehiculo') : 'Nuevo vehiculo' }}</p>
+          <h2>{{ selectedVehiculo ? selectedVehiculo.dominio : 'Registrar en la flota' }}</h2>
         </div>
-        <button type="button" class="secondary-button" (click)="newVehicle()" *ngIf="selectedVehiculo">
-          Nuevo
-        </button>
+        <div class="header-actions">
+          <button type="button" class="mobile-close-button" aria-label="Cerrar formulario" (click)="closeFormModal()">Cerrar</button>
+          <button type="button" class="secondary-button" (click)="openNewVehicle()" *ngIf="selectedVehiculo">
+            Nuevo
+          </button>
+        </div>
       </header>
 
       <form [formGroup]="form" (ngSubmit)="submit()">
+        <fieldset [disabled]="isReadOnlySelected">
         <div class="two-columns">
           <label>
             <span>Marca</span>
@@ -61,32 +65,41 @@
           <span>Vehiculo activo para recolecciones</span>
         </label>
 
+        </fieldset>
+
         <div class="message" *ngIf="message">{{ message }}</div>
-        <button type="submit" [disabled]="isSaving || !transportista">
-          {{ isSaving ? 'Guardando...' : (selectedVehiculo ? 'Guardar cambios' : 'Registrar vehiculo') }}
+        <div class="modal-action-bar" *ngIf="selectedVehiculo && isReadOnlySelected">
+          <span>Modo consulta</span>
+          <button type="button" class="edit-enable-button" (click)="enableVehicleEdit()">Habilitar edicion</button>
+        </div>
+        <button class="submit-button" type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !transportista">
+          {{ submitButtonLabel }}
         </button>
       </form>
     </article>
 
-    <article class="panel">
+    <article class="panel records-panel">
       <header class="panel-header">
         <div>
           <p class="eyebrow">Flota</p>
           <h2>Vehiculos del transportista</h2>
         </div>
-        <span class="chip">{{ vehiculos.length }}</span>
+        <div class="records-header-actions">
+          <span class="chip">{{ vehiculos.length }}</span>
+          <button type="button" class="record-add-button" (click)="openNewVehicle()">Agregar vehiculo</button>
+        </div>
       </header>
 
       <div class="vehicle-grid" *ngIf="vehiculos.length; else empty">
-        <div class="vehicle-card" *ngFor="let vehiculo of vehiculos">
+        <div class="vehicle-card clickable" *ngFor="let vehiculo of vehiculos" (click)="editVehicle(vehiculo)">
           <div>
             <strong>{{ vehiculo.dominio }}</strong>
             <span>{{ vehiculo.marca }} {{ vehiculo.modelo }}</span>
             <small>{{ vehiculo.anio ?? 'Sin anio' }} - Chasis {{ vehiculo.chasis ?? '-' }}</small>
           </div>
           <div class="vehicle-actions">
-            <button type="button" class="secondary-button" (click)="editVehicle(vehiculo)">Editar</button>
-            <button type="button" class="status-button" [class.active]="vehiculo.activo" (click)="toggleEstado(vehiculo)">
+            <button type="button" class="secondary-button" (click)="editVehicle(vehiculo); $event.stopPropagation()">Ver</button>
+            <button type="button" class="status-button" [class.active]="vehiculo.activo" (click)="toggleEstado(vehiculo); $event.stopPropagation()">
               {{ vehiculo.activo ? 'Activo' : 'Inactivo' }}
             </button>
           </div>

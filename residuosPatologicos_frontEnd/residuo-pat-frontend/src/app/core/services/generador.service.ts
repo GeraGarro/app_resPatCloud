@@ -8,9 +8,9 @@ import { Generador, GeneradorRequest, PageResponse } from '../models/operations.
 export class GeneradorService {
   constructor(private readonly http: HttpClient) {}
 
-  listActivos(): Observable<Generador[]> {
+  listActivos(size = 500): Observable<Generador[]> {
     return this.http
-      .get<PageResponse<Generador>>(`${API_BASE_URL}/api/generadores/activos?size=50`)
+      .get<PageResponse<Generador>>(`${API_BASE_URL}/api/generadores/activos?size=${size}`)
       .pipe(map((page) => page.content ?? []));
   }
 

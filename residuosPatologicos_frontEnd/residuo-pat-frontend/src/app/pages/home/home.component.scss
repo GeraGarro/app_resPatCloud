@@ -296,6 +296,32 @@ h2 {
   padding: 18px;
 }
 
+.collections-panel {
+  position: relative;
+  border: 2px solid #1f7a5c;
+  background:
+    linear-gradient(180deg, rgba(31, 122, 92, 0.08), rgba(255, 255, 255, 0) 120px),
+    #ffffff;
+  box-shadow: 0 20px 44px rgba(31, 122, 92, 0.14);
+}
+
+.collections-panel::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #1f7a5c, #9a6a19);
+  content: "";
+}
+
+.collections-panel .panel-header {
+  margin: -2px -2px 16px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid #cfe4da;
+  border-radius: 14px 14px 0 0;
+  background: rgba(248, 252, 250, 0.92);
+}
+
 .panel-header {
   margin-bottom: 16px;
 }
@@ -359,18 +385,25 @@ h2 {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: -4px 0 12px;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid #dcebe4;
+  border-radius: 12px;
+  background: #f8fcfa;
   color: #65746d;
 }
 
 .table-wrap {
+  border: 1px solid #dcebe4;
+  border-radius: 14px;
   overflow-x: auto;
+  background: #ffffff;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 760px;
+  min-width: 640px;
 }
 
 th,
@@ -730,12 +763,16 @@ td small {
 @media (max-width: 900px) {
   .transport-shell {
     grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
     height: auto;
     min-height: 100vh;
     overflow: visible;
   }
 
   .content {
+    width: 100%;
+    max-width: 100%;
     height: auto;
     overflow: visible;
   }
@@ -761,18 +798,50 @@ td small {
     width: 100%;
     min-width: 0;
   }
+
+  .route-summary,
+  .route-summary > *,
+  .dashboard-grid,
+  .right-column,
+  .panel,
+  .document-strip {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 640px) {
   .content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
     padding: 12px;
     padding-bottom: 96px;
   }
 
+  .transport-shell,
+  app-transportista-sidebar {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .route-card {
+    width: 100%;
+  }
+
   .metric-grid,
   .document-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(116px, 1fr);
+    grid-template-columns: none;
     gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
   }
 
   .topbar {
@@ -786,12 +855,61 @@ td small {
     gap: 10px;
   }
 
+  .route-summary {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, 1fr);
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-column {
+    order: -1;
+    display: grid;
+    max-width: 100%;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(168px, 1fr);
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .collections-panel {
+    order: 1;
+  }
+
+  .document-strip {
+    display: none;
+  }
+
   .route-card,
   .operator-card,
   .metric-card,
   .panel {
     padding: 12px;
     border-radius: 12px;
+  }
+
+  .collections-panel {
+    border-width: 2px;
+    box-shadow: 0 14px 28px rgba(31, 122, 92, 0.16) !important;
+  }
+
+  .collections-panel::before {
+    height: 4px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .collections-panel .panel-header {
+    margin: -12px -12px 12px;
+    padding: 14px 12px 12px;
+    border-radius: 10px 10px 0 0;
   }
 
   .period-card {
@@ -820,6 +938,13 @@ td small {
   .metric-card {
     gap: 3px;
     min-height: 0;
+  }
+
+  .action-panel,
+  .residue-panel {
+    min-width: 0;
+    max-height: 220px;
+    overflow-y: auto;
   }
 
   .metric-card small,
@@ -857,7 +982,9 @@ td small {
   }
 
   .table-wrap {
+    border: 0;
     overflow: visible;
+    background: transparent;
   }
 
   table {
@@ -878,9 +1005,10 @@ td small {
     display: grid;
     gap: 8px;
     padding: 11px;
-    border: 1px solid #dce7e1;
+    border: 1px solid #cfe4da;
     border-radius: 12px;
     background: #ffffff;
+    box-shadow: 0 8px 18px rgba(31, 122, 92, 0.08);
   }
 
   tr.clickable-row:hover {
@@ -941,31 +1069,4 @@ td small {
     text-align: center;
   }
 
-  .document-link {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .document-highlight,
-  .document-card,
-  .document-note {
-    padding: 10px;
-    border-radius: 10px;
-  }
-
-  .document-highlight {
-    grid-column: 1 / -1;
-  }
-
-  .document-highlight strong {
-    font-size: 26px;
-  }
-
-}
-
-@media (max-width: 420px) {
-  .metric-grid,
-  .document-grid {
-    grid-template-columns: 1fr;
-  }
 }

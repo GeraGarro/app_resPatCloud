@@ -144,7 +144,6 @@
               <tr>
                 <th>Generador</th>
                 <th>Fecha estimada</th>
-                <th>Vinculos</th>
                 <th>Peso</th>
                 <th>Estado</th>
                 <th>Accion</th>
@@ -161,10 +160,6 @@
                   <small>{{ registro.generador.tipo }} - {{ registro.generador.legajo ?? 'Sin legajo' }}</small>
                 </td>
                 <td data-label="Fecha">{{ registro.fechaEstimada }}</td>
-                <td data-label="Vinculos">
-                  <strong>{{ registro.hojaRuta }}</strong>
-                  <small>{{ registro.certificado }}</small>
-                </td>
                 <td data-label="Peso">{{ registro.peso | number: '1.0-2' }} kg</td>
                 <td data-label="Estado">
                   <span class="state" [class.done]="registro.estado === 'Procesado'" [class.planned]="registro.estado !== 'Procesado'">

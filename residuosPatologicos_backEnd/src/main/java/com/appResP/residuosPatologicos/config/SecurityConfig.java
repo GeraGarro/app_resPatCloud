@@ -70,7 +70,8 @@ public AuthenticationManager authManager(AuthenticationConfiguration config) thr
         config.setAllowedOrigins(java.util.List.of(
                 "http://localhost",
                 "http://localhost:80",
-                "http://localhost:4200"
+                "http://localhost:4200",
+                "http://127.0.0.1:4200"
         ));
         config.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         config.setAllowedHeaders(java.util.List.of("*"));

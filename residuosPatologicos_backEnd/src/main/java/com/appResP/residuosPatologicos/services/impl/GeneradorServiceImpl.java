@@ -17,10 +17,12 @@ import com.appResP.residuosPatologicos.repository.IGeneradorRepository;
 import com.appResP.residuosPatologicos.repository.ITransportistaRepository;
 import com.appResP.residuosPatologicos.services.IGeneradorService;
 import com.appResP.residuosPatologicos.services.TransportistaProfileService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,8 @@ public class GeneradorServiceImpl implements IGeneradorService {
 
     private final GeneradorMapper generadorMapper; // bean (no static)
     private final TransportistaProfileService transportistaProfileService;
+    private final JdbcTemplate jdbcTemplate;
+    private final EntityManager entityManager;
 
     @Override
     @Transactional(readOnly = true)
@@ -107,23 +111,19 @@ public class GeneradorServiceImpl implements IGeneradorService {
 
 
         // 1) Validaciones base
+        validarTipo(dto);
         validarCamposObligatorios(dto);
 
 
-        //2) Regla: NO permitir cambiar el subtipo en update (evita líos con herencia)
-        if (dto.getTipo() != null) {
-            TipoGenerador actual = (existing instanceof GeneradorEmpresa)
-                    ? TipoGenerador.EMPRESA
-                    : TipoGenerador.AUTONOMO;
-
-            if (dto.getTipo() != actual) {
-                throw new IllegalArgumentException(
-                        "No se permite cambiar el tipo de generador en una actualización.");
-            }
-        }
-
         // 3) Validación de unicidad (update real)
-        validarUnicosUpdate(existing, dto);
+        validarUnicosUpdateForTipo(existing, dto);
+
+        TipoGenerador actual = tipoActual(existing);
+        if (dto.getTipo() != actual) {
+            convertirTipoGenerador(existing, dto);
+            existing = generadorRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Generador no encontrado: " + id));
+        }
 
         // 4) Aplicar cambios
         generadorMapper.updateEntity(existing, dto);
@@ -255,6 +255,68 @@ public class GeneradorServiceImpl implements IGeneradorService {
             throw new DuplicateResourceException("Ya existe un generador con ese email.");
 
     }
+
+    private void validarUnicosUpdateForTipo(Generador existing, GeneradorRequestDTO dto) {
+        if (dto.getTipo() == TipoGenerador.EMPRESA) {
+            boolean mismoCuit = existing instanceof GeneradorEmpresa empresa
+                    && dto.getCuit().equals(empresa.getCuit());
+            if (!mismoCuit && generadorEmpresaRepository.existsByCuitAndIdNot(dto.getCuit(), existing.getId()))
+                throw new DuplicateResourceException("Ya existe un generador empresa con ese CUIT.");
+
+        } else if (dto.getTipo() == TipoGenerador.AUTONOMO) {
+            boolean mismoCuil = existing instanceof GeneradorAutonomo autonomo
+                    && dto.getCuil().equals(autonomo.getCuil());
+            if (!mismoCuil && generadorAutonomoRepository.existsByCuilAndIdNot(dto.getCuil(), existing.getId()))
+                throw new DuplicateResourceException("Ya existe un generador autonomo con ese CUIL.");
+        }
+
+        if (hasText(dto.getEmail())
+                && !dto.getEmail().equals(existing.getEmail())
+                && generadorRepository.existsByEmailAndIdNot(dto.getEmail(), existing.getId()))
+            throw new DuplicateResourceException("Ya existe un generador con ese email.");
+    }
+
+    private TipoGenerador tipoActual(Generador generador) {
+        if (generador instanceof GeneradorEmpresa) {
+            return TipoGenerador.EMPRESA;
+        }
+        if (generador instanceof GeneradorAutonomo) {
+            return TipoGenerador.AUTONOMO;
+        }
+        throw new IllegalStateException("Tipo de generador no soportado: " + generador.getClass().getName());
+    }
+
+    private void convertirTipoGenerador(Generador existing, GeneradorRequestDTO dto) {
+        Long id = existing.getId();
+        entityManager.detach(existing);
+
+        if (dto.getTipo() == TipoGenerador.EMPRESA) {
+            jdbcTemplate.update("delete from generador_autonomo where id = ?", id);
+            jdbcTemplate.update("delete from generador_empresa where id = ?", id);
+            jdbcTemplate.update("update generador set tipo_generador = 'EMPRESA' where id = ?", id);
+            jdbcTemplate.update(
+                    "insert into generador_empresa (id, cuit, razon_social, nombre_fantasia) values (?, ?, ?, ?)",
+                    id,
+                    dto.getCuit(),
+                    dto.getRazonSocial(),
+                    dto.getNombreFantasia()
+            );
+        } else {
+            jdbcTemplate.update("delete from generador_empresa where id = ?", id);
+            jdbcTemplate.update("delete from generador_autonomo where id = ?", id);
+            jdbcTemplate.update("update generador set tipo_generador = 'AUTONOMO' where id = ?", id);
+            jdbcTemplate.update(
+                    "insert into generador_autonomo (id, nombre, apellido, cuil) values (?, ?, ?, ?)",
+                    id,
+                    dto.getNombre(),
+                    dto.getApellido(),
+                    dto.getCuil()
+            );
+        }
+
+        entityManager.clear();
+    }
+
     private void validarCamposObligatorios(GeneradorRequestDTO dto) {
         if (dto == null)
             throw new IllegalArgumentException("Datos del generador obligatorios.");

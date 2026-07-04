@@ -17,16 +17,20 @@
   </div>
 
   <div class="page-grid">
-    <article class="panel">
+    <article class="panel form-panel" [class.form-modal-open]="isFormModalOpen">
       <header class="panel-header">
         <div>
-          <p class="eyebrow">{{ selectedTipo ? 'Editar tipo' : 'Nuevo tipo' }}</p>
-          <h2>{{ selectedTipo ? 'Editar residuo' : 'Registrar residuo' }}</h2>
+          <p class="eyebrow">{{ selectedTipo ? (isReadOnlySelected ? 'Consulta' : 'Editar tipo') : 'Nuevo tipo' }}</p>
+          <h2>{{ selectedTipo ? selectedTipo.nombre : 'Registrar residuo' }}</h2>
         </div>
-        <button type="button" class="secondary-button" *ngIf="selectedTipo" (click)="cancelEdit()">Cancelar</button>
+        <div class="header-actions">
+          <button type="button" class="mobile-close-button" aria-label="Cerrar formulario" (click)="closeFormModal()">Cerrar</button>
+          <button type="button" class="secondary-button" *ngIf="selectedTipo" (click)="openNewTipo()">Nuevo</button>
+        </div>
       </header>
 
       <form [formGroup]="form" (ngSubmit)="submit()">
+        <fieldset [disabled]="isReadOnlySelected">
         <label>
           <span>Codigo</span>
           <input formControlName="codigo" placeholder="RP-01">
@@ -42,22 +46,31 @@
           <span>Activo para crear tickets</span>
         </label>
 
+        </fieldset>
+
         <div class="message" *ngIf="message">{{ message }}</div>
-        <button type="submit" [disabled]="isSaving || !profileStatus?.completo">
-          {{ isSaving ? 'Guardando...' : (selectedTipo ? 'Guardar cambios' : 'Registrar tipo') }}
+        <div class="modal-action-bar" *ngIf="selectedTipo && isReadOnlySelected">
+          <span>Modo consulta</span>
+          <button type="button" class="edit-enable-button" (click)="enableTipoEdit()">Habilitar edicion</button>
+        </div>
+        <button class="submit-button" type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !profileStatus?.completo">
+          {{ submitButtonLabel }}
         </button>
       </form>
     </article>
 
-    <article class="panel">
+    <article class="panel records-panel">
       <header class="panel-header">
         <div>
           <p class="eyebrow">Catalogo completo</p>
           <h2>Todos los tipos existentes</h2>
         </div>
-        <div class="summary-chips">
-          <span class="chip">{{ tiposResiduo.length }} total</span>
-          <span class="chip active">{{ activosCount }} activos</span>
+        <div class="records-header-actions">
+          <div class="summary-chips">
+            <span class="chip">{{ tiposResiduo.length }} total</span>
+            <span class="chip active">{{ activosCount }} activos</span>
+          </div>
+          <button type="button" class="record-add-button" (click)="openNewTipo()">Agregar tipo</button>
         </div>
       </header>
 

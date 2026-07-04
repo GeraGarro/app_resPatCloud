@@ -149,7 +149,7 @@
 
       <div class="form-actions">
         <button type="submit" [disabled]="isSavingProfile">
-          {{ isSavingProfile ? 'Guardando...' : (transportista ? 'Guardar cambios' : 'Guardar datos') }}
+          {{ isSavingProfile ? 'Guardando...' : (transportista ? 'Actualizar datos del transportista' : 'Guardar datos del transportista') }}
         </button>
         <button
           *ngIf="transportista"
