@@ -465,6 +465,30 @@ button:disabled {
   display: block;
 }
 
+.generator-name {
+  color: #17211d;
+  line-height: 1.2;
+}
+
+.autonomo-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.surname-highlight {
+  color: #176a4f;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.given-name {
+  color: #43544c;
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .phone-chips {
   display: flex;
   flex-wrap: wrap;

@@ -159,7 +159,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.isLoading = true;
     this.generadorService.listActivos().subscribe({
       next: (generadores) => {
-        this.generadores = generadores;
+        this.generadores = this.sortGeneradores(generadores);
         this.currentPage = 0;
         this.isLoading = false;
       },
@@ -354,10 +354,25 @@ export class TransportistaGeneradoresComponent implements OnInit {
   }
 
   nombreGenerador(generador: Generador): string {
+    if (generador.tipo === 'AUTONOMO') {
+      return [generador.apellido, generador.nombre]
+        .map((value) => this.normalizeText(value))
+        .filter(Boolean)
+        .join(', ')
+        || 'Generador sin nombre';
+    }
+
     return generador.razonSocial
       || generador.nombreFantasia
-      || [generador.nombre, generador.apellido].filter(Boolean).join(' ')
       || 'Generador sin nombre';
+  }
+
+  apellidoAutonomo(generador: Generador): string {
+    return this.normalizeText(generador.apellido) ?? 'Sin apellido';
+  }
+
+  nombreAutonomo(generador: Generador): string {
+    return this.normalizeText(generador.nombre) ?? 'Sin nombre';
   }
 
   ubicacion(generador: Generador): string {
@@ -464,6 +479,33 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.addTelefono();
     this.configureTipoValidators('EMPRESA');
     this.configureDomicilioValidators('CALLE');
+  }
+
+  private sortGeneradores(generadores: Generador[]): Generador[] {
+    return [...generadores].sort((current, next) => {
+      const currentKey = this.generadorSortKey(current);
+      const nextKey = this.generadorSortKey(next);
+      const byName = currentKey.localeCompare(nextKey, 'es', { sensitivity: 'base' });
+
+      if (byName !== 0) {
+        return byName;
+      }
+
+      return current.id - next.id;
+    });
+  }
+
+  private generadorSortKey(generador: Generador): string {
+    if (generador.tipo === 'AUTONOMO') {
+      return [
+        this.normalizeText(generador.apellido),
+        this.normalizeText(generador.nombre),
+      ].filter(Boolean).join(' ');
+    }
+
+    return this.normalizeText(generador.razonSocial)
+      ?? this.normalizeText(generador.nombreFantasia)
+      ?? '';
   }
 
   private normalizeText(value: unknown): string | undefined {
