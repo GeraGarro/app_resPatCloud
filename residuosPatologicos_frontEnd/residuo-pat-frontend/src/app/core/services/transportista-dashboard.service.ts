@@ -15,6 +15,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TransportistaDashboardService {
+  private readonly catalogPageSize = 200;
+
   constructor(private readonly http: HttpClient) {}
 
   downloadInformeHojaRuta(hojaRutaId: number): Observable<Blob> {
@@ -40,11 +42,13 @@ export class TransportistaDashboardService {
         ticketsActuales: this.safePage<TicketControl>(
           this.http.get<PageResponse<TicketControl>>(`${API_BASE_URL}/api/hojas-ruta/actual/tickets?size=100`)
         ),
-        generadoresActivos: this.safePage<Generador>(
-          this.http.get<PageResponse<Generador>>(`${API_BASE_URL}/api/generadores/activos?size=20`)
+        generadoresActivos: this.safeFullPage<Generador>(
+          `${API_BASE_URL}/api/generadores/activos`,
+          this.catalogPageSize
         ),
-        tiposResiduo: this.safePage<TipoResiduo>(
-          this.http.get<PageResponse<TipoResiduo>>(`${API_BASE_URL}/api/tipos-residuo?size=20`)
+        tiposResiduo: this.safeFullPage<TipoResiduo>(
+          `${API_BASE_URL}/api/tipos-residuo`,
+          this.catalogPageSize
         ),
         certificadosPage: this.loadCertificadosPage(transportistaActual),
         transportistas: transportistaActual
@@ -113,6 +117,37 @@ export class TransportistaDashboardService {
       map((page) => page.content ?? []),
       catchError(() => of([]))
     );
+  }
+
+  private safeFullPage<T>(url: string, size: number): Observable<T[]> {
+    return this.http.get<PageResponse<T>>(this.pageUrl(url, 0, size)).pipe(
+      switchMap((firstPage) => {
+        const firstContent = firstPage.content ?? [];
+        const totalPages = firstPage.totalPages ?? 1;
+
+        if (totalPages <= 1) {
+          return of(firstContent);
+        }
+
+        const nextPages = Array.from({ length: totalPages - 1 }, (_, index) => {
+          return this.http.get<PageResponse<T>>(this.pageUrl(url, index + 1, size));
+        });
+
+        return forkJoin(nextPages).pipe(
+          map((pages) => [
+            ...firstContent,
+            ...pages.flatMap((page) => page.content ?? []),
+          ])
+        );
+      }),
+      catchError(() => of([]))
+    );
+  }
+
+  private pageUrl(url: string, page: number, size: number): string {
+    const separator = url.includes('?') ? '&' : '?';
+
+    return `${url}${separator}page=${page}&size=${size}`;
   }
 
   private anio(fecha: string): number {

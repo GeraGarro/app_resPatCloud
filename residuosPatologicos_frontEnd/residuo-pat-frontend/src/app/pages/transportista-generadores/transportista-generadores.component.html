@@ -244,10 +244,16 @@
       </div>
 
       <div class="list" *ngIf="filteredGeneradores.length; else empty">
-        <div class="list-row clickable" *ngFor="let generador of paginatedGeneradores" (click)="selectGenerador(generador)">
+        <div
+          class="list-row clickable"
+          *ngFor="let generador of paginatedGeneradores"
+          [class.autonomo-row]="generador.tipo === 'AUTONOMO'"
+          (click)="selectGenerador(generador)"
+        >
           <div>
             <strong class="generator-name" [class.autonomo-name]="generador.tipo === 'AUTONOMO'">
               <ng-container *ngIf="generador.tipo === 'AUTONOMO'; else empresaGeneradorName">
+                <span class="autonomo-label">Autonomo</span>
                 <span class="surname-highlight">{{ apellidoAutonomo(generador) }}</span>
                 <span class="given-name">{{ nombreAutonomo(generador) }}</span>
               </ng-container>

@@ -218,9 +218,16 @@ export class TransportistaTicketFormComponent implements OnInit {
   }
 
   nombreGenerador(generador: Generador): string {
+    if (generador.tipo === 'AUTONOMO') {
+      return [generador.apellido, generador.nombre]
+        .map((value) => this.normalizeText(value))
+        .filter(Boolean)
+        .join(', ')
+        || 'Generador sin nombre';
+    }
+
     return generador.razonSocial
       || generador.nombreFantasia
-      || [generador.nombre, generador.apellido].filter(Boolean).join(' ')
       || 'Generador sin nombre';
   }
 
@@ -347,7 +354,9 @@ export class TransportistaTicketFormComponent implements OnInit {
   }
 
   private applyDashboardData(data: TransportistaDashboardData): void {
-    this.generadores = data.generadoresActivos.filter((generador) => generador.estado);
+    this.generadores = this.sortGeneradores(
+      data.generadoresActivos.filter((generador) => generador.estado)
+    );
 
     if (this.generadores.length && !this.form.get('generadorId')?.value) {
       this.form.patchValue({ generadorId: this.generadores[0].id });
@@ -411,5 +420,41 @@ export class TransportistaTicketFormComponent implements OnInit {
   private getErrorMessage(error: unknown): string {
     return (error as { error?: { message?: string } })?.error?.message
       ?? 'No se pudo guardar el manifiesto.';
+  }
+
+  private sortGeneradores(generadores: Generador[]): Generador[] {
+    return [...generadores].sort((current, next) => {
+      const currentKey = this.generadorSortKey(current);
+      const nextKey = this.generadorSortKey(next);
+      const byName = currentKey.localeCompare(nextKey, 'es', { sensitivity: 'base' });
+
+      if (byName !== 0) {
+        return byName;
+      }
+
+      return current.id - next.id;
+    });
+  }
+
+  private generadorSortKey(generador: Generador): string {
+    if (generador.tipo === 'AUTONOMO') {
+      return [
+        this.normalizeText(generador.apellido),
+        this.normalizeText(generador.nombre),
+      ].filter(Boolean).join(' ');
+    }
+
+    return this.normalizeText(generador.razonSocial)
+      ?? this.normalizeText(generador.nombreFantasia)
+      ?? '';
+  }
+
+  private normalizeText(value: unknown): string | undefined {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const normalized = value.trim();
+    return normalized || undefined;
   }
 }

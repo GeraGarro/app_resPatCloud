@@ -327,10 +327,31 @@ a {
     font-weight: 900;
   }
 
+  .mobile-select-filter {
+    padding: 12px 12px 0;
+    background: #ffffff;
+  }
+
+  .mobile-select-filter input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 12px;
+    border: 1px solid #cfded6;
+    border-radius: 12px;
+    background: #fbfdfb;
+    color: #17211d;
+    outline: none;
+  }
+
+  .mobile-select-filter input:focus {
+    border-color: #1f7a5c;
+    box-shadow: 0 0 0 3px rgba(31, 122, 92, 0.13);
+  }
+
   .mobile-select-options {
     display: grid;
     gap: 8px;
-    max-height: min(560px, calc(100dvh - 154px));
+    max-height: min(560px, calc(100dvh - 208px));
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 12px;
@@ -381,6 +402,14 @@ a {
   .mobile-select-option:disabled {
     color: #8a9791;
     background: #f2f5f3;
+  }
+
+  .mobile-select-empty {
+    padding: 8px 14px 12px;
+    color: #66766e;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
   }
 
   .mobile-select-hint {

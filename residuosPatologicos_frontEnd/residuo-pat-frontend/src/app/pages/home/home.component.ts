@@ -347,9 +347,16 @@ export class HomeComponent implements OnInit {
   }
 
   nombreGenerador(generador: Generador): string {
+    if (generador.tipo === 'AUTONOMO') {
+      return [generador.apellido, generador.nombre]
+        .map((value) => this.normalizeText(value))
+        .filter(Boolean)
+        .join(', ')
+        || 'Generador sin nombre';
+    }
+
     return generador.razonSocial
       ?? generador.nombreFantasia
-      ?? [generador.nombre, generador.apellido].filter(Boolean).join(' ')
       ?? 'Generador sin nombre';
   }
 
@@ -569,6 +576,15 @@ export class HomeComponent implements OnInit {
       estado: true,
       razonSocial: `Generador #${generadorId}`,
     };
+  }
+
+  private normalizeText(value: unknown): string | undefined {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const normalized = value.trim();
+    return normalized || undefined;
   }
 
   private openPdf(pdf: Blob, fileName: string): void {

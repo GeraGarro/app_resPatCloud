@@ -67,13 +67,20 @@ export class MobileSelectModalDirective implements OnDestroy {
     const title = this.renderer.createElement('h3') as HTMLElement;
     const closeButton = this.renderer.createElement('button') as HTMLButtonElement;
     const options = this.renderer.createElement('div') as HTMLElement;
+    const filterWrapper = this.renderer.createElement('div') as HTMLElement;
+    const filterInput = this.renderer.createElement('input') as HTMLInputElement;
+    const emptyState = this.renderer.createElement('div') as HTMLElement;
     const hasScrollableOptions = select.options.length > 10;
+    const shouldShowFilter = select.options.length > 10;
+    const optionButtons: Array<{ button: HTMLButtonElement; label: string }> = [];
 
     this.renderer.addClass(overlay, 'mobile-select-backdrop');
     this.renderer.addClass(sheet, 'mobile-select-sheet');
     this.renderer.addClass(header, 'mobile-select-header');
     this.renderer.addClass(eyebrow, 'mobile-select-eyebrow');
+    this.renderer.addClass(filterWrapper, 'mobile-select-filter');
     this.renderer.addClass(options, 'mobile-select-options');
+    this.renderer.addClass(emptyState, 'mobile-select-empty');
 
     if (hasScrollableOptions) {
       this.renderer.addClass(sheet, 'has-scroll');
@@ -82,16 +89,24 @@ export class MobileSelectModalDirective implements OnDestroy {
     this.renderer.setAttribute(sheet, 'role', 'dialog');
     this.renderer.setAttribute(sheet, 'aria-modal', 'true');
     this.renderer.setAttribute(closeButton, 'type', 'button');
+    this.renderer.setAttribute(filterInput, 'type', 'search');
+    this.renderer.setAttribute(filterInput, 'placeholder', 'Filtrar opciones');
 
     eyebrow.textContent = 'Seleccionar opcion';
     title.textContent = this.getLabel();
     closeButton.textContent = 'Cerrar';
+    emptyState.textContent = 'Sin opciones para ese filtro';
 
     this.renderer.appendChild(titleGroup, eyebrow);
     this.renderer.appendChild(titleGroup, title);
     this.renderer.appendChild(header, titleGroup);
     this.renderer.appendChild(header, closeButton);
     this.renderer.appendChild(sheet, header);
+
+    if (shouldShowFilter) {
+      this.renderer.appendChild(filterWrapper, filterInput);
+      this.renderer.appendChild(sheet, filterWrapper);
+    }
 
     Array.from(select.options).forEach((option, index) => {
       const optionButton = this.renderer.createElement('button') as HTMLButtonElement;
@@ -109,10 +124,31 @@ export class MobileSelectModalDirective implements OnDestroy {
       }
 
       optionButton.addEventListener('click', () => this.chooseOption(index));
+      optionButtons.push({
+        button: optionButton,
+        label: this.normalizeOptionText(optionButton.textContent),
+      });
       this.renderer.appendChild(options, optionButton);
     });
 
     this.renderer.appendChild(sheet, options);
+    this.renderer.appendChild(sheet, emptyState);
+    this.renderer.setStyle(emptyState, 'display', 'none');
+
+    if (shouldShowFilter) {
+      filterInput.addEventListener('input', () => {
+        const needle = this.normalizeOptionText(filterInput.value);
+        let visibleOptions = 0;
+
+        for (const item of optionButtons) {
+          const isVisible = !needle || item.label.includes(needle);
+          this.renderer.setStyle(item.button, 'display', isVisible ? '' : 'none');
+          visibleOptions += isVisible ? 1 : 0;
+        }
+
+        this.renderer.setStyle(emptyState, 'display', visibleOptions ? 'none' : 'block');
+      });
+    }
 
     if (hasScrollableOptions) {
       const hint = this.renderer.createElement('div') as HTMLElement;
@@ -185,5 +221,13 @@ export class MobileSelectModalDirective implements OnDestroy {
     return select.closest('label')?.querySelector('span')?.textContent?.trim()
       || select.getAttribute('aria-label')
       || 'Opciones disponibles';
+  }
+
+  private normalizeOptionText(value: unknown): string {
+    return String(value ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
   }
 }

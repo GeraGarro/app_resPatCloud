@@ -448,6 +448,11 @@ button:disabled {
   background: #f6f9f7;
 }
 
+.autonomo-row {
+  border: 1px solid #cbe7dc;
+  border-left: 5px solid #1f7a5c;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -465,11 +470,6 @@ button:disabled {
   display: block;
 }
 
-.generator-name {
-  color: #17211d;
-  line-height: 1.2;
-}
-
 .autonomo-name {
   display: flex;
   flex-wrap: wrap;
@@ -477,9 +477,18 @@ button:disabled {
   gap: 6px;
 }
 
+.autonomo-label {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e7f5ef;
+  color: #176a4f;
+  font-size: 10px;
+  font-weight: 950;
+}
+
 .surname-highlight {
   color: #176a4f;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 950;
 }
 
