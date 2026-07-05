@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Generador, GeneradorRequest, Telefono, TipoTelefono, TransportistaProfileStatus } from '../../core/models/operations.models';
 import { GeneradorService } from '../../core/services/generador.service';
@@ -10,6 +10,8 @@ import { TransportistaService } from '../../core/services/transportista.service'
   styleUrl: './transportista-generadores.component.scss'
 })
 export class TransportistaGeneradoresComponent implements OnInit {
+  @ViewChild('formPanel') private formPanel?: ElementRef<HTMLElement>;
+
   form!: FormGroup;
   generadores: Generador[] = [];
   profileStatus: TransportistaProfileStatus | null = null;
@@ -51,7 +53,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
       altura: [null],
       localidad: ['', Validators.required],
       provincia: ['', Validators.required],
-      codigoPostal: [null],
+      codigoPostal: [null, Validators.required],
     });
 
     this.configureTipoValidators(this.tipo);
@@ -263,6 +265,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.configureDomicilioValidators(domicilioTipo);
     this.message = 'Generador seleccionado en modo consulta.';
     this.openFormModal();
+    this.focusFormPanel();
   }
 
   editSelectedGenerador(): void {
@@ -273,6 +276,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.isEditingGenerador = true;
     this.message = 'Edicion habilitada para el generador seleccionado.';
     this.openFormModal();
+    this.focusFormPanel();
   }
 
   cancelEdit(): void {
@@ -284,6 +288,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.resetForm();
     this.message = '';
     this.openFormModal();
+    this.focusFormPanel();
   }
 
   showExistingGeneradores(): void {
@@ -340,7 +345,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
 
     this.telefonos.push(this.fb.group({
       numero: [telefono?.numero ?? ''],
-      tipo: [telefono?.tipo ?? 'WHATSAPP'],
+      tipo: [telefono?.tipo ?? 'WHATSAPP', Validators.required],
       estado: [telefono?.estado ?? true],
     }));
   }
@@ -375,6 +380,20 @@ export class TransportistaGeneradoresComponent implements OnInit {
     return this.normalizeText(generador.nombre) ?? 'Sin nombre';
   }
 
+  tituloEmpresa(generador: Generador): string {
+    return this.normalizeText(generador.razonSocial)
+      ?? this.normalizeText(generador.nombreFantasia)
+      ?? 'Generador sin nombre';
+  }
+
+  detalleEmpresa(generador: Generador): string {
+    if (this.normalizeText(generador.razonSocial) && this.normalizeText(generador.nombreFantasia)) {
+      return this.normalizeText(generador.nombreFantasia) as string;
+    }
+
+    return 'Empresa';
+  }
+
   ubicacion(generador: Generador): string {
     return [generador.domicilio?.localidad, generador.domicilio?.provincia].filter(Boolean).join(', ')
       || 'Sin ubicacion';
@@ -393,6 +412,34 @@ export class TransportistaGeneradoresComponent implements OnInit {
     const value = String(control?.value ?? '').trim();
 
     return Boolean((control?.touched || control?.dirty) && value && !/^\d{11}$/.test(value));
+  }
+
+  showFieldWarning(controlName: string): boolean {
+    const control = this.form.get(controlName);
+
+    return Boolean(control && (control.touched || control.dirty) && control.invalid);
+  }
+
+  fieldWarning(controlName: string, label: string): string {
+    const control = this.form.get(controlName);
+
+    if (control?.hasError('required')) {
+      return `${label} es obligatorio.`;
+    }
+
+    if (control?.hasError('pattern')) {
+      return `${label} debe tener exactamente 11 digitos.`;
+    }
+
+    if (control?.hasError('email')) {
+      return 'Ingresa un email valido.';
+    }
+
+    if (control?.hasError('min')) {
+      return `${label} debe ser mayor a cero.`;
+    }
+
+    return `Revisa ${label.toLowerCase()}.`;
   }
 
   private buildRequest(): GeneradorRequest {
@@ -440,6 +487,7 @@ export class TransportistaGeneradoresComponent implements OnInit {
 
   private configureTipoValidators(tipo: 'EMPRESA' | 'AUTONOMO'): void {
     this.setValidators('razonSocial', tipo === 'EMPRESA' ? [Validators.required] : []);
+    this.setValidators('nombreFantasia', tipo === 'EMPRESA' ? [Validators.required] : []);
     this.setValidators('cuit', tipo === 'EMPRESA'
       ? [Validators.required, Validators.pattern(/^\d{11}$/)]
       : []
@@ -479,6 +527,15 @@ export class TransportistaGeneradoresComponent implements OnInit {
     this.addTelefono();
     this.configureTipoValidators('EMPRESA');
     this.configureDomicilioValidators('CALLE');
+  }
+
+  private focusFormPanel(): void {
+    setTimeout(() => {
+      this.formPanel?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
   }
 
   private sortGeneradores(generadores: Generador[]): Generador[] {

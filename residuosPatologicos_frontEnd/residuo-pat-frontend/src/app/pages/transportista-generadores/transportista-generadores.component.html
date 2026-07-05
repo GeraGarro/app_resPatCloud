@@ -17,13 +17,17 @@
   </div>
 
   <div class="page-grid">
-    <article class="panel form-panel" [class.form-modal-open]="isFormModalOpen">
+    <article #formPanel class="panel form-panel" [class.form-modal-open]="isFormModalOpen">
       <header class="panel-header">
         <div>
           <p class="eyebrow">{{ selectedGenerador ? (isReadOnlySelected ? 'Consulta' : 'Edicion') : 'Nuevo generador' }}</p>
           <h2>{{ selectedGenerador ? nombreGenerador(selectedGenerador) : 'Registrar cliente' }}</h2>
         </div>
         <div class="header-actions">
+          <span class="consult-mode-pill" *ngIf="selectedGenerador && isReadOnlySelected">Modo consulta</span>
+          <button type="button" class="edit-enable-button header-edit-button" *ngIf="selectedGenerador && isReadOnlySelected" (click)="editSelectedGenerador()">
+            Habilitar edicion
+          </button>
           <button type="button" class="mobile-close-button" aria-label="Cerrar formulario" (click)="closeFormModal()">
             Cerrar
           </button>
@@ -47,15 +51,17 @@
           <label>
             <span>Razon social</span>
             <input formControlName="razonSocial" placeholder="Clinica / empresa">
+            <small class="field-warning" *ngIf="showFieldWarning('razonSocial')">{{ fieldWarning('razonSocial', 'Razon social') }}</small>
           </label>
           <label>
             <span>CUIT</span>
             <input formControlName="cuit" placeholder="11 digitos">
-            <small class="field-warning" *ngIf="showDocumentWarning('cuit')">El CUIT debe tener exactamente 11 digitos.</small>
+            <small class="field-warning" *ngIf="showFieldWarning('cuit')">{{ fieldWarning('cuit', 'CUIT') }}</small>
           </label>
           <label class="wide">
             <span>Nombre fantasia</span>
             <input formControlName="nombreFantasia" placeholder="Nombre operativo">
+            <small class="field-warning" *ngIf="showFieldWarning('nombreFantasia')">{{ fieldWarning('nombreFantasia', 'Nombre fantasia') }}</small>
           </label>
         </div>
 
@@ -64,15 +70,17 @@
             <label>
               <span>Nombre</span>
               <input formControlName="nombre">
+              <small class="field-warning" *ngIf="showFieldWarning('nombre')">{{ fieldWarning('nombre', 'Nombre') }}</small>
             </label>
             <label>
               <span>Apellido</span>
               <input formControlName="apellido">
+              <small class="field-warning" *ngIf="showFieldWarning('apellido')">{{ fieldWarning('apellido', 'Apellido') }}</small>
             </label>
             <label class="wide">
               <span>CUIL</span>
               <input formControlName="cuil" placeholder="11 digitos">
-              <small class="field-warning" *ngIf="showDocumentWarning('cuil')">El CUIL debe tener exactamente 11 digitos.</small>
+              <small class="field-warning" *ngIf="showFieldWarning('cuil')">{{ fieldWarning('cuil', 'CUIL') }}</small>
             </label>
           </div>
         </ng-template>
@@ -81,6 +89,7 @@
           <label>
             <span>Email</span>
             <input type="email" formControlName="email" placeholder="Opcional">
+            <small class="field-warning" *ngIf="showFieldWarning('email')">{{ fieldWarning('email', 'Email') }}</small>
           </label>
           <label>
             <span>Legajo</span>
@@ -96,26 +105,32 @@
           <label class="wide" *ngIf="domicilioTipo === 'BARRIO'">
             <span>Barrio</span>
             <input formControlName="barrio" placeholder="Nombre del barrio">
+            <small class="field-warning" *ngIf="showFieldWarning('barrio')">{{ fieldWarning('barrio', 'Barrio') }}</small>
           </label>
           <label *ngIf="domicilioTipo === 'CALLE'">
             <span>Calle</span>
             <input formControlName="calle">
+            <small class="field-warning" *ngIf="showFieldWarning('calle')">{{ fieldWarning('calle', 'Calle') }}</small>
           </label>
           <label *ngIf="domicilioTipo === 'CALLE'">
             <span>Altura</span>
             <input type="number" formControlName="altura">
+            <small class="field-warning" *ngIf="showFieldWarning('altura')">{{ fieldWarning('altura', 'Altura') }}</small>
           </label>
           <label>
             <span>Codigo postal</span>
             <input type="number" formControlName="codigoPostal">
+            <small class="field-warning" *ngIf="showFieldWarning('codigoPostal')">{{ fieldWarning('codigoPostal', 'Codigo postal') }}</small>
           </label>
           <label>
             <span>Localidad</span>
             <input formControlName="localidad">
+            <small class="field-warning" *ngIf="showFieldWarning('localidad')">{{ fieldWarning('localidad', 'Localidad') }}</small>
           </label>
           <label>
             <span>Provincia</span>
             <input formControlName="provincia">
+            <small class="field-warning" *ngIf="showFieldWarning('provincia')">{{ fieldWarning('provincia', 'Provincia') }}</small>
           </label>
         </div>
 
@@ -179,10 +194,6 @@
         </fieldset>
 
         <div class="message" *ngIf="message">{{ message }}</div>
-        <div class="modal-action-bar" *ngIf="selectedGenerador && isReadOnlySelected">
-          <span>Modo consulta</span>
-          <button type="button" class="edit-enable-button" (click)="editSelectedGenerador()">Habilitar edicion</button>
-        </div>
         <button class="submit-button" type="submit" *ngIf="!isReadOnlySelected" [disabled]="isSaving || !profileStatus?.completo">
           {{ submitButtonLabel }}
         </button>
@@ -247,18 +258,24 @@
         <div
           class="list-row clickable"
           *ngFor="let generador of paginatedGeneradores"
-          [class.autonomo-row]="generador.tipo === 'AUTONOMO'"
           (click)="selectGenerador(generador)"
         >
-          <div>
-            <strong class="generator-name" [class.autonomo-name]="generador.tipo === 'AUTONOMO'">
+          <div class="generator-summary">
+            <div
+              class="generator-identity"
+              [class.autonomo-identity]="generador.tipo === 'AUTONOMO'"
+              [class.empresa-identity]="generador.tipo === 'EMPRESA'"
+            >
+              <span class="generator-kind">{{ generador.tipo === 'AUTONOMO' ? 'Autonomo' : 'Empresa' }}</span>
               <ng-container *ngIf="generador.tipo === 'AUTONOMO'; else empresaGeneradorName">
-                <span class="autonomo-label">Autonomo</span>
-                <span class="surname-highlight">{{ apellidoAutonomo(generador) }}</span>
-                <span class="given-name">{{ nombreAutonomo(generador) }}</span>
+                <strong class="generator-title">{{ apellidoAutonomo(generador) }}</strong>
+                <span class="generator-subtitle">{{ nombreAutonomo(generador) }}</span>
               </ng-container>
-              <ng-template #empresaGeneradorName>{{ nombreGenerador(generador) }}</ng-template>
-            </strong>
+              <ng-template #empresaGeneradorName>
+                <strong class="generator-title">{{ tituloEmpresa(generador) }}</strong>
+                <span class="generator-subtitle">{{ detalleEmpresa(generador) }}</span>
+              </ng-template>
+            </div>
             <small>{{ generador.tipo }} - {{ generador.legajo ?? 'Sin legajo' }}</small>
             <div class="phone-chips" *ngIf="telefonosVisibles(generador).length; else sinTelefonos">
               <span
@@ -275,7 +292,6 @@
           </div>
           <div class="row-actions">
             <span>{{ ubicacion(generador) }}</span>
-            <button type="button" class="secondary-button" (click)="selectGenerador(generador); $event.stopPropagation()">Ver</button>
           </div>
         </div>
       </div>
